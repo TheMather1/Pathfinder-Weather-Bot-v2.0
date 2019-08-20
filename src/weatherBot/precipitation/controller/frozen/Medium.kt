@@ -9,7 +9,7 @@ import weatherBot.precipitation.snow.LightSnow
 import weatherBot.precipitation.snow.MediumSnow
 
 object Medium: Controller {
-    override fun invoke(intensity: Intensity){
+    override operator fun invoke(intensity: Intensity){
         when(1 d 100){
             in 1..10 -> MediumFog(1 d 8)
             in 11..20 -> MediumFog(1 d 12)
