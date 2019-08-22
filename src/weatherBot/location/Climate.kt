@@ -3,14 +3,15 @@ package weatherBot.location
 import weatherBot.d
 import java.lang.RuntimeException
 
-enum class Climate {
-    COLD{
-        val winterTemp = 20
-        val springTemp = 30
-        val summerTemp = 40
-        val fallTemp = 30
-        fun adjustPrecip( u: Int ):Int { return u-1 }
-        fun variation(): Pair<Int, Int>{
+enum class Climate(val winterTemp: Int, val springTemp: Int, val summerTemp: Int, val fallTemp: Int, val adjustPrecip: Int) {
+    COLD(
+        20,
+        30,
+        40,
+        30,
+        -1
+    ){
+        override fun tempVariation(): Pair<Int, Int>{
             return when (1 d 100){
                 in 1..20 ->  (-3 d 10) to (1 d 4)
                 in 21..40 ->  (-2 d 10) to (1 d 6)+1
@@ -23,13 +24,14 @@ enum class Climate {
             }
         }
     },
-    TEMPERATE{
-        val winterTemp = 30
-        val springTemp = 60
-        val summerTemp = 80
-        val fallTemp = 60
-        fun adjustPrecip( u: Int ):Int { return u }
-        fun variation(): Pair<Int, Int>{
+    TEMPERATE(
+        30,
+        60,
+        80,
+        60,
+        0
+    ){
+        override fun tempVariation(): Pair<Int, Int>{
             return when (1 d 100){
                 in 1..5 ->  (-3 d 10) to (1 d 2)
                 in 6..15 ->  (-2 d 10) to (1 d 4)
@@ -42,13 +44,14 @@ enum class Climate {
             }
         }
     },
-    TROPICAL{
-        val winterTemp = 50
-        val springTemp = 75
-        val summerTemp = 95
-        val fallTemp = 75
-        fun adjustPrecip( u: Int ):Int { return u+1 }
-        fun variation(): Pair<Int, Int>{
+    TROPICAL(
+        50,
+        75,
+        95,
+        75,
+        1
+    ){
+        override fun tempVariation(): Pair<Int, Int>{
             return when (1 d 100){
                 in 1..10 ->  (-2 d 10) to (1 d 2)
                 in 11..25 ->  (-1 d 10) to (1 d 2)
@@ -58,5 +61,6 @@ enum class Climate {
                 else -> throw RuntimeException("d% yielded a number not between 1 and 100.")
             }
         }
-    }
+    };
+    abstract fun tempVariation(): Pair<Int, Int>
 }

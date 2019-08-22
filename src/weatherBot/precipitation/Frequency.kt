@@ -3,7 +3,7 @@ package weatherBot.precipitation
 import java.lang.Math.max
 import java.lang.Math.min
 
-enum class Frequency(chance: Int){
+enum class Frequency(val chance: Int){
     DROUGHT(5),
     RARE(15),
     INTERMITTENT(30),

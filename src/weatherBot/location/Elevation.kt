@@ -1,31 +1,32 @@
 package weatherBot.location
 
 import weatherBot.precipitation.Intensity
+import weatherBot.precipitation.Precipitation
 
-enum class Elevation {
-    SEA_LEVEL{
-        val adjustTemperature = 10
-        val adjustPrecipitation = 0
-        val basePrecipitation = Intensity.HEAVY
-    },
-    LOWLAND{
-        val adjustTemperature = 0
-        val adjustPrecipitation = 0
-        val basePrecipitation = Intensity.MEDIUM
-    },
-    HIGHLAND{
-        val adjustTemperature = -10
-        val adjustPrecipitation = -1
-        val basePrecipitation = Intensity.MEDIUM
-    },
-    HIGHLAND_ARID{
-        val adjustTemperature = +10
-        val adjustPrecipitation = -1
-        val basePrecipitation = Intensity.MEDIUM
-    },
-    HIGHLAND_MOUNTAIN{
-        val adjustTemperature = -20
-        val adjustPrecipitation = -1
-        val basePrecipitation = Intensity.MEDIUM
-    }
+enum class Elevation(val adjustTemp: Int, val adjustPrecip: Int, val basePrecipitation: Intensity) {
+    SEA_LEVEL(
+        10,
+        0,
+        Intensity.HEAVY
+    ),
+    LOWLAND(
+        0,
+        0,
+        Intensity.MEDIUM
+    ),
+    HIGHLAND(
+        -10,
+        -1,
+        Intensity.MEDIUM
+    ),
+    HIGHLAND_ARID(
+        +10,
+        -1,
+        Intensity.MEDIUM
+    ),
+    HIGHLAND_MOUNTAIN(
+        -20,
+        -1,
+        Intensity.MEDIUM
+    )
 }
