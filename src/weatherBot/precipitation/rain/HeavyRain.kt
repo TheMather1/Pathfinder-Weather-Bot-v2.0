@@ -1,4 +1,6 @@
 package weatherBot.precipitation.rain
 
-interface HeavyRain: Rain {
+import java.time.LocalDate
+
+open class HeavyRain(override val hours: Long, override val date: LocalDate): Rain {
 }

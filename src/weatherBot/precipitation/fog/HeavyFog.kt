@@ -1,5 +1,7 @@
 package weatherBot.precipitation.fog
 
-class HeavyFog(override val duration: Int) : Fog {
+import java.time.LocalDate
+
+class HeavyFog(override val hours: Long, override val date: LocalDate) : Fog {
 
 }

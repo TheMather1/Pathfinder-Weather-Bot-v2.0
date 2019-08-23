@@ -1,9 +1,9 @@
 package weatherBot.precipitation
 
-import java.lang.Math.max
-import java.lang.Math.min
+import kotlin.math.max
+import kotlin.math.min
 
-enum class Frequency(val chance: Int){
+enum class Frequency(val chance: Long){
     DROUGHT(5),
     RARE(15),
     INTERMITTENT(30),
@@ -13,6 +13,6 @@ enum class Frequency(val chance: Int){
 
     operator fun inc(): Frequency = plus(1)
     operator fun dec(): Frequency = minus(1)
-    operator fun plus(i: Int): Frequency = values()[min(this.ordinal+i, 2)]
-    operator fun minus(i: Int): Frequency = values()[max(this.ordinal - i, 0)]
+    operator fun plus(i: Int): Frequency = values()[min(ordinal + i, values().lastIndex)]
+    operator fun minus(i: Int): Frequency = values()[max(ordinal - i, 0)]
 }

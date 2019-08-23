@@ -1,5 +1,7 @@
 package weatherBot.precipitation.rain
 
-class LightRain(override val duration: Int) : Rain {
+import java.time.LocalDate
+
+class LightRain(override val hours: Long, override val date: LocalDate) : Rain {
 
 }

@@ -1,8 +1,8 @@
 package weatherBot.precipitation.snow
 
-import weatherBot.precipitation.Blizzard
 import weatherBot.precipitation.Thunder
+import java.time.LocalDate
 
-class ThunderBlizzard(override val duration: Int) : Blizzard, Thunder {
+class ThunderBlizzard(override val hours: Long, override val date: LocalDate) : Blizzard(date, hours), Thunder {
 
 }

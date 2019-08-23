@@ -1,7 +1,7 @@
 package weatherBot.precipitation.snow
 
-import weatherBot.precipitation.Snow
+import java.time.LocalDate
 
-class MediumSnow(override val duration: Int) : Snow {
+class MediumSnow(override val hours: Long, override val date: LocalDate) : Snow {
 
 }

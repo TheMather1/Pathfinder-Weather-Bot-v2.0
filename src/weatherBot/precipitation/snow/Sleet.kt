@@ -1,4 +1,7 @@
 package weatherBot.precipitation.snow
 
-class Sleet(override val duration: Int) : Snow {
+import java.time.LocalDate
+
+class Sleet(override val hours: Long, override val date: LocalDate) : Snow {
+
 }

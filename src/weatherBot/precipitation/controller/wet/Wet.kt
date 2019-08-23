@@ -1,16 +1,15 @@
 package weatherBot.precipitation.controller.wet
 
+import weatherBot.location.Location
 import weatherBot.precipitation.Intensity
 import weatherBot.precipitation.Precipitation
 import weatherBot.precipitation.controller.Controller
-import weatherBot.precipitation.controller.frozen.Heavy
-import weatherBot.precipitation.controller.frozen.Light
-import weatherBot.precipitation.controller.frozen.Medium
+import java.time.LocalDate
 
 object Wet: Controller {
-    override operator fun invoke(intensity: Intensity): Precipitation =  when(intensity){
-        Intensity.LIGHT -> Light(intensity)
-        Intensity.MEDIUM -> Medium(intensity)
-        Intensity.HEAVY -> Heavy(intensity)
+    override operator fun invoke(temp: Long, date: LocalDate): Precipitation =  when(Location.intensity){
+        Intensity.LIGHT -> Light(temp, date)
+        Intensity.MEDIUM -> Medium(temp, date)
+        Intensity.HEAVY -> Heavy(temp, date)
     }
 }

@@ -18,5 +18,5 @@ enum class Clouds(val description: String) {
         }
     }
 
-    fun adjustTemp(season: Season): Int = if (season == Season.SPRING || season == Season.SUMMER) -10 else 10
+    fun adjustTemp(season: Season): Long = if (season == Season.SPRING || season == Season.SUMMER) -10 else 10
 }

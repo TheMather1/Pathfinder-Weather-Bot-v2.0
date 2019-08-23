@@ -1,8 +1,8 @@
 package weatherBot.precipitation.controller
 
-import weatherBot.precipitation.Intensity
 import weatherBot.precipitation.Precipitation
+import java.time.LocalDate
 
 interface Controller {
-    operator fun invoke(intensity: Intensity): Precipitation
+    operator fun invoke(temp: Long, date: LocalDate): Precipitation
 }
