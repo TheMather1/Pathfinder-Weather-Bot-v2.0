@@ -1,4 +1,3 @@
 package weatherBot.events.tornado
 
-open class Tornado {
-}
+open class Tornado

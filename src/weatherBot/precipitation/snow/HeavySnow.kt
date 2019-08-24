@@ -1,6 +1,7 @@
 package weatherBot.precipitation.snow
 
 import weatherBot.d
+import weatherBot.location.Location
 import weatherBot.precipitation.Precipitation
 import java.time.LocalDate
 
@@ -17,4 +18,6 @@ open class HeavySnow(override val date: LocalDate, override val hours: Long) : S
             }
         }
     }
+
+    override fun fall() { Location.snowLevel += (1 d 4) }
 }

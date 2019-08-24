@@ -1,4 +1,3 @@
 package weatherBot.events
 
-class Hurricane {
-}
+class Hurricane

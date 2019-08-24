@@ -28,6 +28,8 @@ interface Precipitation {
         }.also { this.prevEnd = prevEnd }
 
     }
+    fun print(prev: Precipitation?): String
+    fun finished(): String
     val date: LocalDate
     val hours: Long
     private val start: LocalDateTime
@@ -42,5 +44,7 @@ interface Precipitation {
     get() = TimeFrame(start, end)
     val tempAdjust: Long
     get() = 0
+
+    fun fall(){}
 }
 

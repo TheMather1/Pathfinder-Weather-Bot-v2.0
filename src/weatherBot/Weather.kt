@@ -13,9 +13,9 @@ class Weather(season: Season, tempVar: Long, day: LocalDate, private val prevPre
         else -> null
     }
 
-    val temp: Long;
-    val precipitation: Precipitation?;
-    val clouds: Clouds;
+    val temp: Long
+    val precipitation: Precipitation?
+    val clouds: Clouds
 
     init {
         var newTemp = season.temp() + tempVar
