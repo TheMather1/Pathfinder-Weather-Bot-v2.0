@@ -2,7 +2,7 @@ package weatherBot.time
 
 import weatherBot.location.Climate
 import weatherBot.location.Location
-import weatherBot.precipitation.Frequency
+import weatherBot.weather.precipitation.Frequency
 import java.time.LocalDate
 
 enum class Season {

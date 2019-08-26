@@ -1,7 +1,7 @@
 package weatherBot.time
 
-import weatherBot.Weather
-import weatherBot.precipitation.Precipitation
+import weatherBot.weather.Weather
+import weatherBot.weather.precipitation.Precipitation
 import java.time.LocalDate
 import java.time.LocalDateTime
 

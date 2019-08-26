@@ -1,8 +1,8 @@
 package weatherBot.time
 
-import weatherBot.Weather
+import weatherBot.weather.Weather
 import weatherBot.location.Location
-import weatherBot.precipitation.Precipitation
+import weatherBot.weather.precipitation.Precipitation
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -21,5 +21,6 @@ class Day(day: LocalDate, prevPrecipitation: Precipitation?) {
     }
 
     val season = Season.generate(day)
-    val weather = Weather(season, tempVar(day), day, prevPrecipitation?.takeIf { it.end.toLocalDate() >= day })
+    val weather =
+        Weather(season, tempVar(day), day, prevPrecipitation?.takeIf { it.end.toLocalDate() >= day })
 }

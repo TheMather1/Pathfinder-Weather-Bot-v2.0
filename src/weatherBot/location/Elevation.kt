@@ -1,6 +1,6 @@
 package weatherBot.location
 
-import weatherBot.precipitation.Intensity
+import weatherBot.weather.precipitation.Intensity
 
 enum class Elevation(val adjustTemp: Long, val adjustPrecip: Int, val basePrecipitation: Intensity) {
     SEA_LEVEL(
