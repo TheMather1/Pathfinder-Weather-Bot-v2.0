@@ -1,6 +1,7 @@
 package weatherBot.precipitation.controller.frozen
 
 import weatherBot.d
+import weatherBot.dHundredException
 import weatherBot.precipitation.Precipitation
 import weatherBot.precipitation.controller.Controller
 import weatherBot.precipitation.fog.HeavyFog
@@ -17,6 +18,6 @@ object Heavy: Controller {
         in 21..60 -> LightSnow(2 d 12, date)
         in 61..90 -> MediumSnow(1 d 8, date)
         in 91..100 -> HeavySnow(1 d 6, date)
-        else -> throw RuntimeException("d% returned value not between 1 and 100.")
+        else -> throw dHundredException
     }
 }

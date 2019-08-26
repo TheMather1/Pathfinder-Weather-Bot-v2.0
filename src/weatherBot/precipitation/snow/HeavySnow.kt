@@ -7,6 +7,10 @@ import java.time.LocalDate
 
 
 open class HeavySnow(override val date: LocalDate, override val hours: Long) : Snow {
+    override fun print(prev: Precipitation?): String = TODO()
+
+    override fun finished(): String = TODO()
+
     companion object{
         private fun blizzard(): Boolean = (1 d 100) <= 40
         operator fun invoke(hours: Long, date: LocalDate): HeavySnow {

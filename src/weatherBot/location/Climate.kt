@@ -1,7 +1,7 @@
 package weatherBot.location
 
 import weatherBot.d
-import java.lang.RuntimeException
+import weatherBot.dHundredException
 
 enum class Climate(val winterTemp: Long, val springTemp: Long, val summerTemp: Long, val fallTemp: Long, val adjustPrecip: Int) {
     COLD(
@@ -20,7 +20,7 @@ enum class Climate(val winterTemp: Long, val springTemp: Long, val summerTemp: L
                 in 81..95 ->  ({1 d 10} to (1 d 6)+1)
                 in 96..99 ->  ({2 d 10} to (1 d 4))
                 100.toLong() -> ({3 d 10} to (1 d 2))
-                else -> throw RuntimeException("d% yielded a number not between 1 and 100.")
+                else -> throw dHundredException
             }
         }
     },
@@ -40,7 +40,7 @@ enum class Climate(val winterTemp: Long, val springTemp: Long, val summerTemp: L
                 in 66..85 ->  ({1 d 10} to (1 d 4)+1)
                 in 86..95 ->  ({2 d 10} to (1 d 4))
                 in 96..100 -> ({3 d 10} to (1 d 2))
-                else -> throw RuntimeException("d% yielded a number not between 1 and 100.")
+                else -> throw dHundredException
             }
         }
     },
@@ -58,7 +58,7 @@ enum class Climate(val winterTemp: Long, val springTemp: Long, val summerTemp: L
                 in 26..55 ->  ({0.toLong()} to (1 d 4))
                 in 56..85 ->  ({1 d 10} to (1 d 4))
                 in 86..100 -> ({2 d 10} to (1 d 2))
-                else -> throw RuntimeException("d% yielded a number not between 1 and 100.")
+                else -> throw dHundredException
             }
         }
     };

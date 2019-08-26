@@ -1,7 +1,6 @@
 package weatherBot
 
 import weatherBot.time.Season
-import java.lang.RuntimeException
 
 enum class Clouds(val description: String) {
     NONE("The sky is completely clear."),
@@ -14,7 +13,7 @@ enum class Clouds(val description: String) {
             in 51..70 -> LIGHT
             in 71..85 -> MEDIUM
             in 86..100 -> OVERCAST
-            else -> throw RuntimeException("d% yielded a number not between 1 and 100.")
+            else -> throw dHundredException
         }
     }
 

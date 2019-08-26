@@ -1,6 +1,7 @@
 package weatherBot.precipitation.controller.wet
 
 import weatherBot.d
+import weatherBot.dHundredException
 import weatherBot.precipitation.Precipitation
 import weatherBot.precipitation.controller.Controller
 import weatherBot.precipitation.fog.LightFog
@@ -18,6 +19,6 @@ object Light: Controller {
         in 51..75 -> Drizzle(2 d 12, date)
         in 76..90 -> LightRain(1 d 4, date)
         in 91..100 -> if (temp < 40) Sleet(1, date) else LightRain(1, date)
-        else -> throw RuntimeException("d% returned value not between 1 and 100.")
+        else -> throw dHundredException
     }
 }
