@@ -10,6 +10,4 @@ class Thunderstorm(override val hours: Long, override val date: LocalDate, overr
     override fun print(prev: Precipitation?): String = TODO()
 
     override fun finished(): String = TODO()
-
-    override val wind = Thunder::wind.call()
 }

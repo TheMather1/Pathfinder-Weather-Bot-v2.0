@@ -1,33 +1,35 @@
 package weatherBot.time
 
+import weatherBot.time.Day.Companion.precipitation
+import weatherBot.time.Day.Companion.nextDay
+import weatherBot.time.Day.Companion.weather
 import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.LocalTime.MIDNIGHT
+import java.time.LocalDateTime.now
 import java.time.ZoneOffset
 import java.util.*
 import kotlin.concurrent.timerTask
 
 object Clock {
-    private val timer = Timer()
+    private var active = false
+    private var timer = Timer()
+    private val now: LocalDateTime
+        get() = now().withMinute(0)
+
+    operator fun invoke() = if (active) println("The bot is already running.") else execute().also { active = true }
+    fun stop() = timer.cancel().also { timer = Timer(); active = false }
+    fun status() = if(active) "running." else "stopped."
 
     private fun execute() {
-        if (LocalTime.now() == MIDNIGHT) Schedule.nextDay()
-        val weather = Schedule.weather
-        val precipitation = Schedule.activePrecipitation?.apply { fall() }
-        val prevPrecipitation = Schedule.prevPrecipitation
-        val precipitationDescription = if(precipitation != prevPrecipitation) precipitation?.print(prevPrecipitation) ?: prevPrecipitation?.finished() else null
-        val cloudDescription = weather.clouds.description
-        val temp = weather.temp(LocalTime.now())
-        val extremeTempDescription = when(temp + (precipitation?.tempAdjust ?: 0)){
-            in Long.MIN_VALUE..40 -> TODO("Hypothermia")
-            in 90..Long.MAX_VALUE -> TODO("Heatstroke")
-            else -> null
-        }
+        if (now.toLocalTime() == MIDNIGHT) nextDay()
+        val precipitation = precipitation?.apply { fall() }
+        val temp = weather.temp(now.toLocalTime())
+        schedule()
     }
 
-    fun schedule() {
-        val nextHour = Date.from(LocalDateTime.now().plusHours(1).toInstant(ZoneOffset.UTC))
-        val task = timerTask { execute(); schedule() }
+    private fun schedule() {
+        val nextHour = Date.from(now.plusHours(1).toInstant(ZoneOffset.UTC))
+        val task = timerTask { execute() }
         timer.schedule(task, nextHour)
     }
 }

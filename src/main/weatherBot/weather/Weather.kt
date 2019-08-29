@@ -15,6 +15,7 @@ class Weather(private val season: Season, tempVar: Long, day: LocalDate, private
     private val temp = season.temp() + tempVar
     private val nightTemp = temp-(2 d 6)-3
     fun temp(now: LocalTime): Long = ((temp - nightTemp)/2).let { nightTemp + it + cos((now.hour.toFloat()-12) / 12 * PI).roundToLong() * it } + clouds(now).adjustTemp(season)
+
     val clouds = Clouds()
     fun clouds(time: LocalTime): Clouds {
         return when (time) {
@@ -28,14 +29,16 @@ class Weather(private val season: Season, tempVar: Long, day: LocalDate, private
             } ?: clouds
         }
     }
+
     val wind = Wind()
     fun wind(time: LocalTime) = when{
             precipitation is Thunder && time in precipitation.timeFrame -> precipitation.wind
             precipitation is Fog && time in precipitation.timeFrame -> Wind.LIGHT
             else -> wind
     }
+
     val precipitation = Precipitation(season, temp, day, prevPrecipitation?.end)
-    fun getPrecipitation(now: LocalTime): Precipitation? = when(now){
+    fun precipitation(now: LocalTime): Precipitation? = when(now){
         in prevPrecipitation?.timeFrame ?: TimeFrame.empty -> prevPrecipitation
         in precipitation?.timeFrame ?: TimeFrame.empty -> precipitation
         else -> null

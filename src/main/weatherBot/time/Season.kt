@@ -23,7 +23,7 @@ enum class Season {
         override fun frequency(): Frequency = Frequency.RARE + Location.adjustPrecip
     };
     companion object {
-        fun generate(day: LocalDate): Season = when(day.dayOfYear){
+        operator fun invoke(day: LocalDate): Season = when(day.dayOfYear){
             in 0..45 -> WINTER
             in 45..137 -> SPRING
             in 138..228 -> SUMMER
