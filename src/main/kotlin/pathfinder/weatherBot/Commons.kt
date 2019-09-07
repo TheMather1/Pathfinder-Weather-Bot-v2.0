@@ -1,14 +1,7 @@
 package pathfinder.weatherBot
 
-import java.io.File
-import java.lang.RuntimeException
-import java.util.*
 import kotlin.math.absoluteValue
 import kotlin.random.Random
-
-
-val CONFIG_FILE = File("location.properties").apply { if (!exists()) createNewFile() }
-var config = Properties()
 
 infix fun Int.d(u: Int): Long {
     return (0 until (this.absoluteValue))

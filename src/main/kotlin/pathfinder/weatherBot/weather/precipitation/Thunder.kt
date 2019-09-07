@@ -9,8 +9,6 @@ interface Thunder: Precipitation {
     companion object {
         val tornado: Boolean
             get() = wind == Wind.WINDSTORM && (1 d 100) <= 10
-        val haboob: Boolean
-            get() = Location.desert && (1 d 100) <= 20
         val wind: Wind
             get(): Wind = when (1 d 100) {
                 in 1..50 -> Wind.STRONG
@@ -19,6 +17,9 @@ interface Thunder: Precipitation {
                 else -> throw dHundredException
             }
     }
+    val location: Location
+    val haboob: Boolean
+        get() = location.desert && (1 d 100) <= 20
     val temp: Long
     val hurricane: Boolean
         get() = temp > 85 && (1 d 100) <= 20

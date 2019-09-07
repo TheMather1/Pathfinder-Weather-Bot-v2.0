@@ -1,7 +1,6 @@
 package pathfinder.weatherBot.weather.precipitation.fog
 
 import pathfinder.weatherBot.weather.precipitation.Precipitation
-import pathfinder.weatherBot.weather.precipitation.fog.Fog
 import java.time.LocalDate
 
 class MediumFog(override val hours: Long, override val date: LocalDate) : Fog {

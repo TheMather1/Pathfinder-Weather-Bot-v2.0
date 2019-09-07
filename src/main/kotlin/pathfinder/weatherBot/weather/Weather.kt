@@ -1,6 +1,7 @@
 package pathfinder.weatherBot.weather
 
 import pathfinder.weatherBot.d
+import pathfinder.weatherBot.location.Location
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.Thunder
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
@@ -10,9 +11,9 @@ import java.time.LocalDate
 import java.time.LocalTime
 import kotlin.math.*
 
-class Weather(private val season: Season, tempVar: Long, day: LocalDate, private val prevPrecipitation: Precipitation?, private val prevClouds: Clouds, private val prevWind: Wind) {
+class Weather(val location: Location, private val season: Season, tempVar: Long, day: LocalDate, private val prevPrecipitation: Precipitation?, private val prevClouds: Clouds, private val prevWind: Wind) {
 
-    private val temp = season.temp() + tempVar
+    private val temp = season.temp(location) + tempVar
     private val nightTemp = temp-(2 d 6)-3
     fun temp(now: LocalTime): Long = ((temp - nightTemp)/2).let { nightTemp + it + cos((now.hour.toFloat()-12) / 12 * PI).roundToLong() * it } + clouds(now).adjustTemp(season)
 
@@ -37,7 +38,7 @@ class Weather(private val season: Season, tempVar: Long, day: LocalDate, private
             else -> wind
     }
 
-    val precipitation = Precipitation(season, temp, day, prevPrecipitation?.end)
+    val precipitation = Precipitation(location, season, temp, day, prevPrecipitation?.end)
     fun precipitation(now: LocalTime): Precipitation? = when(now){
         in prevPrecipitation?.timeFrame ?: TimeFrame.empty -> prevPrecipitation
         in precipitation?.timeFrame ?: TimeFrame.empty -> precipitation

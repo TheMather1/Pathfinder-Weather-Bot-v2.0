@@ -7,20 +7,20 @@ import java.time.LocalDate
 
 enum class Season {
     SPRING {
-        override fun temp(): Long = Location.climate.springTemp + Location.elevation.adjustTemp
-        override fun frequency(): Frequency = (if (Location.climate == Climate.TROPICAL) Frequency.COMMON else Frequency.INTERMITTENT) + Location.adjustPrecip
+        override fun temp(location: Location): Long = location.climate.springTemp + location.elevation.adjustTemp
+        override fun frequency(location: Location): Frequency = (if (location.climate == Climate.TROPICAL) Frequency.COMMON else Frequency.INTERMITTENT) + location.adjustPrecip
     },
     SUMMER {
-        override fun temp(): Long = Location.climate.summerTemp + Location.elevation.adjustTemp
-        override fun frequency(): Frequency = (if (Location.climate == Climate.TROPICAL) Frequency.INTERMITTENT else Frequency.COMMON) + Location.adjustPrecip
+        override fun temp(location: Location): Long = location.climate.summerTemp + location.elevation.adjustTemp
+        override fun frequency(location: Location): Frequency = (if (location.climate == Climate.TROPICAL) Frequency.INTERMITTENT else Frequency.COMMON) + location.adjustPrecip
     },
     FALL {
-        override fun temp(): Long = Location.climate.fallTemp + Location.elevation.adjustTemp
-        override fun frequency(): Frequency = (if (Location.climate == Climate.TROPICAL) Frequency.COMMON else Frequency.INTERMITTENT) + Location.adjustPrecip
+        override fun temp(location: Location): Long = location.climate.fallTemp + location.elevation.adjustTemp
+        override fun frequency(location: Location): Frequency = (if (location.climate == Climate.TROPICAL) Frequency.COMMON else Frequency.INTERMITTENT) + location.adjustPrecip
     },
     WINTER {
-        override fun temp(): Long = Location.climate.springTemp + Location.elevation.adjustTemp
-        override fun frequency(): Frequency = Frequency.RARE + Location.adjustPrecip
+        override fun temp(location: Location): Long = location.climate.winterTemp + location.elevation.adjustTemp
+        override fun frequency(location: Location): Frequency = Frequency.RARE + location.adjustPrecip
     };
     companion object {
         operator fun invoke(day: LocalDate): Season = when(day.dayOfYear){
@@ -32,6 +32,6 @@ enum class Season {
         }
     }
 
-    abstract fun temp(): Long
-    abstract fun frequency(): Frequency
+    abstract fun temp(location: Location): Long
+    abstract fun frequency(location: Location): Frequency
 }

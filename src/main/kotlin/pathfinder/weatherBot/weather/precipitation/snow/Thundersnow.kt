@@ -1,11 +1,12 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
+import pathfinder.weatherBot.location.Location
 import pathfinder.weatherBot.weather.Wind
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.Thunder
 import java.time.LocalDate
 
-class Thundersnow(override val date: LocalDate, override val hours: Long, override val temp: Long, override val wind: Wind) : HeavySnow(date, hours),
+class Thundersnow(location: Location, override val date: LocalDate, override val hours: Long, override val temp: Long, override val wind: Wind) : HeavySnow(location, date, hours),
     Thunder {
 
     override fun print(prev: Precipitation?): String = TODO()
@@ -14,10 +15,10 @@ class Thundersnow(override val date: LocalDate, override val hours: Long, overri
 
 
     companion object {
-        operator fun invoke(hours: Long, date: LocalDate, temp: Long): HeavySnow {
+        operator fun invoke(location: Location, hours: Long, date: LocalDate, temp: Long): HeavySnow {
             val wind = Thunder::wind.call()
-            return if (blizzard(wind)) ThunderBlizzard(hours, date, temp, wind)
-            else Thundersnow(date, hours, temp, wind)
+            return if (blizzard(wind)) ThunderBlizzard(location, hours, date, temp, wind)
+            else Thundersnow(location, date, hours, temp, wind)
         }
     }
 }

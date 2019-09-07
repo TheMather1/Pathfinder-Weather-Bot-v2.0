@@ -1,6 +1,7 @@
 package pathfinder.weatherBot.weather.precipitation
 
 import pathfinder.weatherBot.d
+import pathfinder.weatherBot.location.Location
 import pathfinder.weatherBot.weather.precipitation.controller.frozen.Frozen
 import pathfinder.weatherBot.weather.precipitation.controller.wet.Wet
 import pathfinder.weatherBot.time.Season
@@ -12,20 +13,21 @@ import java.time.LocalTime.NOON
 
 interface Precipitation {
     companion object{
-        private fun dry(season: Season): Boolean = (1 d 100) > season.frequency().chance
+        private fun dry(location: Location, season: Season): Boolean = (1 d 100) > season.frequency(location).chance
         private fun frozen(temp: Long): Boolean = temp <= 32
         private var prevEnd: LocalDateTime? = null
         fun thunder(): Boolean = (1 d 100) <= 10
 
         operator fun invoke(
+            location: Location,
             season: Season,
             temp: Long,
             date: LocalDate,
             prevEnd: LocalDateTime?
         ): Precipitation? = when {
-            dry(season) -> null
-            frozen(temp) -> Frozen(temp, date)
-            else -> Wet(temp, date)
+            dry(location, season) -> null
+            frozen(temp) -> Frozen(location, temp, date)
+            else -> Wet(location, temp, date)
         }.also { Companion.prevEnd = prevEnd }
 
     }

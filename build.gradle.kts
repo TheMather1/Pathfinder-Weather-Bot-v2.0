@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 group = "pathfinder"
 version = "2.0"
 
@@ -12,6 +10,8 @@ repositories {
     jcenter()
 }
 
+val sourceCompatibility = JavaVersion.VERSION_1_8
+
 application {
     mainClassName = "pathfinder.weatherBot.Interface"
 }
@@ -19,10 +19,19 @@ application {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
+    compile("net.dv8tion:JDA:4.0.0_46")
 }
 
 sourceSets {
     main {
         java.srcDir("/src/main/kotlin/pathfinder/weatherBot")
+    }
+}
+
+tasks {
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
     }
 }

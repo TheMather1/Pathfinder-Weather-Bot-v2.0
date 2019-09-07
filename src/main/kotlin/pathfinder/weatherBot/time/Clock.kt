@@ -1,29 +1,29 @@
 package pathfinder.weatherBot.time
 
-import pathfinder.weatherBot.time.Day.Companion.precipitation
-import pathfinder.weatherBot.time.Day.Companion.nextDay
-import pathfinder.weatherBot.time.Day.Companion.weather
+import pathfinder.weatherBot.Bot
 import java.time.LocalDateTime
-import java.time.LocalTime.MIDNIGHT
 import java.time.LocalDateTime.now
+import java.time.LocalTime.MIDNIGHT
 import java.time.ZoneOffset
 import java.util.*
 import kotlin.concurrent.timerTask
 
-object Clock {
+class Clock(private val bot: Bot) {
     private var active = false
     private var timer = Timer()
+    private val calendar = Calendar(bot.location)
     private val now: LocalDateTime
         get() = now().withMinute(0)
 
-    operator fun invoke() = if (active) println("The bot is already running.") else execute().also { active = true }
-    fun stop() = timer.cancel().also { timer = Timer(); active = false }
+    fun start(): String = if (active) "The bot is already running." else execute().let { active = true; "Started bot." }
+    fun stop(): String  = if (active) timer.cancel().let { timer = Timer(); active = false; "Stopped bot." } else "The bot is not currently running."
     fun status() = if(active) "running." else "stopped."
 
     private fun execute() {
-        if (now.toLocalTime() == MIDNIGHT) nextDay()
-        val precipitation = precipitation?.apply { fall() }
-        val temp = weather.temp(now.toLocalTime())
+        if (now.toLocalTime() == MIDNIGHT) calendar.nextDay()
+        val precipitation = calendar.precipitation?.apply { fall() }
+        val temp = calendar.weather.temp(now.toLocalTime())
+        bot.post(TODO())
         schedule()
     }
 

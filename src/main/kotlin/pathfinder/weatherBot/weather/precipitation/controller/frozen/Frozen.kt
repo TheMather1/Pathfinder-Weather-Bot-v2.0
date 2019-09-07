@@ -7,9 +7,9 @@ import pathfinder.weatherBot.weather.precipitation.controller.Controller
 import java.time.LocalDate
 
 object Frozen: Controller {
-    override operator fun invoke(temp: Long, date: LocalDate): Precipitation = when(Location.intensity){
-            Intensity.LIGHT -> Light(temp, date)
-            Intensity.MEDIUM -> Medium(temp, date)
-            Intensity.HEAVY -> Heavy(temp, date)
+    override operator fun invoke(location: Location, temp: Long, date: LocalDate): Precipitation = when(location.intensity){
+            Intensity.LIGHT -> Light(location, temp, date)
+            Intensity.MEDIUM -> Medium(location, temp, date)
+            Intensity.HEAVY -> Heavy(location, temp, date)
         }
 }
