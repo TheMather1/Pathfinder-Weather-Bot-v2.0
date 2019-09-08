@@ -21,9 +21,8 @@ class Clock(private val bot: Bot) {
 
     private fun execute() {
         if (now.toLocalTime() == MIDNIGHT) calendar.nextDay()
-        val precipitation = calendar.precipitation?.apply { fall() }
-        val temp = calendar.weather.temp(now.toLocalTime())
-        bot.post(TODO())
+        val hour = Hour(calendar, now)
+        bot.post(TODO(hour.execute))
         schedule()
     }
 

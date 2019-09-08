@@ -1,21 +1,16 @@
 package pathfinder.weatherBot.time
 
-import pathfinder.weatherBot.weather.Clouds
-import pathfinder.weatherBot.weather.Weather
-import pathfinder.weatherBot.weather.Wind
-import pathfinder.weatherBot.weather.precipitation.Precipitation
 import java.time.LocalDateTime
 
-class Hour(private val calendar: Calendar, val dateTime: LocalDateTime, val precipitation: Precipitation?, val clouds: Clouds, val wind: Wind, val temp: Long) {
-    private constructor(calendar: Calendar, dateTime: LocalDateTime) : this(calendar, dateTime, calendar.days[dateTime.toLocalDate().compareTo(calendar.days[1].day) + 1].weather)
-    private constructor(calendar: Calendar, dateTime: LocalDateTime, weather: Weather) : this(
-        calendar,
-        dateTime,
-        weather.precipitation,
-        weather.clouds,
-        weather.wind,
-        weather.temp(dateTime.toLocalTime())
-    )
+class Hour(private val calendar: Calendar, private val now: LocalDateTime) {
+    val weather = calendar.days[now.toLocalDate().compareTo(calendar.days[1].day) + 1].weather
+    val precipitation = weather.precipitation(now.toLocalTime())
+    val clouds = weather.clouds(now.toLocalTime())
+    val wind = weather.wind(now.toLocalTime())
+    val temp = weather.temp(now.toLocalTime())
+
+    val execute: String
+        get() = print.also { precipitation?.fall() }
 
     val print: String
         get(){
@@ -26,7 +21,7 @@ class Hour(private val calendar: Calendar, val dateTime: LocalDateTime, val prec
         }
 
     private val prevHour: Hour
-            get() = Hour(calendar, dateTime.minusHours(1))
+            get() = Hour(calendar, now.minusHours(1))
 
     private val extremeTempDescription: String?
         get() = when(temp + (precipitation?.tempAdjust ?: 0)){
