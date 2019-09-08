@@ -57,11 +57,11 @@ class Bot(private val guildId: String){
         }
 
         override fun onGuildLeave(event: GuildLeaveEvent){
-            instances.remove(event.guild.id)
+            instances.remove(event.guild.id)?.stop()
         }
 
         override fun onGuildBan(event: GuildBanEvent){
-            instances.remove(event.guild.id)
+            instances.remove(event.guild.id)?.stop()
         }
 
         private fun helpText(message: String) = when(message){
@@ -82,7 +82,7 @@ class Bot(private val guildId: String){
             return when (command){
                 "help" -> helpText(param)
                 "start" -> if(sudo) start() else "You do not have permission to start the bot."
-                "stop" -> if(sudo) clock.stop() else "You do not have permission to stop the bot."
+                "stop" -> if(sudo) stop() else "You do not have permission to stop the bot."
                 "status" -> "The bot is currently ${clock.status()}"
                 "channel" -> if (sudo) setChannel(this) else "You do not have permission to change the output channel."
                 "climate" -> if (sudo) setClimate(param) else "You do not have permission to change the climate."
@@ -105,6 +105,7 @@ class Bot(private val guildId: String){
     }
 
     private fun start(): String = if (location.isSet()) clock.start() else "You first need to set the ${location.missing()}."
+    private fun stop(): String = clock.stop()
 
     private fun setClimate(message: String): String =
         Climate.valueOf(message.toUpperCase()).let {
