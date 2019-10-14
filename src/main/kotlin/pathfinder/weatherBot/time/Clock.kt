@@ -1,6 +1,6 @@
 package pathfinder.weatherBot.time
 
-import pathfinder.weatherBot.Bot
+import pathfinder.weatherBot.bot.Bot
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
 import java.time.LocalTime.MIDNIGHT
@@ -22,7 +22,7 @@ class Clock(private val bot: Bot) {
     private fun execute() {
         if (now.toLocalTime() == MIDNIGHT) calendar.nextDay()
         val hour = Hour(calendar, now)
-        bot.post(TODO(hour.execute))
+        bot.post(message = TODO(hour.execute))
         schedule()
     }
 
