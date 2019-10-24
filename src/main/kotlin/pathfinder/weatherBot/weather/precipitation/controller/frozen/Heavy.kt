@@ -12,13 +12,13 @@ import pathfinder.weatherBot.weather.precipitation.snow.LightSnow
 import pathfinder.weatherBot.weather.precipitation.snow.MediumSnow
 import java.time.LocalDate
 
-object Heavy: Controller {
-    override operator fun invoke(location: Location, temp: Long, date: LocalDate): Precipitation = when(1 d 100){
-        in 1..10 -> MediumFog(1 d 8, date)
-        in 11..20 -> HeavyFog(2 d 6, date)
-        in 21..60 -> LightSnow(location,2 d 12, date)
-        in 61..90 -> MediumSnow(location,1 d 8, date)
-        in 91..100 -> HeavySnow(location,1 d 6, date, temp)
+object Heavy : Controller {
+    override operator fun invoke(location: Location, date: LocalDate, temp: Long): Precipitation = when (1 d 100) {
+        in 1..10 -> MediumFog(date, 1 d 8)
+        in 11..20 -> HeavyFog(date, 2 d 6)
+        in 21..60 -> LightSnow(location, date, 2 d 12)
+        in 61..90 -> MediumSnow(location, date, 1 d 8)
+        in 91..100 -> HeavySnow(location, date, 1 d 6, temp)
         else -> throw dHundredException
     }
 }

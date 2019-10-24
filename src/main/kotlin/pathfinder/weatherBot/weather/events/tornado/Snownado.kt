@@ -1,3 +1,5 @@
 package pathfinder.weatherBot.weather.events.tornado
 
-class Snownado: Tornado()
+import pathfinder.weatherBot.time.TimeFrame
+
+class Snownado(timeFrame: TimeFrame) : Tornado(timeFrame)

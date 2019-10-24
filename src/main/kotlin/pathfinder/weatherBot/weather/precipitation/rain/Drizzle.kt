@@ -3,7 +3,7 @@ package pathfinder.weatherBot.weather.precipitation.rain
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import java.time.LocalDate
 
-class Drizzle(override val hours: Long, override val date: LocalDate) : Rain {
+class Drizzle(date: LocalDate, hours: Long) : Rain(date, hours) {
     override fun print(prev: Precipitation?): String = TODO()
 
     override fun finished(): String = TODO()
