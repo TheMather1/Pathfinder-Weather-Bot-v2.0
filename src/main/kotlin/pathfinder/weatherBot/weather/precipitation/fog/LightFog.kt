@@ -3,7 +3,7 @@ package pathfinder.weatherBot.weather.precipitation.fog
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import java.time.LocalDate
 
-class LightFog(override val hours: Long, override val date: LocalDate) : Fog {
+class LightFog(date: LocalDate, hours: Long) : Fog(date, hours) {
     override fun print(prev: Precipitation?): String = TODO()
 
     override fun finished(): String = TODO()

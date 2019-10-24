@@ -42,7 +42,7 @@ class Weather(val location: Location, private val season: Season, tempVar: Long,
             else -> wind
     }
 
-    val precipitation: Precipitation? = Precipitation(location, season, temp, day, prevPrecipitation?.end)
+    val precipitation: Precipitation? = Precipitation(location, season, day, prevPrecipitation?.end, temp)
     fun precipitation(now: LocalTime): Precipitation? = when(now){
         in prevPrecipitation?.timeFrame ?: TimeFrame.empty -> prevPrecipitation
         in precipitation?.timeFrame ?: TimeFrame.empty -> precipitation

@@ -1,14 +1,12 @@
 package pathfinder.weatherBot.weather.precipitation
 
-import pathfinder.weatherBot.weather.Wind
 import pathfinder.weatherBot.d
 import pathfinder.weatherBot.dHundredException
 import pathfinder.weatherBot.location.Location
+import pathfinder.weatherBot.weather.Wind
 
-interface Thunder: Precipitation {
+interface Thunder {
     companion object {
-        val tornado: Boolean
-            get() = wind == Wind.WINDSTORM && (1 d 100) <= 10
         val wind: Wind
             get(): Wind = when (1 d 100) {
                 in 1..50 -> Wind.STRONG
@@ -18,9 +16,14 @@ interface Thunder: Precipitation {
             }
     }
     val location: Location
+    val temp: Long
+
+    val tornado: Boolean
+        get() = wind == Wind.WINDSTORM && (1 d 100) <= 10
+
     val haboob: Boolean
         get() = location.desert && (1 d 100) <= 20
-    val temp: Long
+
     val hurricane: Boolean
         get() = temp > 85 && (1 d 100) <= 20
 
