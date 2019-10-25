@@ -10,6 +10,6 @@ enum class Intensity {
 
     operator fun inc() = plus(1)
     operator fun dec() = minus(1)
-    operator fun plus(i: Int) = values()[min(ordinal+i, values().lastIndex)]
-    operator fun minus(i: Int) = values()[max(ordinal-i, 0)]
+    operator fun plus(i: Int) = values()[min(ordinal + i, values().lastIndex)]
+    operator fun minus(i: Int) = values()[max(ordinal - i, 0)]
 }

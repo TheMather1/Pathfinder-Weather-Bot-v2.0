@@ -6,23 +6,24 @@ import pathfinder.weatherBot.weather.events.Event
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.Thunder
 import pathfinder.weatherBot.weather.precipitation.snow.Snow
+import java.time.LocalDateTime
 
-open class Tornado(override val timeFrame: TimeFrame) : Event {
+open class Tornado(val timeFrame: TimeFrame) : Event {
+
     companion object {
-        operator fun invoke(trigger: Precipitation): Tornado? {
+        operator fun invoke(trigger: Precipitation?): Tornado? {
             return if (trigger is Thunder && trigger.tornado)
-                TimeFrame(trigger.start, trigger.start.plusHours(3 d 6)).let {
-                    when (trigger) {
-                    is Snow -> Snownado(it)
-                    else -> Tornado(it)
-                }
-            }
+                with(
+                        TimeFrame(trigger.start, trigger.start.plusHours(3 d 6)),
+                        if (trigger is Snow) ::Snownado else ::Tornado)
             else null
         }
     }
-    override val description: String
+    override fun progress(time: LocalDateTime) = takeIf { time in timeFrame }
+
+    override val description
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-    override val finished: String
+    override val finished
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
 }

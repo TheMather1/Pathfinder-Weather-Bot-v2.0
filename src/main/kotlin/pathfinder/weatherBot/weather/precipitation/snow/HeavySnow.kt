@@ -8,15 +8,17 @@ import java.time.LocalDate
 
 
 open class HeavySnow(val location: Location, date: LocalDate, hours: Long) : Snow(date, hours) {
-    override fun print(prev: Precipitation?): String = TODO()
+    override val fireRetardance = 75
 
-    override fun finished(): String = TODO()
+    override fun print(prev: Precipitation?) = TODO()
 
-    companion object{
+    override fun finished() = TODO()
+
+    companion object {
         fun blizzard(wind: Wind): Boolean = wind >= Wind.SEVERE && (1 d 100) <= 40
         operator fun invoke(location: Location, date: LocalDate, hours: Long, temp: Long): HeavySnow {
             val wind = Wind()
-            fun blizzardDuration(): Long = if ((1 d 100) <= 20) 2 d 12 else hours
+            fun blizzardDuration() = if ((1 d 100) <= 20) 2 d 12 else hours
             return when {
                 thunder() -> Thundersnow(location, hours, date, temp)
                 blizzard(wind) -> Blizzard(location, date, blizzardDuration(), wind)
@@ -25,5 +27,7 @@ open class HeavySnow(val location: Location, date: LocalDate, hours: Long) : Sno
         }
     }
 
-    override fun fall() { location.snowLevel += (1 d 4) }
+    override fun fall() {
+        location.snowLevel += (1 d 4)
+    }
 }

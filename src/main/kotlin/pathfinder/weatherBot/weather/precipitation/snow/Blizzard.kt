@@ -6,9 +6,11 @@ import pathfinder.weatherBot.weather.precipitation.Precipitation
 import java.time.LocalDate
 
 open class Blizzard(location: Location, date: LocalDate, hours: Long, open val wind: Wind) : HeavySnow(location, date, hours) {
-    override fun print(prev: Precipitation?): String = TODO()
+    override fun print(prev: Precipitation?) = TODO()
 
-    override fun finished(): String = TODO()
+    override fun finished() = TODO()
 
-    override fun fall() { location.snowLevel += 4 }
+    override fun fall() {
+        location.snowLevel += 4
+    }
 }

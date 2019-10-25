@@ -11,19 +11,20 @@ class CommandHandler(private val bot: Bot) {
 
     private var prefix = "WEATHER!"
 
-    private fun String.firstWord() : String = substringBefore(' ', this)
-    private fun String.succeedingWords() : String? = substringAfter(' ').takeUnless{ none(' '::equals) }
-    private fun String?.assertNoMoreParams(function: () -> String) : String = if(isNullOrEmpty()) function() else TOO_MANY_PARAMETERS
+    private fun String.firstWord() = substringBefore(' ', this)
+    private fun String.succeedingWords() = substringAfter(' ').takeUnless { none(' '::equals) }
+    private fun String?.assertNoMoreParams(function: () -> String) = if (isNullOrEmpty()) function() else TOO_MANY_PARAMETERS
 
-    internal operator fun invoke(message : Message) : String? {
-        fun sudo(function: ()->String) = if(message.member?.hasPermission(ADMINISTRATOR) == true) function() else "You do not have permission to do this."
-        fun String.sudo(function: (String?)->String) = sudo { function(succeedingWords()) }
-        fun Message.sudo(function: (Message)->String) = sudo { function(this) }
-        val command = message.contentRaw.toUpperCase().takeIf { it.startsWith(prefix) }?.removePrefix(prefix) ?: return null
+    internal operator fun invoke(message: Message): String? {
+        fun sudo(function: () -> String) = if (message.member?.hasPermission(ADMINISTRATOR) == true) function() else "You do not have permission to do this."
+        fun String.sudo(function: (String?) -> String) = sudo { function(succeedingWords()) }
+        fun Message.sudo(function: (Message) -> String) = sudo { function(this) }
+        val command = message.contentRaw.toUpperCase().takeIf { it.startsWith(prefix) }?.removePrefix(prefix)
+                ?: return null
 
         return when (command.firstWord()) {
             "HELP" -> help(command.succeedingWords())
-            "STATUS" -> command.succeedingWords().assertNoMoreParams { "The bot is currently ${bot.clock.status()}" }
+            "STATUS" -> command.succeedingWords().assertNoMoreParams { "The bot is currently ${bot.clock.status}" }
             "START" -> command.sudo(::start)
             "STOP" -> command.sudo(::stop)
             "CLIMATE" -> command.sudo(::climate)
@@ -35,29 +36,27 @@ class CommandHandler(private val bot: Bot) {
         }
     }
 
-    private fun help(vararg command: String?): String {
-        return when (command.firstOrNull()) {
-            null -> listCommands()
-            "HELP" -> helpDescription()
-            "STATUS" -> statusDescription()
-            "START" -> startDescription()
-            "STOP" -> stopDescription()
-            "CLIMATE" -> climateDescription()
-            "ELEVATION" -> elevationDescription()
-            "DESERT" -> desertDescription()
-            "PREFIX" -> prefixDescription()
-            "CHANNEL" -> channelDescription()
-            else -> "That is not a valid command."
-        }
+    private fun help(vararg command: String?) = when (command.firstOrNull()) {
+        null -> listCommands()
+        "HELP" -> helpDescription()
+        "STATUS" -> statusDescription()
+        "START" -> startDescription()
+        "STOP" -> stopDescription()
+        "CLIMATE" -> climateDescription()
+        "ELEVATION" -> elevationDescription()
+        "DESERT" -> desertDescription()
+        "PREFIX" -> prefixDescription()
+        "CHANNEL" -> channelDescription()
+        else -> "That is not a valid command."
     }
 
-    private fun helpDescription(): String = """|Command: help
+    private fun helpDescription() = """|Command: help
     |Usage:
     |   help - List the available commands.
     |   help [command] - Describe the specified command.
     """.trimMargin()
 
-    private fun listCommands(): String = """List of commands:
+    private fun listCommands() = """List of commands:
     |   help - This command.
     |   TODO
     """.trimMargin()
@@ -94,17 +93,17 @@ class CommandHandler(private val bot: Bot) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun start(param : String?) : String = param.assertNoMoreParams(bot::start)
-    private fun stop(param : String?) : String = param.assertNoMoreParams(bot::stop)
+    private fun start(param: String?) = param.assertNoMoreParams(bot::start)
+    private fun stop(param: String?) = param.assertNoMoreParams(bot::stop)
 
-    private fun climate(param : String?) : String = bot.setClimate(param.orEmpty())
-    private fun elevation(param : String?) : String = bot.setElevation(param.orEmpty())
-    private fun desert(param : String?) : String = bot.setDesert(param.orEmpty())
+    private fun climate(param: String?) = bot.setClimate(param.orEmpty())
+    private fun elevation(param: String?) = bot.setElevation(param.orEmpty())
+    private fun desert(param: String?) = bot.setDesert(param.orEmpty())
 
-    private fun prefix(param: String?) : String = param.takeUnless(String?::isNullOrBlank)?.let {
-        it.succeedingWords().assertNoMoreParams {
-            prefix = it.firstWord()
-            "Prefix has been set to ${it.firstWord()}"
+    private fun prefix(param: String?) = param.takeUnless(String?::isNullOrBlank)?.run {
+        succeedingWords().assertNoMoreParams {
+            prefix = firstWord()
+            "Prefix has been set to ${firstWord()}"
         }
     } ?: "No prefix specified."
 }

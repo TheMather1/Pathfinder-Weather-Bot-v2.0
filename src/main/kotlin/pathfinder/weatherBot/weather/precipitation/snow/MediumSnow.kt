@@ -5,9 +5,13 @@ import pathfinder.weatherBot.weather.precipitation.Precipitation
 import java.time.LocalDate
 
 class MediumSnow(val location: Location, date: LocalDate, hours: Long) : Snow(date, hours) {
-    override fun print(prev: Precipitation?): String = TODO()
+    override val fireRetardance = 25
 
-    override fun finished(): String = TODO()
+    override fun print(prev: Precipitation?) = TODO()
 
-    override fun fall() { location.snowLevel += 1 }
+    override fun finished() = TODO()
+
+    override fun fall() {
+        location.snowLevel += 1
+    }
 }
