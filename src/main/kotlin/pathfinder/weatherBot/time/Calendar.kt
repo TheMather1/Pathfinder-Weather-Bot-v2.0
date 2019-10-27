@@ -1,39 +1,40 @@
 package pathfinder.weatherBot.time
 
+import pathfinder.weatherBot.PushQueue
 import pathfinder.weatherBot.d
 import pathfinder.weatherBot.location.Location
 import pathfinder.weatherBot.weather.Weather
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import java.time.LocalDate
+import java.time.LocalDate.now
 import java.time.LocalTime
 
 class Calendar(val location: Location) {
     internal val days = pregenDays()
     val precipitation: Precipitation?
-        get() = days[1].precipitation(LocalTime.now())
+        get() = days.peek().precipitation(LocalTime.now())
     val weather: Weather
-        get() = days[1].weather
-    private var tempVarEnd = LocalDate.now()
+        get() = days.peek().weather
+    private var tempVarEnd = now()
     private var tempVarDie = { 1 d 1 }
 
-    private fun pregenDays(): MutableList<Day> {
-        var weatherHolder: Weather? = null
-        return MutableList(4) {
-            Day(this, LocalDate.now().plusDays((it - 1).toLong()), weatherHolder)
-                    .also { day -> weatherHolder = day.weather}
+    private fun pregenDays(): PushQueue<Day> {
+        val queue = PushQueue<Day>(4)
+        (-1L..3L).map(now()::plusDays).forEach{
+            queue.add(Day(this, it, queue.lastOrNull()?.weather))
         }
-    }
-    fun nextDay() {
-        val prevWeather = days[3].weather
-        days.add(
-                Day(this, LocalDate.now().plusDays(3), prevWeather)
-        )
-        days.removeAt(0)
+        return queue
     }
 
-    internal fun tempVar(day: LocalDate): Long = (tempVarDie.takeUnless { day == tempVarEnd }
-            ?: location.climate.tempVariation()
-                    .apply { tempVarEnd = day.plusDays(second) }
-                    .first.apply(::tempVarDie::set)
-            ).run { invoke() }
+    fun nextDay() = days.push(Day(this, now().plusDays(3), days.lastOrNull()?.weather))
+
+    internal fun tempVar(day: LocalDate): Long =
+            if(day != tempVarEnd) tempVarDie()
+            else newTempVar(day)
+
+    private fun newTempVar(day : LocalDate): Long = location.climate.tempVariation().run {
+        tempVarDie = first
+        tempVarEnd = day.plusDays(second)
+        first()
+}
 }
