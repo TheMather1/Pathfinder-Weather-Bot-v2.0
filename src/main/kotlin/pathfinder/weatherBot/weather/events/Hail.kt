@@ -5,6 +5,6 @@ import pathfinder.weatherBot.time.TimeFrame
 
 class Hail(override val timeFrame: TimeFrame) : Event {
     override val description = TODO()
-    override val finished = TODO() //To change initializer of created properties use File | Settings | File Templates.
+    override val finished = TODO()
     private val damaging = (1 d 100) <= 5
 }

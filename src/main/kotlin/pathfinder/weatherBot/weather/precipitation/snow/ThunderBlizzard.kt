@@ -7,6 +7,6 @@ import java.time.LocalDate
 
 class ThunderBlizzard(location: pathfinder.weatherBot.location.Location, date: LocalDate, hours: Long, override val temp: Long, override val wind: Wind) : Blizzard(location, date, hours, wind),
         Thunder {
-    override fun print(prev: Precipitation?): String = TODO()
-    override fun finished(): String = TODO()
+    override fun print(prev: Precipitation?) = TODO()
+    override fun finished() = TODO()
 }

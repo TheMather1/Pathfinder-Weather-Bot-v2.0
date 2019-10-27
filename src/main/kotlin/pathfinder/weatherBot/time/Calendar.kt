@@ -8,33 +8,26 @@ import pathfinder.weatherBot.weather.precipitation.Precipitation
 import java.time.LocalDate
 import java.time.LocalDate.now
 import java.time.LocalTime
+import java.time.temporal.ChronoUnit.HOURS
 
 class Calendar(val location: Location) {
     internal val days = pregenDays()
-    val precipitation: Precipitation?
-        get() = days.peek().precipitation(LocalTime.now())
-    val weather: Weather
+    val precipitation
+        get() = days.peek().precipitation(LocalTime.now()).truncatedTo(HOURS))
+    val weather
         get() = days.peek().weather
     private var tempVarEnd = now()
     private var tempVarDie = { 1 d 1 }
 
-    private fun pregenDays(): PushQueue<Day> {
-        val queue = PushQueue<Day>(4)
-        (-1L..3L).map(now()::plusDays).forEach{
-            queue.add(Day(this, it, queue.lastOrNull()?.weather))
-        }
-        return queue
+    private fun pregenDays(): PushQueue<Day> = (0..3).fold(PushQueue<Day>(4)) { dayQueue, x ->
+        dayQueue.also { it + Day(this, now().plusDays((x - 1).toLong()), dayList.lastOrNull()) }
     }
 
-    fun nextDay() = days.push(Day(this, now().plusDays(3), days.lastOrNull()?.weather))
+    fun nextDay() = days.push(Day(this, LocalDate.now().plusDays(3), days.lastOrNull()))
 
-    internal fun tempVar(day: LocalDate): Long =
-            if(day != tempVarEnd) tempVarDie()
-            else newTempVar(day)
-
-    private fun newTempVar(day : LocalDate): Long = location.climate.tempVariation().run {
-        tempVarDie = first
-        tempVarEnd = day.plusDays(second)
-        first()
-}
+    internal fun tempVar(day: LocalDate) = (tempVarDie.takeUnless { day == tempVarEnd }
+            ?: location.climate.tempVariation()
+                    .apply { tempVarEnd = day.plusDays(second) }
+                    .first.apply(::tempVarDie::set)
+            )()
 }
