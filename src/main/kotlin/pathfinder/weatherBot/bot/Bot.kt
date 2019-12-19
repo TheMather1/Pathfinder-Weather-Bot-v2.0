@@ -64,7 +64,7 @@ class Bot(private val guildId: String) {
     }
 
     private fun command(message: Message) {
-        commandHandler(message)?.let { post(message.textChannel, it) }
+        commandHandler(message)?.let { post(it, message.textChannel) }
     }
 
     internal fun setChannel(message: Message) =
@@ -114,5 +114,5 @@ class Bot(private val guildId: String) {
 
     internal fun stop() = if ((::clock.getDelegate() as Lazy<*>).isInitialized()) clock.stop() else ""
 
-    fun post(channel: TextChannel? = null, message: String) = (channel ?: outputChannel)?.sendMessage(message)?.queue()
+    fun post(message: String, channel: TextChannel? = outputChannel) = channel?.sendMessage(message)?.queue()
 }

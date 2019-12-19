@@ -19,12 +19,16 @@ application {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
+    testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
     compile("net.dv8tion:JDA:4.0.0_46")
 }
 
 sourceSets {
     main {
-        java.srcDir("/src/main/kotlin/pathfinder/weatherBot")
+        java.srcDir("/src/main/kotlin")
+    }
+    test {
+        java.srcDir("/src/test/kotlin")
     }
 }
 
@@ -33,5 +37,8 @@ tasks {
         kotlinOptions {
             jvmTarget = "1.8"
         }
+    }
+    test {
+        useJUnitPlatform()
     }
 }

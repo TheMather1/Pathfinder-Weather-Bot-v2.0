@@ -8,9 +8,11 @@ class PushQueue<T>(private val maxSize: Int) {
 
     fun push(element: T): T = container.apply{ add(element) }.removeAt(0)
 
-    fun add(element: T): Boolean = size < maxSize && container.add(element)
+    operator fun plus(element: T): Boolean = size < maxSize && container.add(element)
 
     fun peek(): T = container.first()
 
     fun lastOrNull(): T? = container.lastOrNull()
+
+    operator fun get(i: Int) = container[i]
 }

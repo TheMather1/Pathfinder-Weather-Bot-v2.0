@@ -2,25 +2,45 @@ package pathfinder.weatherBot.bot
 
 import net.dv8tion.jda.api.Permission.ADMINISTRATOR
 import net.dv8tion.jda.api.entities.Message
+import pathfinder.weatherBot.bot.commands.*
+import java.lang.String.CASE_INSENSITIVE_ORDER
+import kotlin.reflect.KFunction1
 
-class CommandHandler(private val bot: Bot) {
+class CommandHandler(internal val bot: Bot?) {
 
     companion object {
         private const val TOO_MANY_PARAMETERS = "This command does not take any parameters."
     }
 
-    private var prefix = "WEATHER!"
+    internal val commands = listOf(
+            Help(this)
+    ).associateBy(Command::command)
+            .toSortedMap(CASE_INSENSITIVE_ORDER)
+
+    internal var prefix = "WEATHER!"
 
     private fun String.firstWord() = substringBefore(' ', this)
     private fun String.succeedingWords() = substringAfter(' ').takeUnless { none(' '::equals) }
-    private fun String?.assertNoMoreParams(function: () -> String) = if (isNullOrEmpty()) function() else TOO_MANY_PARAMETERS
+    private fun String?.assertNoMoreParams(function: () -> String?) = if (isNullOrEmpty() && function != null) function() else TOO_MANY_PARAMETERS
 
     internal operator fun invoke(message: Message): String? {
-        fun sudo(function: () -> String) = if (message.member?.hasPermission(ADMINISTRATOR) == true) function() else "You do not have permission to do this."
-        fun String.sudo(function: (String?) -> String) = sudo { function(succeedingWords()) }
-        fun Message.sudo(function: (Message) -> String) = sudo { function(this) }
+        fun sudo(function: () -> String?) = if (message.member?.hasPermission(ADMINISTRATOR) == true) function() else "You do not have permission to do this."
+        fun String.sudo(function: KFunction1<@ParameterName(name = "param") String?, String?>) = sudo { function(succeedingWords()) }
+        fun Message.sudo(function: ((Message) -> String)?) = sudo { function?.invoke(this) }
         val command = message.contentRaw.toUpperCase().takeIf { it.startsWith(prefix) }?.removePrefix(prefix)
                 ?: return null
+
+
+        with(command.split(' ')) {
+            commands[first()].also {
+                when {
+                    it == null -> bot?.post(message = "$command is not a valid command.")
+                    size > 1 -> it.execute(drop(1))
+                    else -> it.execute()
+                }
+            }
+        }
+        if (bot == null) return null
 
         return when (command.firstWord()) {
             "HELP" -> help(command.succeedingWords())
@@ -93,12 +113,12 @@ class CommandHandler(private val bot: Bot) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun start(param: String?) = param.assertNoMoreParams(bot::start)
-    private fun stop(param: String?) = param.assertNoMoreParams(bot::stop)
+    private fun start(param: String?) = param.assertNoMoreParams { bot?.start() }
+    private fun stop(param: String?) = param.assertNoMoreParams { bot?.stop() }
 
-    private fun climate(param: String?) = bot.setClimate(param.orEmpty())
-    private fun elevation(param: String?) = bot.setElevation(param.orEmpty())
-    private fun desert(param: String?) = bot.setDesert(param.orEmpty())
+    private fun climate(param: String?) = bot?.setClimate(param.orEmpty())
+    private fun elevation(param: String?) = bot?.setElevation(param.orEmpty())
+    private fun desert(param: String?) = bot?.setDesert(param.orEmpty())
 
     private fun prefix(param: String?) = param.takeUnless(String?::isNullOrBlank)?.run {
         succeedingWords().assertNoMoreParams {
