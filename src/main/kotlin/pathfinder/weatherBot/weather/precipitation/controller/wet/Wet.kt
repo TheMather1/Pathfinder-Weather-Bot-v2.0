@@ -1,7 +1,6 @@
 package pathfinder.weatherBot.weather.precipitation.controller.wet
 
 import pathfinder.weatherBot.location.Location
-import pathfinder.weatherBot.weather.precipitation.Intensity
 import pathfinder.weatherBot.weather.precipitation.Intensity.*
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.controller.Controller

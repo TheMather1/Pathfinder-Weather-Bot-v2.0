@@ -1,10 +1,9 @@
 package pathfinder.weatherBot.weather.events
 
 import pathfinder.weatherBot.d
-import pathfinder.weatherBot.time.TimeFrame
 import java.time.LocalDateTime
 
-class Hail() : Event {
+class Hail : Event {
     override fun progress(time: LocalDateTime): Event? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

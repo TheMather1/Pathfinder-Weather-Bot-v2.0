@@ -1,6 +1,5 @@
 package pathfinder.weatherBot.weather.events
 
-import pathfinder.weatherBot.time.TimeFrame
 import java.time.LocalDateTime
 
 open class Sandstorm : Event {

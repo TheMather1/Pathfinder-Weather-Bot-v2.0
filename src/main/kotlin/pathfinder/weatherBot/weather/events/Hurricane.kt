@@ -1,9 +1,8 @@
 package pathfinder.weatherBot.weather.events
 
-import pathfinder.weatherBot.time.TimeFrame
 import java.time.LocalDateTime
 
-class Hurricane() : Event {
+class Hurricane : Event {
     override fun progress(time: LocalDateTime): Event? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

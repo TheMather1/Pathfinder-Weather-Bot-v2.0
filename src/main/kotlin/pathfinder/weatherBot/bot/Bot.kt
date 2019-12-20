@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.events.guild.GuildLeaveEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import org.slf4j.LoggerFactory
+import pathfinder.weatherBot.bot.interaction.CommandHandler
 import pathfinder.weatherBot.location.Climate
 import pathfinder.weatherBot.location.Elevation
 import pathfinder.weatherBot.location.Location
@@ -67,15 +68,10 @@ class Bot(private val guildId: String) {
         commandHandler(message)?.let { post(it, message.textChannel) }
     }
 
-    internal fun setChannel(message: Message) =
-            message.mentionedChannels[0].takeIf {
-                message.contentRaw.split(' ').drop(1).all(it.asMention::equals)
-            }
-                    ?.run {
-                        outputChannelId = id
-                        "Output channel has been set to $asMention."
-                    }
-                    ?: "Cannot identify channel. Correct usage: channel [#channel]"
+    internal fun setChannel(channel: TextChannel, oldChannel: TextChannel = channel) = channel.run {
+        outputChannelId = id
+        post("Output channel has been set to $asMention.", oldChannel)
+    }
 
     internal fun setClimate(message: String) =
             try {

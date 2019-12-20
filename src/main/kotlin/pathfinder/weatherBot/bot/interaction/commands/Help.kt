@@ -1,16 +1,17 @@
-package pathfinder.weatherBot.bot.commands
+package pathfinder.weatherBot.bot.interaction.commands
 
-import pathfinder.weatherBot.bot.CommandHandler
+import pathfinder.weatherBot.bot.interaction.CommandHandler
 
 
 class Help(handler: CommandHandler) : Command(handler = handler) {
     override val command = "help"
     override val description = "List the available commands."
+    override val supportedParameterCounts = arrayOf(0, 1)
 
     override fun execute() {
         handler.bot?.post("""
             Available commands:
-            ${handler.commands.values.map { "${it.command} - ${it.description}" }.joinToString("\n")}
+            ${handler.commands.values.joinToString("\n") { "${it.command} - ${it.description}" }}
         """.trimIndent())
     }
 

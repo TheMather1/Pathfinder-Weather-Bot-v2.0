@@ -10,4 +10,6 @@ infix fun Int.d(u: Int) = (0 until (this.absoluteValue))
             else it
         }
 
+fun String.removeSuffixOrNull(suffix: CharSequence, ignoreCase: Boolean = false) = takeIf { startsWith(suffix, ignoreCase) }?.drop(suffix.length)
+
 val dHundredException = RuntimeException("d% yielded a number not between 1 and 100.")

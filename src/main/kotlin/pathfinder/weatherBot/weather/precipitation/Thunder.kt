@@ -30,6 +30,6 @@ interface Thunder {
     val wind
         get() = Thunder.wind
     fun lightning(){
-
+        TODO()
     }
 }

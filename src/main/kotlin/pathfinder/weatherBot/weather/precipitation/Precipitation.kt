@@ -4,12 +4,10 @@ import pathfinder.weatherBot.d
 import pathfinder.weatherBot.location.Location
 import pathfinder.weatherBot.time.Season
 import pathfinder.weatherBot.time.TimeFrame
-import pathfinder.weatherBot.weather.events.tornado.Tornado
 import pathfinder.weatherBot.weather.precipitation.controller.frozen.Frozen
 import pathfinder.weatherBot.weather.precipitation.controller.wet.Wet
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.LocalTime.MIDNIGHT
 import java.time.LocalTime.NOON
 

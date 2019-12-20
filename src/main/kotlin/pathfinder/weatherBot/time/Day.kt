@@ -2,10 +2,8 @@ package pathfinder.weatherBot.time
 
 import pathfinder.weatherBot.weather.Weather
 import pathfinder.weatherBot.weather.events.Event
-import pathfinder.weatherBot.weather.precipitation.Precipitation
 import java.time.LocalDate
 import java.time.LocalTime
-import java.time.LocalTime.MIDNIGHT
 
 class Day(calendar: Calendar, val day: LocalDate, prevDay: Day?) {
     val weather: Weather = Weather(calendar.location, Season(day), calendar.tempVar(day), day, prevDay?.weather)

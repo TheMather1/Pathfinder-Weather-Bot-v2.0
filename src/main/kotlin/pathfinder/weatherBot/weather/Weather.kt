@@ -2,17 +2,17 @@ package pathfinder.weatherBot.weather
 
 import pathfinder.weatherBot.d
 import pathfinder.weatherBot.location.Location
+import pathfinder.weatherBot.time.Season
+import pathfinder.weatherBot.time.TimeFrame
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.Thunder
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
-import pathfinder.weatherBot.time.Season
-import pathfinder.weatherBot.time.TimeFrame
-import pathfinder.weatherBot.weather.events.Event
-import pathfinder.weatherBot.weather.events.Wildfire
-import pathfinder.weatherBot.weather.events.tornado.Tornado
 import java.time.LocalDate
 import java.time.LocalTime
-import kotlin.math.*
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.min
+import kotlin.math.roundToLong
 
 class Weather(val location: Location, private val season: Season, tempVar: Long, day: LocalDate, prevWeather: Weather?) {
     private val prevPrecipitation: Precipitation? = prevWeather?.precipitation
