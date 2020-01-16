@@ -2,12 +2,11 @@ package pathfinder.weatherBot.bot.interaction
 
 import net.dv8tion.jda.api.Permission.ADMINISTRATOR
 import net.dv8tion.jda.api.entities.Message
-import pathfinder.weatherBot.bot.Bot
 import pathfinder.weatherBot.bot.interaction.commands.*
 import pathfinder.weatherBot.removeSuffixOrNull
 import java.lang.String.CASE_INSENSITIVE_ORDER
 
-class CommandHandler(internal val bot: Bot?) {
+class CommandHandler(private val client: Client) {
 
     internal var prefix = "WEATHER!"
 

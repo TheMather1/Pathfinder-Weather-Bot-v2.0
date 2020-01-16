@@ -36,6 +36,7 @@ tasks {
     compileKotlin {
         kotlinOptions {
             jvmTarget = "1.8"
+            freeCompilerArgs += "-Xuse-experimental=kotlin.Experimental"
         }
     }
     test {

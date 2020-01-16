@@ -1,6 +1,6 @@
 package pathfinder.weatherBot.time
 
-import pathfinder.weatherBot.bot.Bot
+import pathfinder.weatherBot.bot.Bot_old
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
 import java.time.LocalTime.MIDNIGHT
@@ -9,7 +9,7 @@ import java.time.temporal.ChronoUnit.HOURS
 import java.util.*
 import kotlin.concurrent.timerTask
 
-class Clock(private val bot: Bot) {
+class Clock(private val bot: Bot_old) {
     private var active = false
     private var timer = Timer()
     private val calendar = Calendar(bot.location)
@@ -37,7 +37,7 @@ class Clock(private val bot: Bot) {
 
     private fun execute() {
         if (now.toLocalTime() == MIDNIGHT) calendar.nextDay()
-        val hour = Hour(calendar, now)
+        val hour = Hour_old(calendar, now)
         bot.post(message = TODO(hour.execute))
     }
 

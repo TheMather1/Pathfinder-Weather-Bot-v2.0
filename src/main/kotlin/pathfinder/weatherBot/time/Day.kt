@@ -1,15 +1,24 @@
 package pathfinder.weatherBot.time
 
-import pathfinder.weatherBot.weather.Weather
-import pathfinder.weatherBot.weather.events.Event
+import java.io.Serializable
 import java.time.LocalDate
-import java.time.LocalTime
 
-class Day(calendar: Calendar, val day: LocalDate, prevDay: Day?) {
-    val weather: Weather = Weather(calendar.location, Season(day), calendar.tempVar(day), day, prevDay?.weather)
-    val events = (0..23).map { day.atTime(it, 0) }.fold(ArrayList<List<Event>>()) { eventList, time ->
-        eventList.apply { add(Event(eventList.lastOrNull() ?: emptyList(), time, weather, calendar.location)) }
+data class Day(val hours: Array<Hour>, val date: LocalDate): Serializable {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Day
+
+        if (!hours.contentEquals(other.hours)) return false
+        if (date != other.date) return false
+
+        return true
     }
 
-    fun precipitation(now: LocalTime) = weather.precipitation(now)
+    override fun hashCode(): Int {
+        var result = hours.contentHashCode()
+        result = 31 * result + date.hashCode()
+        return result
+    }
 }

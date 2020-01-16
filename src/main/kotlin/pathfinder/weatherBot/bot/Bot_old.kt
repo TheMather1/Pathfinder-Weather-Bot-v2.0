@@ -19,7 +19,7 @@ import pathfinder.weatherBot.location.Location
 import pathfinder.weatherBot.time.Clock
 import java.util.*
 
-class Bot(private val guildId: String) {
+class Bot_old(private val guildId: String) {
     private val commandHandler = CommandHandler(this)
     private val guild: Guild?
         get() = botUser.getGuildById(guildId)
@@ -31,8 +31,8 @@ class Bot(private val guildId: String) {
 
     companion object : ListenerAdapter() {
         private lateinit var token: String
-        private val instances = HashMap<String, Bot>()
-        private val logger = LoggerFactory.getLogger(Bot::class.java)
+        private val instances = HashMap<String, Bot_old>()
+        private val logger = LoggerFactory.getLogger(Bot_old::class.java)
         lateinit var botUser: JDA
 
         @JvmStatic
@@ -47,12 +47,12 @@ class Bot(private val guildId: String) {
         override fun onMessageReceived(event: MessageReceivedEvent) {
             with(event.message) {
                 logger.info("Received message:\n$author: $contentRaw in $guild#$channel")
-                instances.getOrPut(guild.id, { Bot(guild.id) }).command(this)
+                instances.getOrPut(guild.id, { Bot_old(guild.id) }).command(this)
             }
         }
 
         override fun onGuildJoin(event: GuildJoinEvent) {
-            event.guild.id.also { instances[it] = Bot(it) }
+            event.guild.id.also { instances[it] = Bot_old(it) }
         }
 
         override fun onGuildLeave(event: GuildLeaveEvent) {
