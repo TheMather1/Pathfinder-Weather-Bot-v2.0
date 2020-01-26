@@ -1,12 +1,16 @@
 package pathfinder.weatherBot.weather.events
 
-import java.time.LocalDateTime
+import pathfinder.weatherBot.weather.Weather
 
-open class Sandstorm : Event {
-    override fun progress(time: LocalDateTime): Event? {
+open class Sandstorm : Event<Sandstorm> {
+    override fun progress(weather: Weather): Event<Sandstorm>? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override val description = TODO()
-    override val finished = TODO()
+    override fun description(prev: Sandstorm?): String {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override val finished: String
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 }

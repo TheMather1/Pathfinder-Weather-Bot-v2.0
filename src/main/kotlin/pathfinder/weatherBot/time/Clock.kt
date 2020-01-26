@@ -1,7 +1,7 @@
 package pathfinder.weatherBot.time
 
-import pathfinder.weatherBot.bot.Bot_old
-import java.time.LocalDateTime
+import pathfinder.weatherBot.bot.WeatherDescription
+import pathfinder.weatherBot.bot.interaction.Client
 import java.time.LocalDateTime.now
 import java.time.LocalTime.MIDNIGHT
 import java.time.ZoneOffset
@@ -9,12 +9,20 @@ import java.time.temporal.ChronoUnit.HOURS
 import java.util.*
 import kotlin.concurrent.timerTask
 
-class Clock(private val bot: Bot_old) {
+class Clock(private val client: Client) {
     private var active = false
     private var timer = Timer()
-    private val calendar = Calendar(bot.location)
-    private val now: LocalDateTime
+
+    private val now
         get() = now().truncatedTo(HOURS)
+    private val isMidnight
+        get() = now.toLocalTime() == MIDNIGHT
+    private val today
+        get() = client.forecast.apply { if (isMidnight) progress() }.today
+    private val thisHour
+        get() = today.hours[now.hour]
+    private val description: String
+        get() = WeatherDescription(thisHour).toString()
 
     fun start() =
             if (active) "The bot is already running."
@@ -35,11 +43,7 @@ class Clock(private val bot: Bot_old) {
     val status
         get() = if (active) "running." else "stopped."
 
-    private fun execute() {
-        if (now.toLocalTime() == MIDNIGHT) calendar.nextDay()
-        val hour = Hour_old(calendar, now)
-        bot.post(message = TODO(hour.execute))
-    }
+    private fun execute() = client.messageHandler.post(description)
 
     private fun schedule() {
         val nextHour = Date.from(now.plusHours(1).toInstant(ZoneOffset.UTC))

@@ -9,7 +9,7 @@ class Start(handler: CommandHandler) : Command(handler) {
     override val sudo = true
 
     override fun execute() {
-        handler.bot?.start()
+        handler.client.clock.start()
     }
 
     override fun execute(params: List<String>) {

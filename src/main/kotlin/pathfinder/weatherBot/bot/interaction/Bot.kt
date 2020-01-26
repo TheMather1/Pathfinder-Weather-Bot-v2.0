@@ -9,12 +9,11 @@ import net.dv8tion.jda.api.events.guild.GuildLeaveEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import org.slf4j.LoggerFactory
-import pathfinder.weatherBot.bot.Bot_old
 import java.util.*
 
 object Bot : ListenerAdapter() {
     private lateinit var token: String
-    private val instances = HashMap<String, Bot_old>()
+    private val instances = HashMap<String, Client>()
     private val logger = LoggerFactory.getLogger(Bot.javaClass)
     internal lateinit var botUser: JDA
 
@@ -30,19 +29,19 @@ object Bot : ListenerAdapter() {
     override fun onMessageReceived(event: MessageReceivedEvent) {
         with(event.message) {
             logger.info("Received message:\n$author: $contentRaw in $guild#$channel")
-            instances.getOrPut(guild.id, { Bot_old(guild.id) })
+            instances.getOrPut(guild.id, { Client(guild.id, guild.defaultChannel!!.id) }).commandHandler(event.message)
         }
     }
 
     override fun onGuildJoin(event: GuildJoinEvent) {
-        event.guild.id.also { instances[it] = Bot_old(it) }
+        event.guild.also { instances[it.id] = Client(it.id, it.defaultChannel!!.id) }
     }
 
     override fun onGuildLeave(event: GuildLeaveEvent) {
-        instances.remove(event.guild.id)?.stop()
+        instances.remove(event.guild.id)?.clock?.stop()
     }
 
     override fun onGuildBan(event: GuildBanEvent) {
-        instances.remove(event.guild.id)?.stop()
+        instances.remove(event.guild.id)?.clock?.stop()
     }
 }

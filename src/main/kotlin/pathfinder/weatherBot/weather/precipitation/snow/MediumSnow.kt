@@ -1,17 +1,19 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
-import pathfinder.weatherBot.location.Location
+import pathfinder.weatherBot.weather.Weather
 import pathfinder.weatherBot.weather.precipitation.Precipitation
-import java.time.LocalDate
 
-class MediumSnow(val location: Location, date: LocalDate, hours: Long) : Snow(date, hours) {
+class MediumSnow(weather: Weather, hours: Long) : Snow(weather, hours) {
     override val fireRetardance = 25
 
-    override fun print(prev: Precipitation?) = TODO()
-
-    override fun finished() = TODO()
-
     override fun fall() {
-        location.snowLevel += 1
+        weather.hour.day.forecast.biome.snowLevel += 1
     }
+
+    override fun description(prev: Precipitation?): String {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override val finished: String
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 }

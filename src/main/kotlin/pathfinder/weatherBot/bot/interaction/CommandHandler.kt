@@ -6,24 +6,22 @@ import pathfinder.weatherBot.bot.interaction.commands.*
 import pathfinder.weatherBot.removeSuffixOrNull
 import java.lang.String.CASE_INSENSITIVE_ORDER
 
-class CommandHandler(private val client: Client) {
-
-    internal var prefix = "WEATHER!"
-
+class CommandHandler(internal val client: Client) {
     internal val commands = listOf(
             Help(this),
             Start(this),
             Stop(this),
-            Climate(this),
-            Elevation(this),
+            SetClimate(this),
+            SetElevation(this),
             Desert(this),
             Prefix(this),
-            Channel(this)
+            Channel(this),
+            Status(this)
     ).associateBy(Command::command)
             .toSortedMap(CASE_INSENSITIVE_ORDER)
 
     internal operator fun invoke(message: Message): String? {
-        val text = message.contentRaw.removeSuffixOrNull(prefix, true) ?: return null
+        val text = message.contentRaw.removeSuffixOrNull(client.prefix, true) ?: return null
         val sudo = message.member?.hasPermission(ADMINISTRATOR) ?: false
         val newChannel = message.mentionedChannels.firstOrNull()
 

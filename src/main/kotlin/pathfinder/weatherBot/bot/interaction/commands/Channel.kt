@@ -8,14 +8,14 @@ class Channel(handler: CommandHandler) : Command(handler) {
     override val description = "Sets the output channel."
     override val supportedParameterCounts = arrayOf(0, 1)
     override val sudo = true
-    var newChannel: TextChannel? = null
+    lateinit var newChannel: TextChannel
 
     override fun execute() {
-        handler.bot?.setChannel(channel)
+        handler.client.outputChannel = channel
     }
 
     override fun execute(params: List<String>) {
-        if (newChannel != null) handler.bot?.setChannel(newChannel!!)
+        if (::newChannel.isInitialized) handler.client.outputChannel = newChannel
         else TODO("Channel not recognized.")
     }
 

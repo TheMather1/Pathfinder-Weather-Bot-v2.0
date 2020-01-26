@@ -9,7 +9,7 @@ class Stop(handler: CommandHandler) : Command(handler) {
     override val sudo = true
 
     override fun execute() {
-        handler.bot?.stop()
+        handler.client.clock.stop()
     }
 
     override fun execute(params: List<String>) {

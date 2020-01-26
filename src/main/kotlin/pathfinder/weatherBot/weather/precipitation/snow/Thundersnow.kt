@@ -1,22 +1,22 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
-import pathfinder.weatherBot.location.Location
+import pathfinder.weatherBot.weather.Weather
 import pathfinder.weatherBot.weather.Wind
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.Thunder
-import java.time.LocalDate
 
-class Thundersnow(location: Location, date: LocalDate, hours: Long, override val temp: Long, override val wind: Wind) : HeavySnow(location, date, hours),
-        Thunder {
-    override fun print(prev: Precipitation?) = TODO()
-
-    override fun finished() = TODO()
-
-
+class Thundersnow(weather: Weather, hours: Long, override val wind: Wind) : HeavySnow(weather, hours), Thunder {
     companion object {
-        operator fun invoke(location: Location, hours: Long, date: LocalDate, temp: Long): HeavySnow = Thunder.wind.let {
-            if (blizzard(it)) ThunderBlizzard(location, date, hours, temp, it)
-            else Thundersnow(location, date, hours, temp, it)
+        operator fun invoke(weather: Weather, hours: Long): HeavySnow = Thunder.wind.let {
+            if (blizzard(it)) ThunderBlizzard(weather, hours, it)
+            else Thundersnow(weather, hours, it)
         }
     }
+
+    override fun description(prev: Precipitation?): String {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override val finished: String
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 }

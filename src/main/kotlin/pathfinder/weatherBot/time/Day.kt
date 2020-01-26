@@ -1,9 +1,16 @@
 package pathfinder.weatherBot.time
 
+import pathfinder.weatherBot.weather.Temperature
 import java.io.Serializable
 import java.time.LocalDate
 
-data class Day(val hours: Array<Hour>, val date: LocalDate): Serializable {
+class Day(val forecast: Forecast, val date: LocalDate, oldTemp: Temperature? = null): Serializable {
+    val season = Season(date)
+    val temperature = Temperature(this, oldTemp)
+    val hours: Array<Hour> = TODO()
+
+    fun next() = Day(forecast, date.plusDays(1), temperature)
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

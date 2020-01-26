@@ -1,8 +1,9 @@
 package pathfinder.weatherBot.bot.interaction.commands
 
 import pathfinder.weatherBot.bot.interaction.CommandHandler
+import pathfinder.weatherBot.location.Climate
 
-class Climate(handler: CommandHandler) : Command(handler) {
+class SetClimate(handler: CommandHandler) : Command(handler) {
     override val command = "climate"
     override val description = "Sets the climate of the server."
     override val supportedParameterCounts = arrayOf(1)
@@ -13,7 +14,7 @@ class Climate(handler: CommandHandler) : Command(handler) {
 
     override fun execute(params: List<String>) {
         if (params.isEmpty()) execute()
-        else handler.bot?.setClimate(params.first())
+        else handler.client.biome.climate = Climate.valueOf(params.first())
     }
 
     override fun help() {

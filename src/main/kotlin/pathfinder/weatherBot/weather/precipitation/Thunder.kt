@@ -2,7 +2,7 @@ package pathfinder.weatherBot.weather.precipitation
 
 import pathfinder.weatherBot.d
 import pathfinder.weatherBot.dHundredException
-import pathfinder.weatherBot.location.Location
+import pathfinder.weatherBot.weather.Weather
 import pathfinder.weatherBot.weather.Wind.*
 
 interface Thunder {
@@ -15,17 +15,16 @@ interface Thunder {
                 else -> throw dHundredException
             }
     }
-    val location: Location
-    val temp: Long
+    val weather: Weather
 
     val tornado
         get() = wind == WINDSTORM && (1 d 100) <= 10
 
     val haboob
-        get() = location.desert && (1 d 100) <= 20
+        get() = weather.hour.day.forecast.biome.desert && (1 d 100) <= 20
 
     val hurricane
-        get() = temp > 85 && (1 d 100) <= 20
+        get() = weather.hour.temp > 85 && (1 d 100) <= 20
 
     val wind
         get() = Thunder.wind

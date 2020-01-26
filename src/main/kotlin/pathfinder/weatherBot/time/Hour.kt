@@ -2,6 +2,9 @@ package pathfinder.weatherBot.time
 
 import pathfinder.weatherBot.weather.Weather
 import java.io.Serializable
-import java.time.LocalDateTime
+import java.time.LocalTime
 
-data class Hour(val weather : Weather, val time: LocalDateTime): Serializable
+class Hour(val day: Day, val time: LocalTime, prevHour: Hour? = null): Serializable{
+    var temp = day.temperature.tempAtHour(time)
+    val weather: Weather = Weather(this, prevHour?.weather)
+}

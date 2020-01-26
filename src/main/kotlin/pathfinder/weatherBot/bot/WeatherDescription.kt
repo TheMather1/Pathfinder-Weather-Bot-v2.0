@@ -1,8 +1,7 @@
 package pathfinder.weatherBot.bot
 
-import pathfinder.weatherBot.weather.Clouds
-import pathfinder.weatherBot.weather.Wind
-import pathfinder.weatherBot.weather.precipitation.Precipitation
-import java.time.LocalTime
+import pathfinder.weatherBot.time.Hour
 
-class WeatherDescription(val precipitation: Precipitation?, val clouds: Clouds, val wind: Wind, time: LocalTime)
+class WeatherDescription(val hour: Hour) {
+    override fun toString() = TODO()
+}

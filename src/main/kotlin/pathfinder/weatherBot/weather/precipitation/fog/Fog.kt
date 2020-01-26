@@ -1,9 +1,9 @@
 package pathfinder.weatherBot.weather.precipitation.fog
 
+import pathfinder.weatherBot.weather.Weather
 import pathfinder.weatherBot.weather.precipitation.Precipitation
-import java.time.LocalDate
 
-abstract class Fog(date: LocalDate, hours: Long) : Precipitation(date, hours) {
+abstract class Fog(weather: Weather, hours: Long) : Precipitation(weather, hours) {
     override fun fall() {
         TODO()
     }

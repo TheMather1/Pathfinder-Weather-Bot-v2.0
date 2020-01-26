@@ -13,7 +13,7 @@ class Prefix(handler: CommandHandler) : Command(handler) {
     }
 
     override fun execute(params: List<String>) {
-        handler.prefix = params.first()
+        handler.client.prefix = params.first()
         TODO("Confirm change.")
     }
 

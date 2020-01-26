@@ -9,7 +9,7 @@ class Help(handler: CommandHandler) : Command(handler = handler) {
     override val supportedParameterCounts = arrayOf(0, 1)
 
     override fun execute() {
-        handler.bot?.post("""
+        handler.client.messageHandler.post("""
             Available commands:
             ${handler.commands.values.joinToString("\n") { "${it.command} - ${it.description}" }}
         """.trimIndent())

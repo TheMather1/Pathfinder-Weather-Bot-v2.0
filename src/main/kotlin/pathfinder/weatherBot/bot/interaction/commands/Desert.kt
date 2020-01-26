@@ -13,7 +13,7 @@ class Desert(handler: CommandHandler) : Command(handler) {
     }
 
     override fun execute(params: List<String>) {
-        handler.bot?.setClimate(params.first())
+        handler.client.biome.desert = params.first().toBoolean()
     }
 
     override fun help() {

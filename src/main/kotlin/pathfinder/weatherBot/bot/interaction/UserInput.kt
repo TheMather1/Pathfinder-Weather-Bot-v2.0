@@ -5,8 +5,8 @@ import pathfinder.weatherBot.bot.interaction.commands.Channel
 import pathfinder.weatherBot.bot.interaction.commands.Command
 
 class UserInput(input: String, private val sudo: Boolean, handler: CommandHandler) {
-    private var command: Command?
-    private lateinit var parameters: List<String>
+    private val command: Command?
+    private val parameters: List<String>
 
     init {
         val inputArray = input.split(' ')
@@ -17,8 +17,8 @@ class UserInput(input: String, private val sudo: Boolean, handler: CommandHandle
     internal fun execute(channel: TextChannel, newChannel: TextChannel?) {
         try {
             command!!.channel = channel
-            if (command is Channel) (command as Channel).newChannel = newChannel
-            command!!.evaluate(parameters, sudo)
+            if (command is Channel && newChannel != null) command.newChannel = newChannel
+            command.evaluate(parameters, sudo)
         } catch (_: NullPointerException) {
             TODO("Command does not exist.")
         } catch (_: UnsupportedOperationException) {

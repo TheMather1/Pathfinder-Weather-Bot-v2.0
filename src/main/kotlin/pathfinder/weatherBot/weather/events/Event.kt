@@ -1,20 +1,16 @@
 package pathfinder.weatherBot.weather.events
 
-import pathfinder.weatherBot.location.Location
+import pathfinder.weatherBot.weather.Described
 import pathfinder.weatherBot.weather.Weather
-import java.time.LocalDateTime
 
-interface Event {
+interface Event<in T>: Described<T> {
     companion object {
-        operator fun invoke(prevEvents: List<Event>, time: LocalDateTime, weather: Weather, location: Location): List<Event> {
-            return prevEvents.mapNotNull { it.progress(time) }.apply {
-                if (none { it is Wildfire}) Wildfire(weather.temp(time.toLocalTime()), weather.precipitation(time.toLocalTime()), location)
+        operator fun invoke(prevEvents: List<Event<*>>, weather: Weather): List<Event<*>> {
+            return prevEvents.mapNotNull { it.progress(weather) }.toMutableList().apply {
+                if (none { it is Wildfire }) Wildfire.invoke(weather)?.let {add(it)}
             }
         }
     }
 
-    fun progress(time: LocalDateTime): Event?
-
-    val description: String
-    val finished: String
+    fun progress(weather: Weather): Event<T>?
 }
