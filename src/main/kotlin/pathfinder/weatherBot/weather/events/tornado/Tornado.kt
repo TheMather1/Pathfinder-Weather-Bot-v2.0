@@ -1,29 +1,29 @@
 package pathfinder.weatherBot.weather.events.tornado
 
 import pathfinder.weatherBot.d
-import pathfinder.weatherBot.time.TimeFrame
+import pathfinder.weatherBot.weather.Weather
 import pathfinder.weatherBot.weather.events.Event
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.Thunder
 import pathfinder.weatherBot.weather.precipitation.snow.Snow
-import java.time.LocalDateTime
+import kotlin.reflect.full.primaryConstructor
 
-open class Tornado(val timeFrame: TimeFrame) : Event {
+open class Tornado(val hours: Long) : Event<Tornado> {
 
     companion object {
         operator fun invoke(trigger: Precipitation?): Tornado? {
             return if (trigger is Thunder && trigger.tornado)
-                with(
-                        TimeFrame(trigger.start, trigger.start.plusHours(3 d 6)),
-                        if (trigger is Snow) ::Snownado else ::Tornado)
+                with(3 d 6, if (trigger is Snow) ::Snownado else ::Tornado)
             else null
         }
     }
-    override fun progress(time: LocalDateTime) = takeIf { time in timeFrame }
 
-    override val description
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override fun progress(weather: Weather) = if (hours > 0) this::class.primaryConstructor?.call(hours - 1) else null
     override val finished
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = TODO("not implemented")
+
+    override fun description(prev: Tornado?): String {
+        TODO("not implemented")
+    }
 
 }

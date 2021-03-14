@@ -1,12 +1,14 @@
 package pathfinder.weatherBot.weather.precipitation.rain
 
+import pathfinder.weatherBot.weather.Weather
 import pathfinder.weatherBot.weather.precipitation.Precipitation
-import java.time.LocalDate
 
-class MediumRain(date: LocalDate, hours: Long) : Rain(date, hours) {
+class MediumRain(weather: Weather, hours: Long) : Rain(weather, hours) {
     override val fireRetardance = 15
+    override fun description(prev: Precipitation?): String {
+        TODO("not implemented")
+    }
 
-    override fun print(prev: Precipitation?) = TODO()
-
-    override fun finished() = TODO()
+    override val finished: String
+        get() = TODO("not implemented")
 }

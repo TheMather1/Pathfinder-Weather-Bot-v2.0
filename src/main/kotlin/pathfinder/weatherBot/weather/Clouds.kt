@@ -38,6 +38,8 @@ enum class Clouds(val description: String) {
 
     abstract fun print(clouds: Clouds): String
 
-    fun adjustTemp(season: Season): Long = if (this == OVERCAST && (season == Season.SPRING || season == Season.SUMMER)) -10 else 10
+    fun adjustTemp(season: Season): Long =
+        if (this == OVERCAST && (season == Season.SPRING || season == Season.SUMMER)) -10 else 10
+
     operator fun plus(i: Int): Clouds = values()[(ordinal + i).coerceAtMost(values().size - 1)]
 }

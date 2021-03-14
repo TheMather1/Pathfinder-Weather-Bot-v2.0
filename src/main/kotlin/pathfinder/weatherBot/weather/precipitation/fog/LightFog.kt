@@ -1,12 +1,16 @@
 package pathfinder.weatherBot.weather.precipitation.fog
 
+import pathfinder.weatherBot.weather.Weather
 import pathfinder.weatherBot.weather.precipitation.Precipitation
-import java.time.LocalDate
 
-class LightFog(date: LocalDate, hours: Long) : Fog(date, hours) {
+class LightFog(weather: Weather, hours: Long) : Fog(weather, hours) {
+
     override val fireRetardance = 0
 
-    override fun print(prev: Precipitation?) = TODO()
+    override fun description(prev: Precipitation?): String {
+        TODO("not implemented")
+    }
 
-    override fun finished() = TODO()
+    override val finished: String
+        get() = TODO("not implemented")
 }

@@ -1,7 +1,6 @@
 package pathfinder.weatherBot.time
 
-import pathfinder.weatherBot.bot.Bot
-import java.time.LocalDateTime
+import pathfinder.weatherBot.interaction.Client
 import java.time.LocalDateTime.now
 import java.time.LocalTime.MIDNIGHT
 import java.time.ZoneOffset
@@ -9,37 +8,39 @@ import java.time.temporal.ChronoUnit.HOURS
 import java.util.*
 import kotlin.concurrent.timerTask
 
-class Clock(private val bot: Bot) {
+class Clock(private val client: Client) {
     private var active = false
     private var timer = Timer()
-    private val calendar = Calendar(bot.location)
-    private val now: LocalDateTime
+
+    private val now
         get() = now().truncatedTo(HOURS)
+    private val isMidnight
+        get() = now.toLocalTime() == MIDNIGHT
+    private val today
+        get() = client.forecast.apply { if (isMidnight) progress() }.today
+    private val thisHour
+        get() = today.hours[now.hour]
 
     fun start() =
-            if (active) "The bot is already running."
-            else {
-                schedule()
-                active = true
-                "Started bot."
-            }
+        if (active) "The bot is already running."
+        else {
+            schedule()
+            active = true
+            "Started bot."
+        }
 
     fun stop() =
-            if (active) {
-                timer.cancel()
-                timer = Timer()
-                active = false
-                "Stopped bot."
-            } else "The bot is not currently running."
+        if (active) {
+            timer.cancel()
+            timer = Timer()
+            active = false
+            "Stopped bot."
+        } else "The bot is not currently running."
 
     val status
-        get() = if (active) "running." else "stopped."
+        get() = if (active) "running" else "stopped"
 
-    private fun execute() {
-        if (now.toLocalTime() == MIDNIGHT) calendar.nextDay()
-        val hour = Hour(calendar, now)
-        bot.post(message = TODO(hour.execute))
-    }
+    private fun execute() = client.outputChannel.sendMessage(thisHour.describe())
 
     private fun schedule() {
         val nextHour = Date.from(now.plusHours(1).toInstant(ZoneOffset.UTC))

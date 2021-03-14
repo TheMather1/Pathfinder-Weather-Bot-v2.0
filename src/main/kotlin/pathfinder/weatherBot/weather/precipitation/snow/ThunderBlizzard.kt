@@ -1,12 +1,16 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
+import pathfinder.weatherBot.weather.Weather
 import pathfinder.weatherBot.weather.Wind
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.Thunder
-import java.time.LocalDate
 
-class ThunderBlizzard(location: pathfinder.weatherBot.location.Location, date: LocalDate, hours: Long, override val temp: Long, override val wind: Wind) : Blizzard(location, date, hours, wind),
+class ThunderBlizzard(weather: Weather, hours: Long, override val wind: Wind) : Blizzard(weather, hours),
         Thunder {
-    override fun print(prev: Precipitation?) = TODO()
-    override fun finished() = TODO()
+    override fun description(prev: Precipitation?): String {
+        TODO("not implemented")
+    }
+
+    override val finished: String
+        get() = TODO("not implemented")
 }
