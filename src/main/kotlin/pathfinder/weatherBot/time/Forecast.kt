@@ -4,7 +4,7 @@ import pathfinder.weatherBot.location.Biome
 import java.io.Serializable
 import java.time.LocalDate
 
-data class Forecast(val biome: Biome): Serializable {
+data class Forecast(val biome: Biome) : Serializable {
     var today: Day = Day(this, LocalDate.now())
         private set
     var tomorrow: Day = today.next()

@@ -2,41 +2,26 @@ group = "pathfinder"
 version = "2.0"
 
 plugins {
-    kotlin("jvm") version "1.3.50"
-    application
+    kotlin("jvm") version "1.4.30"
 }
 
 repositories {
     jcenter()
 }
 
-val sourceCompatibility = JavaVersion.VERSION_1_8
-
-application {
-    mainClassName = "pathfinder.weatherBot.Interface"
-}
-
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
-    testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
-    compile("net.dv8tion:JDA:4.0.0_46")
-}
-
-sourceSets {
-    main {
-        java.srcDir("/src/main/kotlin")
-    }
-    test {
-        java.srcDir("/src/test/kotlin")
-    }
+    implementation("net.dv8tion", "JDA", "4.2.0_236")
+    implementation("org.slf4j", "slf4j-jdk14", "1.7.30")
+    implementation("club.minnced", "jda-reactor", "1.2.0")
+    testImplementation("org.junit.jupiter", "junit-jupiter", "5.5.2")
 }
 
 tasks {
     compileKotlin {
         kotlinOptions {
             jvmTarget = "1.8"
-            freeCompilerArgs += "-Xuse-experimental=kotlin.Experimental"
         }
     }
     test {

@@ -10,9 +10,9 @@ class LightSnow(weather: Weather, hours: Long) : Snow(weather, hours) {
     }
 
     override fun description(prev: Precipitation?): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 
     override val finished: String
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = TODO("not implemented")
 }

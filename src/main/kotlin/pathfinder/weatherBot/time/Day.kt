@@ -3,11 +3,14 @@ package pathfinder.weatherBot.time
 import pathfinder.weatherBot.weather.Temperature
 import java.io.Serializable
 import java.time.LocalDate
+import java.time.LocalTime
 
-class Day(val forecast: Forecast, val date: LocalDate, oldTemp: Temperature? = null): Serializable {
+class Day(val forecast: Forecast, val date: LocalDate, oldTemp: Temperature? = null) : Serializable {
     val season = Season(date)
     val temperature = Temperature(this, oldTemp)
-    val hours: Array<Hour> = TODO()
+    val hours: Array<Hour> = (0..23).fold(emptyArray()) { o, i ->
+        o + Hour(this, LocalTime.of(i, 0), o.lastOrNull())
+    }
 
     fun next() = Day(forecast, date.plusDays(1), temperature)
 

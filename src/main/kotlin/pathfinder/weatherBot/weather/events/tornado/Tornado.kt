@@ -17,12 +17,13 @@ open class Tornado(val hours: Long) : Event<Tornado> {
             else null
         }
     }
-    override fun progress(weather: Weather) = if (hours > 0) this::class.primaryConstructor?.call(hours-1) else null
+
+    override fun progress(weather: Weather) = if (hours > 0) this::class.primaryConstructor?.call(hours - 1) else null
     override val finished
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        get() = TODO("not implemented")
 
     override fun description(prev: Tornado?): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 
 }
