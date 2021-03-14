@@ -14,6 +14,6 @@ class Start(handler: CommandHandler) : Command(handler) {
         message.channel.sendMessage(handler.client.clock.start())
 
     override fun help(message: Message): MessageAction {
-        TODO("not implemented")
+        message.channel.sendMessage("Starts up the bot.")
     }
 }

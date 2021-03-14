@@ -6,9 +6,9 @@ import pathfinder.weatherBot.weather.precipitation.Precipitation
 class Drizzle(weather: Weather, hours: Long) : Rain(weather, hours) {
     override val fireRetardance = 5
     override fun description(prev: Precipitation?): String {
-        TODO("not implemented")
+        "A refreshing drizzle drips across the land. Giving the plant life a nice drink."
     }
 
     override val finished: String
-        get() = TODO("not implemented")
+        get() = "The drizzle ceases."
 }

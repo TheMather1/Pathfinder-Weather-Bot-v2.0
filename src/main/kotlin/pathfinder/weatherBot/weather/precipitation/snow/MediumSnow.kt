@@ -11,9 +11,9 @@ class MediumSnow(weather: Weather, hours: Long) : Snow(weather, hours) {
     }
 
     override fun description(prev: Precipitation?): String {
-        TODO("not implemented")
+        "Snow begins falling from the sky with some haste. With any luck, the children will have a snow day!"
     }
 
     override val finished: String
-        get() = TODO("not implemented")
+        get() = "The snowing gradually ends."
 }

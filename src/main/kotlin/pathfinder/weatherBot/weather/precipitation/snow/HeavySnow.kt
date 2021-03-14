@@ -27,9 +27,9 @@ open class HeavySnow(weather: Weather, hours: Long) : Snow(weather, hours) {
     }
 
     override fun description(prev: Precipitation?): String {
-        TODO("not implemented")
+        "The streets are rapidly accumulating snow, and it doesn't show signs of stopping!"
     }
 
     override val finished: String
-        get() = TODO("not implemented")
+        get() = "The heavy pillowing of snow stops, as kids can be seen outside playing in it."
 }

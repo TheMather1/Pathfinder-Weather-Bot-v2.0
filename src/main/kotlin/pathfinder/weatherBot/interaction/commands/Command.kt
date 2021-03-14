@@ -15,8 +15,8 @@ abstract class Command(val handler: CommandHandler) {
     abstract fun help(message: Message): MessageAction
 
     internal fun evaluate(message: Message) = when {
-        sudo && !message.sudo -> TODO("User not authorized to use command.")
-        message.params.count() !in supportedParameterCounts -> TODO("Unsupported parameter count.")
+        sudo && !message.sudo -> message.channel.sendMessage("Only administrators may use this command.")
+        message.params.count() !in supportedParameterCounts -> message.channel.sendMessage("Unacceptable parameters")
         else -> execute(message)
     }
 

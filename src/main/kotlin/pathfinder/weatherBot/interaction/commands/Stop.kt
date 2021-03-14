@@ -13,6 +13,6 @@ class Stop(handler: CommandHandler) : Command(handler) {
     override fun execute(message: Message) = message.channel.sendMessage(handler.client.clock.stop())
 
     override fun help(message: Message): MessageAction {
-        TODO("not implemented")
+        message.channel.sendMessage("Puts an end to the bot.")
     }
 }

@@ -12,10 +12,10 @@ class Prefix(handler: CommandHandler) : Command(handler) {
 
     override fun execute(message: Message): MessageAction {
         handler.client.prefix = message.params.first()
-        TODO("Confirm change.")
+        message.channel.sendMessage("Prefix has been changed!")
     }
 
     override fun help(message: Message): MessageAction {
-        TODO("not implemented")
+        message.channel.sendMessage("Allows the prefix the bot uses to be changed for compatibility purposes.")
     }
 }

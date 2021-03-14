@@ -21,6 +21,6 @@ class CommandHandler(internal val client: Client) {
 
     internal operator fun invoke(message: Message): MessageAction {
         val command = message.contentRaw.removePrefix(client.prefix).replaceAfter(' ', "")
-        return commands[command]?.evaluate(message) ?: TODO("Command does not exist.")
+        return commands[command]?.evaluate(message) ?: message.channel.sendMessage("Command does not exist.")
     }
 }

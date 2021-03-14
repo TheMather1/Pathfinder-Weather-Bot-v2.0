@@ -13,10 +13,10 @@ class SetClimate(handler: CommandHandler) : Command(handler) {
 
     override fun execute(message: Message): MessageAction {
         handler.client.biome.climate = Climate.valueOf(message.params.first())
-        TODO("Confirm change.")
+        message.channel.sendMessage("Climate has been altered!")
     }
 
     override fun help(message: Message): MessageAction {
-        TODO("not implemented")
+        message.channel.sendMessage("Sets the climate to COLD, TEMPERATE, or TROPICAL.")
     }
 }

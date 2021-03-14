@@ -13,10 +13,10 @@ class SetElevation(handler: CommandHandler) : Command(handler) {
 
     override fun execute(message: Message): MessageAction {
         handler.client.biome.elevation = Elevation.valueOf(message.params.first())
-        TODO("Confirm change.")
+        message.channel.sendMessage("Elevation has been changed!")
     }
 
     override fun help(message: Message): MessageAction {
-        TODO("not implemented")
+        message.channel.sendMessage("Sets elevation of area to SEA_LEVEL, LOWLAND, HIGHLAND, HIGHLAND_ARID, or HIGHLAND_MOUNTAIN")
     }
 }

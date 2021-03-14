@@ -17,6 +17,6 @@ class Desert(handler: CommandHandler) : Command(handler) {
     }
 
     override fun help(message: Message): MessageAction {
-        TODO("not implemented")
+        message.channel.sendMessage ("If set to true, area is treated as a desert")
     }
 }

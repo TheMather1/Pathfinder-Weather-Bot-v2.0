@@ -6,11 +6,11 @@ import pathfinder.weatherBot.weather.precipitation.Precipitation
 open class HeavyRain(weather: Weather, hours: Long) : Rain(weather, hours) {
     override val fireRetardance = 25
     override fun description(prev: Precipitation?): String {
-        TODO("not implemented")
+        "Dark, heavy clouds begin pouring rain across the area. Don't wear your fancy clothes out, they'll probably get ruined!"
     }
 
     override val finished: String
-        get() = TODO("not implemented")
+        get() = "The clouds have been drained, and the downpour ends."
 
     override fun fall() {
         TODO("not implemented")

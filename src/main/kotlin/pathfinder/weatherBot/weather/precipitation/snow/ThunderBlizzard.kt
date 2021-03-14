@@ -8,9 +8,9 @@ import pathfinder.weatherBot.weather.precipitation.Thunder
 class ThunderBlizzard(weather: Weather, hours: Long, override val wind: Wind) : Blizzard(weather, hours),
         Thunder {
     override fun description(prev: Precipitation?): String {
-        TODO("not implemented")
+        "Our sight is obscured by the plumes of snow, and our hearing is plagued by roaring thunder. It's a thunder blizzard! "
     }
 
     override val finished: String
-        get() = TODO("not implemented")
+        get() = "The Thunder Blizzard clears out! Thank the Gods!"
 }

@@ -14,12 +14,12 @@ class Channel(handler: CommandHandler) : Command(handler) {
     override fun execute(message: Message): MessageAction {
         val channel = if (message.params.isEmpty()) message.textChannel
         else message.mentionedChannels.firstOrNull()
-            ?: TODO("Channel not recognized.")
+            ?: return message.channel.sendMessage("The channel has to be mentioned first!")
         handler.client.outputChannel = channel
         return message.textChannel.sendMessage("Output channel set to ${channel.asMention}")
     }
 
     override fun help(message: Message): MessageAction {
-        TODO("not implemented")
+        message.channel.sendMessage ("Sets the output channel to current or mentioned channel!")
     }
 }

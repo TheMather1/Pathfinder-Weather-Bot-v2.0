@@ -10,9 +10,9 @@ class LightSnow(weather: Weather, hours: Long) : Snow(weather, hours) {
     }
 
     override fun description(prev: Precipitation?): String {
-        TODO("not implemented")
+        "Snowflakes flutter down from the sky, falling gently and piling up upon the ground."
     }
 
     override val finished: String
-        get() = TODO("not implemented")
+        get() = "The gentle snowing has ended."
 }

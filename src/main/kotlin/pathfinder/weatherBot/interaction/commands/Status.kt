@@ -6,13 +6,13 @@ import pathfinder.weatherBot.interaction.CommandHandler
 
 class Status(handler: CommandHandler) : Command(handler) {
     override val command = "status"
-    override val description = TODO("not implemented")
+    override val description = ("Bot is running!")
     override val supportedParameterCounts = arrayOf(0)
 
     override fun execute(message: Message): MessageAction =
         message.channel.sendMessage("The bot is ${handler.client.clock.status}.")
 
     override fun help(message: Message): MessageAction {
-        TODO("not implemented")
+        message.channel.sendMessage("Checks the status of the bot.")
     }
 }

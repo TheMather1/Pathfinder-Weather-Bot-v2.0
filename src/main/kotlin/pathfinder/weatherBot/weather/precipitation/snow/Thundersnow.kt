@@ -14,9 +14,9 @@ class Thundersnow(weather: Weather, hours: Long, override val wind: Wind) : Heav
     }
 
     override fun description(prev: Precipitation?): String {
-        TODO("not implemented")
+        "Thunder and lightning accompany a blanketing of snow."
     }
 
     override val finished: String
-        get() = TODO("not implemented")
+        get() = "The thunder rolls away, as does the snow."
 }

@@ -13,7 +13,7 @@ class Help(handler: CommandHandler) : Command(handler = handler) {
     override fun execute(message: Message): MessageAction =
         if (message.params.isEmpty()) listCommands(message)
         else handler.commands[message.params.first()]?.help(message)
-            ?: TODO("No such command.")
+            ?: message.channel.sendMessage("No such command.")
 
     private fun listCommands(message: Message): MessageAction = message.channel.sendMessage(
         "Available commands:\n"
@@ -21,6 +21,6 @@ class Help(handler: CommandHandler) : Command(handler = handler) {
     )
 
     override fun help(message: Message): MessageAction {
-        TODO("Help text for help.")
+        message.channel.sendMessage("Do what you just did but with a different command!.")
     }
 }
