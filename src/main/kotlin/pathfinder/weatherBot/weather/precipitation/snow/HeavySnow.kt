@@ -26,9 +26,8 @@ open class HeavySnow(weather: Weather, hours: Long) : Snow(weather, hours) {
         weather.hour.day.forecast.biome.snowLevel += (1 d 4)
     }
 
-    override fun description(prev: Precipitation?): String {
+    override fun description(prev: Precipitation?) =
         "The streets are rapidly accumulating snow, and it doesn't show signs of stopping!"
-    }
 
     override val finished: String
         get() = "The heavy pillowing of snow stops, as kids can be seen outside playing in it."

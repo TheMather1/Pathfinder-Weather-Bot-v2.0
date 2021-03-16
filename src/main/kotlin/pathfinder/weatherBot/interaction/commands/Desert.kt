@@ -7,7 +7,7 @@ import pathfinder.weatherBot.interaction.CommandHandler
 class Desert(handler: CommandHandler) : Command(handler) {
     override val command = "desert"
     override val description = "Sets the desert boolean of the server."
-    override val supportedParameterCounts = arrayOf(1)
+    override val supportedParameterCounts = listOf(1)
     override val sudo = true
 
     override fun execute(message: Message): MessageAction {
@@ -16,7 +16,6 @@ class Desert(handler: CommandHandler) : Command(handler) {
         return message.channel.sendMessage("Desert set to $desert.")
     }
 
-    override fun help(message: Message): MessageAction {
-        message.channel.sendMessage ("If set to true, area is treated as a desert")
-    }
+    override fun help(message: Message) =
+        message.channel.sendMessage("If set to true, area is treated as a desert.")
 }

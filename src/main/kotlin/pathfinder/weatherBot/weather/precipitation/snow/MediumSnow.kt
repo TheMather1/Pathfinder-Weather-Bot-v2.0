@@ -10,9 +10,8 @@ class MediumSnow(weather: Weather, hours: Long) : Snow(weather, hours) {
         weather.hour.day.forecast.biome.snowLevel += 1
     }
 
-    override fun description(prev: Precipitation?): String {
+    override fun description(prev: Precipitation?) =
         "Snow begins falling from the sky with some haste. With any luck, the children will have a snow day!"
-    }
 
     override val finished: String
         get() = "The snowing gradually ends."

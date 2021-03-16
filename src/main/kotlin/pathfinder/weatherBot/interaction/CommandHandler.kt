@@ -20,7 +20,7 @@ class CommandHandler(internal val client: Client) {
         .toSortedMap(CASE_INSENSITIVE_ORDER)
 
     internal operator fun invoke(message: Message): MessageAction {
-        val command = message.contentRaw.removePrefix(client.prefix).replaceAfter(' ', "")
+        val command = message.contentRaw.removePrefix(client.prefix).substringBefore(' ')
         return commands[command]?.evaluate(message) ?: message.channel.sendMessage("Command does not exist.")
     }
 }

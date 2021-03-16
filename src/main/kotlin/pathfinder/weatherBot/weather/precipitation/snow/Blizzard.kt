@@ -9,9 +9,8 @@ open class Blizzard(weather: Weather, hours: Long) : HeavySnow(weather, hours) {
         weather.hour.day.forecast.biome.snowLevel += 4
     }
 
-    override fun description(prev: Precipitation?): String {
+    override fun description(prev: Precipitation?) =
         "Heavy snow and high winds aren't a good combination. A blizzard has descended upon us!"
-    }
 
     override val finished: String
         get() = "Leaving behind a heaping helping of snow, the blizzard has passed us!"

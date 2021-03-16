@@ -30,7 +30,7 @@ object Bot {
             .filter { it.isFromType(ChannelType.TEXT) }
             .doOnEach {
                 it.get()?.apply {
-                    logger.info("Received message:\n$author: $contentRaw in $guild#$channel")
+                    logger.info("Received message:\n${author.name}: $contentRaw in ${guild.name}#${channel.name}")
                 }
             }
             .filter { it.contentRaw.startsWith(it.client.prefix, true) }

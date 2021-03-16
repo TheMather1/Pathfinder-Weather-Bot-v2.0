@@ -9,9 +9,8 @@ class LightSnow(weather: Weather, hours: Long) : Snow(weather, hours) {
         weather.hour.day.forecast.biome.snowLevel += 0.5
     }
 
-    override fun description(prev: Precipitation?): String {
+    override fun description(prev: Precipitation?) =
         "Snowflakes flutter down from the sky, falling gently and piling up upon the ground."
-    }
 
     override val finished: String
         get() = "The gentle snowing has ended."
