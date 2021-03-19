@@ -7,8 +7,8 @@ class Hurricane : Event<Hurricane> {
         TODO("not implemented")
     }
 
-    override val finished = TODO()
+    override val finished = "The storm seems to have dissipated some time after being on land."
     override fun description(prev: Hurricane?): String {
-        TODO("not implemented")
+        "A cyclone incoming from the ocean can be seen from the beaches of Reloria. Take shelter, it's a hurricane!"
     }
 }

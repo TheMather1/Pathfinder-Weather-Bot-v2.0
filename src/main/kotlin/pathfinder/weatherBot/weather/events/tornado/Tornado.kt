@@ -19,11 +19,10 @@ open class Tornado(val hours: Long) : Event<Tornado> {
     }
 
     override fun progress(weather: Weather) = if (hours > 0) this::class.primaryConstructor?.call(hours - 1) else null
-    override val finished
-        get() = TODO("not implemented")
+    override val finished = TODO("not implemented")
 
     override fun description(prev: Tornado?): String {
-        TODO("not implemented")
+        "Thrashing winds from opposing directions stir into a violent spiral. A tornado suddenly forms!"
     }
 
 }

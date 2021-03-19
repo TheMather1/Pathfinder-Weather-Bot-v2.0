@@ -19,6 +19,6 @@ open class Wildfire(private val weather: Weather) : Event<Wildfire> {
     override fun progress(weather: Weather): Wildfire? =
         if (TODO("extinguish?")) null else Wildfire(weather)
 
-    override fun description(prev: Wildfire?): String = TODO()
-    override val finished = TODO()
+    override fun description(prev: Wildfire?): String = "A fire has started in the wilderness and seems to be growing out of control!"
+    override val finished = "The wildfire is extinguished."
 }
