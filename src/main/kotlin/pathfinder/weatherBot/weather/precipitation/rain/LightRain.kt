@@ -8,11 +8,11 @@ import pathfinder.weatherBot.weather.precipitation.snow.Snow
 class LightRain(weather: Weather, hours: Long) : Rain(weather, hours) {
     override val fireRetardance = 10
     override fun description(prev: Precipitation?) = when (prev) {
-        is LightRain -> "The mild downpour continues."
-        is Fog -> "Light rain pours down, washing away the fog."
-        is Thunderstorm -> "The sound of thunder yields, and the rain fades to a mild downpour."
-        is Rain -> "The rain fades to a mild downpour."
-        is Snow -> "As temperatures rise, the snow gives way to a mild downpour."
+        is LightRain -> "The minor rain shower continues."
+        is Fog -> "Light rain showers down, washing away the fog."
+        is Thunderstorm -> "The sound of thunder yields, and the rain fades to a light sprinkling."
+        is Rain -> "The rain lightens, but doesn't stop."
+        is Snow -> "As temperatures rise, the snowfall turns into a light shower."
         else -> "Rain lightly pours from the gray clouds lining the sky."
     }
 

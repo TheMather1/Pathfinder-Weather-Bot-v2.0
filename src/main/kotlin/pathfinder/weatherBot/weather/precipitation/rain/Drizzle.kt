@@ -9,12 +9,12 @@ class Drizzle(weather: Weather, hours: Long) : Rain(weather, hours) {
     override val fireRetardance = 5
     override fun description(prev: Precipitation?) = when (prev) {
         is Drizzle -> "The drizzle continues."
-        is Fog -> "A refreshing drizzle washes away the fog."
+        is Fog -> "The fog is washed away by a drizzle overhead."
         is Rain -> "The rain slows to a light drizzle."
-        is Snow -> "As temperatures rise, the snow yields to a light drizzle."
-        else -> "A refreshing drizzle drips across the land. Giving the plant life a nice drink."
+        is Snow -> "As temperatures rise, the falling snowflakes turn into water droplets."
+        else -> "A refreshing drizzle covers the area with a fine coat of droplets."
     }
 
     override val finished: String
-        get() = "The drizzle ceases."
+        get() = "The drizzle ends."
 }

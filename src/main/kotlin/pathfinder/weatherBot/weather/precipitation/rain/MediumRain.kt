@@ -10,9 +10,9 @@ class MediumRain(weather: Weather, hours: Long) : Rain(weather, hours) {
     override fun description(prev: Precipitation?) = when (prev) {
         is Fog -> "Rain pours down, washing away the fog."
         is Thunderstorm -> "The sound of thunder yields, and the rain calms somewhat."
-        is LightRain -> "The rain intensifies somewhat."
+        is LightRain -> "The begins falling somewhat harder."
         is MediumRain -> "The rain continues to fall."
-        is HeavyRain -> "The rain calms somewhat."
+        is HeavyRain -> "The rain begins to calm down a bit."
         is Snow -> "As temperatures rise, the snow gives way to rain."
         else -> "A healthy rainfall pours overhead."
     }
