@@ -19,4 +19,4 @@ spring:
       provider: discord
       scope:
         - identify
-pathfinder.weather.bot.token: NjE5OTQ2MTAwNzIzNTQ4MTcx.XXPnzA.zlYJ_DTzms9L0uUUT3p9UQVq-mY
+pathfinder.weather.bot.token: ${weatherbot-token}
