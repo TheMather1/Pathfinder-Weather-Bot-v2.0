@@ -7,7 +7,5 @@ import org.springframework.stereotype.Service
 class ServerDataService(
     private val jda: JDA
 ) {
-    fun getServersForUser(id: String) = jda.guilds.filter {
-     it.loadMembers().get().any { it.id == id }
-    }
+//    fun getServersForUser(id: String) = jda.retrieveUserById(id).complete()
 }

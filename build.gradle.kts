@@ -9,6 +9,7 @@ plugins {
 }
 
 repositories {
+    mavenCentral()
     jcenter()
 //    maven("https://maven.pkg.github.com/TheMather1/temporal-collections")
 }
@@ -17,7 +18,7 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
     implementation("javax.servlet", "jstl", "1.2")
-    implementation("net.dv8tion", "JDA", "4.2.0_247")
+    implementation("net.dv8tion", "JDA", "5.0.0-alpha.2")
     implementation("club.minnced", "jda-reactor", "1.2.0")
 //    implementation("no.mather.temporal", "temporal-collections", "1.0.1")
     implementation("org.springframework.boot", "spring-boot-starter-oauth2-client")
