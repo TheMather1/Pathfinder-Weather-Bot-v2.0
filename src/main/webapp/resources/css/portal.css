@@ -1,29 +1,101 @@
-/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-weight: inherit;
+    font-style: inherit;
+    font-family: inherit;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+
 body {
     background-color: #36393f;
     color: #b9bbbe;
     font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-style: normal;
     font-weight: 400;
     line-height: 1.5;
 }
 
+.wrapper {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+}
+
+.window {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    contain: layout;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
+    overflow: hidden;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+}
+
+.container {
+    display: flex;
+    flex: 1 1 100%;
+    margin: 0;
+    overflow: hidden;
+    -webkit-box-flex: 1;
+    -webkit-box-direction: normal;
+}
+
+.content {
+    display: flex;
+    flex: 1 1 1440px;
+    flex-direction: column;
+    background-color: #36393f;
+    height: 100%;
+    z-index: 2;
+    -webkit-box-flex: 1;
+    -webkit-box-orient: vertical;
+}
+
 /* The sidebar menu */
 .sidebar {
-    display: flex;
+    box-sizing: border-box;
     flex: 0 0 350px;
-    height: 100%;
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
-    top: 0;
-    left: 0;
+    flex-direction: column;
+    min-width: 250px;
+    position: relative;
+    z-index: 2;
     background-color: #2f3136;
-    display: -webkit-box;
-    -webkit-box-flex: 1;
-    -webkit-box-pack: end;
+    display: flex;
+    -webkit-box-direction: normal;
+    -webkit-box-flex: 0;
+    -webkit-box-orient: vertical;
     overflow-x: hidden;
+    overflow-y: hidden;
+    vertical-align: baseline;
 }
 
 .sidebarInner {
+    display: flex;
+    position: relative;
+    flex: 1 1 auto;
+    flex-direction: column;
+    max-width: 335px;
+    min-height: min-content;
+    z-index: 3;
+}
+
+.sidebarContainer {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    height: fit-content;
     padding: 32px 17px 32px 32px;
 }
 
@@ -34,37 +106,80 @@ body {
     text-transform: uppercase;
 }
 
+.sidebar li {
+    list-style: none outside none;
+}
 /* The sidebar links */
 .sidebar a {
-    padding: 8px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 2px;
     color: #b9bbbe;
     font-size: 16px;
+    font-style: normal;
     font-weight: 400;
     line-height: 20px;
     letter-spacing: .3px;
-    text-decoration: none;
-    display: flex;
+    text-decoration-color: #b9bbbe;
+    text-decoration-line: none;
+    text-decoration-style: solid;
+    text-decoration-thickness: auto;
+    text-align: left;
+    padding: 5px 10px;
+    position: relative;
+    list-style: none outside none;
+    -webkit-box-align: center;
+    -webkit-box-direction: normal;
+    -webkit-box-pack: start;
 }
 .sidebar a:hover {
     color: #ffffff;
 }
 
-.scrollerWrapper{
-    height: 100%;
-    display: -webkit-box;
+.sidebar a.activeLink {
+    background-color: #5865F2;
+    border-color: #ffffff;
+    border-radius: 3px;
+    border-image-width: 1;
+    cursor: pointer;
 }
 
-.-webkit-scrollbar {
+.sidebarList {
+    margin-left: -10px;
+}
+
+.scrollerWrapper {
+    display: flex;
+    position: relative;
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 1px;
+    z-index: 3;
+    -webkit-box-flex: 1;
+}
+
+.scroller {
+    display: flex;
+    flex: 1 1 0;
+    justify-content: flex-end;
+    min-height: 1px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-box-flex: 1;
+    -webkit-box-pack: end;
+}
+.scroller::-webkit-scrollbar {
     width: 15px;
 }
-.-webkit-scrollbar-thumb {
-    background-color: #202225;
-    border-color: transparent;
-}
-.-webkit-scrollbar-track {
+.scroller::-webkit-scrollbar-thumb,.scroller::-webkit-scrollbar-track {
     background-clip: padding-box;
     border-width: 3px;
     border-style: solid;
     border-radius: 30px;
     border-color: transparent;
+}
+.scroller::-webkit-scrollbar-track {
+    border-width: initial;
+    background-color: #1c1d20;
 }

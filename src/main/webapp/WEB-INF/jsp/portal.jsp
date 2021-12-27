@@ -9,17 +9,33 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 </head>
 <body>
-<div id="navbar" class="sidebar scrollerWrapper">
-    <div class="sidebarInner">
-        <p class="sidebarHeading">Servers</p>
-        <ul class="sidebarList">
-            <c:forEach var="server" items="${servers}">
-                <li>
-                    <a class="sidebarLink" href="portal/<c:out value="${server.value}"/>"><c:out
-                            value="${server.key}"/></a>
-                </li>
-            </c:forEach>
-        </ul>
+<div class="wrapper">
+    <div class="window">
+        <div class="container">
+            <div id="navbar" class="sidebar">
+                <div class="scrollerWrapper">
+                    <div class="scroller">
+                        <div class="sidebarInner">
+                            <div class="sidebarContainer">
+                                <div class="serverContainer">
+                                    <p class="sidebarHeading">Servers</p>
+                                    <ul class="sidebarList">
+                                        <c:forEach var="server" items="${servers}">
+                                            <li>
+                                                <a class="sidebarLink" href="portal/<c:out value="${server.value}"/>"><c:out
+                                                        value="${server.key}"/></a>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+            </div>
+        </div>
     </div>
 </div>
 </body>
