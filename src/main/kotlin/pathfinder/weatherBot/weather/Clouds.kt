@@ -6,24 +6,24 @@ import pathfinder.weatherBot.time.Season
 
 enum class Clouds(val description: String) {
     NONE("The sky is completely clear.") {
-        override fun print(clouds: Clouds) = if (clouds > this) "The clouds have cleared up! $description" else ""
+        override fun print(clouds: Clouds) = if (clouds > this) "The clouds have cleared up! $description" else null
     },
     LIGHT("There are a few small clouds.") {
         override fun print(clouds: Clouds) = when (clouds.compareTo(this)) {
             -1 -> "Some minor clouds are rolling in."
             1 -> "The sky has cleared up somewhat. $description"
-            else -> ""
+            else -> null
         }
     },
     MEDIUM("The sky is dotted with large clouds.") {
         override fun print(clouds: Clouds) = when (clouds.compareTo(this)) {
             -1 -> "Heavy clouds line the skies."
             1 -> "The overcast disperses and the skies peek out."
-            else -> ""
+            else -> null
         }
     },
     OVERCAST("It is entirely overcast.") {
-        override fun print(clouds: Clouds) = if (clouds < this) "The sky is obscured by heavy, dark clouds." else ""
+        override fun print(clouds: Clouds) = if (clouds < this) "The sky is obscured by heavy, dark clouds." else null
     };
 
     companion object {
@@ -36,7 +36,7 @@ enum class Clouds(val description: String) {
         }
     }
 
-    abstract fun print(clouds: Clouds): String
+    abstract fun print(clouds: Clouds): String?
 
     fun adjustTemp(season: Season): Long =
         if (this == OVERCAST && (season == Season.SPRING || season == Season.SUMMER)) -10 else 10

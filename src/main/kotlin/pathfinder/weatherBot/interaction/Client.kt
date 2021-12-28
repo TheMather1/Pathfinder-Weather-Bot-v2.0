@@ -1,6 +1,7 @@
 package pathfinder.weatherBot.interaction
 
 import net.dv8tion.jda.api.JDA
+import net.dv8tion.jda.api.entities.Role
 import net.dv8tion.jda.api.entities.TextChannel
 import pathfinder.weatherBot.location.Biome
 import pathfinder.weatherBot.time.Clock
@@ -19,4 +20,5 @@ data class Client(internal val serverId: String, private var channelId: String, 
         }
     val commandHandler = CommandHandler(this)
     var prefix = "w!"
+    var forecastRole: Long? = null
 }

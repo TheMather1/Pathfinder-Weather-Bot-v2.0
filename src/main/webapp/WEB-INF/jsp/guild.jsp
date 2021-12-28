@@ -22,7 +22,8 @@
                                     <ul class="sidebarList">
                                         <c:forEach var="server" items="${servers}">
                                             <li>
-                                                <a class="sidebarLink" href="portal/<c:out value="${server.value}"/>">
+                                                <a class="sidebarLink<c:if test="${guild == server.value}"> activeLink</c:if>"
+                                                   href="./<c:out value="${server.value}"/>">
                                                     <c:out value="${server.key}"/>
                                                 </a>
                                             </li>
@@ -35,6 +36,7 @@
                 </div>
             </div>
             <div class="content">
+
             </div>
         </div>
     </div>

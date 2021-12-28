@@ -40,7 +40,7 @@ class Clock(private val client: Client) {
     val status
         get() = if (active) "running" else "stopped"
 
-    private fun execute() = client.outputChannel.sendMessage(thisHour.describe())
+    private fun execute() = client.outputChannel.sendMessage(thisHour.description)
 
     private fun schedule() {
         val nextHour = Date.from(now.plusHours(1).toInstant(ZoneOffset.UTC))

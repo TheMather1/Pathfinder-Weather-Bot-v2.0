@@ -9,6 +9,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 </head>
 <body>
-    <a href="/portal">Server Portal</a>
+    <a href="${pageContext.request.contextPath}/portal">Server Portal</a>
 </body>
 </html>

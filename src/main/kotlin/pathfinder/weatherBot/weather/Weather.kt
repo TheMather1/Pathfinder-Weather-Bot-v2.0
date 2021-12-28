@@ -14,4 +14,12 @@ class Weather(val hour: Hour, prevWeather: Weather?) {
         is Fog -> Wind.LIGHT
         else -> Wind()
     }
+    val description = prevWeather?.let {
+        clouds.print(prevWeather.clouds)
+            ?.plus("\n") + (precipitation?.description(it.precipitation) ?: it.precipitation?.finished)
+            ?.plus("\n") + wind.print(it.wind)
+    } ?: (clouds.description.plus("\n") +
+            precipitation?.description(null)?.plus("\n") +
+            clouds.description)
+
 }
