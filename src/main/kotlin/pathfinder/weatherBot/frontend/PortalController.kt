@@ -14,10 +14,11 @@ import org.springframework.web.server.ResponseStatusException
 import pathfinder.weatherBot.interaction.Client
 import pathfinder.weatherBot.weather.Weather
 import java.time.LocalTime
+import java.util.concurrent.ConcurrentMap
 
 @Controller
 @RequestMapping("/portal")
-class PortalController(private val jda: JDA, private val registrations: Map<Long, Client>) {
+class PortalController(private val jda: JDA, private val registrations: ConcurrentMap<Long, Client>) {
 
     @GetMapping
     fun viewPortal(model: Model, @AuthenticationPrincipal user: DiscordUser): String {
@@ -29,13 +30,14 @@ class PortalController(private val jda: JDA, private val registrations: Map<Long
     @GetMapping("/{guildId}")
     fun viewGuild(model: Model, @AuthenticationPrincipal user: DiscordUser, @PathVariable("guildId") guildId: Long): String {
         val guild = jda.getGuildById(guildId)
-        val client = registrations[guildId]
         guild?.loadMembers()?.get()
         when {
             guild == null -> throw ResponseStatusException(NOT_FOUND, "Server not found.")
-//            client == null -> throw ResponseStatusException(INTERNAL_SERVER_ERROR, "Server not registered.")
             !guild.isMember(user) -> throw ResponseStatusException(FORBIDDEN, "You are not a member of this server.")
-//            else -> model.addAttributes(guild.getMember(user)!!, client)
+            else -> model.addAttributes(
+                guild.getMember(user)!!,
+                registrations.getOrPut(guildId) { Client(guild) }
+            )
         }
         model.addAttribute("guild", guildId)
         val servers = user.mutualGuilds

@@ -22,8 +22,5 @@ class EventService(
     }
 
     private val GenericMessageEvent.client: Client
-        get() = registrations.getOrPut(guild.idLong, clientProvider)
-
-    private val GenericMessageEvent.clientProvider: () -> Client
-        get() = { Client(guild.id, guild.defaultChannel!!.id, jda) }
+        get() = registrations.getOrPut(guild.idLong) { Client(guild) }
 }

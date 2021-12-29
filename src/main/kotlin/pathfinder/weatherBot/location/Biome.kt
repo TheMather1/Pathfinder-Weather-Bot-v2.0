@@ -5,8 +5,11 @@ import pathfinder.weatherBot.location.Elevation.SEA_LEVEL
 import pathfinder.weatherBot.weather.precipitation.Intensity
 import java.io.Serializable
 
-data class Biome(var elevation: Elevation = SEA_LEVEL, var climate: Climate = TEMPERATE, var humidity: Int = 100) :
-    Serializable {
+data class Biome(
+    var elevation: Elevation = SEA_LEVEL,
+    var climate: Climate = TEMPERATE,
+    var humidity: Int = 100
+) : Serializable {
     val frequencyMod: Int
         get() = climate.adjustPrecip + elevation.adjustPrecip
     val intensity: Intensity

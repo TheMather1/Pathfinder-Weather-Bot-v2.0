@@ -4,6 +4,8 @@ import pathfinder.weatherBot.d
 import pathfinder.weatherBot.weather.Weather
 import pathfinder.weatherBot.weather.Wind
 import pathfinder.weatherBot.weather.precipitation.Precipitation
+import pathfinder.weatherBot.weather.precipitation.fog.Fog
+import pathfinder.weatherBot.weather.precipitation.rain.Rain
 
 
 open class HeavySnow(weather: Weather, hours: Long) : Snow(weather, hours) {
@@ -26,9 +28,15 @@ open class HeavySnow(weather: Weather, hours: Long) : Snow(weather, hours) {
         weather.hour.day.forecast.biome.snowLevel += (1 d 4)
     }
 
-    override fun description(prev: Precipitation?) =
-        "The streets are rapidly accumulating snow, and it doesn't show signs of stopping!"
+    override fun description(prev: Precipitation?) = when(prev) {
+        is Blizzard -> "The blizzard yields, but the air is still heavy with snow."
+        is HeavySnow -> null
+        is Snow -> "The snow intensifies into a thick blanket in the air, piling onto the ground."
+        is Rain -> "The rain freezes into a heavy blanket of snow, which starts piling up on the ground."
+        is Fog -> "The fog gives way to a heavy blanket of snow, which starts piling up on the ground."
+        else -> "The air is heavy with snow, which rapidly piles up on the ground."
+    }
 
     override val finished: String
-        get() = "The heavy pillowing of snow stops, as kids can be seen outside playing in it."
+        get() = "The heavy pillowing of snow stops."
 }

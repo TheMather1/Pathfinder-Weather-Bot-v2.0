@@ -6,9 +6,10 @@ import pathfinder.weatherBot.weather.Described
 import pathfinder.weatherBot.weather.Weather
 import pathfinder.weatherBot.weather.precipitation.controller.frozen.Frozen
 import pathfinder.weatherBot.weather.precipitation.controller.wet.Wet
+import java.io.Serializable
 import kotlin.reflect.full.primaryConstructor
 
-abstract class Precipitation(val weather: Weather, val hours: Long): Described<Precipitation> {
+abstract class Precipitation(val weather: Weather, val hours: Long): Described<Precipitation>, Serializable {
     companion object {
         private fun dry(hour: Hour): Boolean = (1 d 100) > hour.day.season.frequency(hour.day.forecast.biome).chance
         private fun frozen(temp: Long): Boolean = temp <= 32

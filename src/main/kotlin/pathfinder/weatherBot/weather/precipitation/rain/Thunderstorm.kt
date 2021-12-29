@@ -9,13 +9,13 @@ import pathfinder.weatherBot.weather.precipitation.snow.Snow
 class Thunderstorm(weather: Weather, hours: Long) : HeavyRain(weather, hours),
     Thunder {
     override fun description(prev: Precipitation?) = when (prev) {
-        is Thunderstorm -> "Static still hangs in the air as the thunderstorm continues."
+        is Thunderstorm -> null
         is Fog -> "With a earth-shaking boom, a thunderstorm scares off the fog."
         is HeavyRain -> "The downpour grows into a thunderstorm!"
         is Rain -> "The rain suddenly begins pouring harder, and white streaks of lightning generate from the clouds."
         is Snow -> "The rising temperatures cause the snowfall to escalate into a fully-fledged thunderstorm!"
         else -> "With blackened clouds pouring to set the mood, a white flash and loud cracks from the sky, it's apparent that a thunderstorm is happening!"
-    } + " Be careful about walking outside in metal armor."
+    }?.plus(" Be careful about walking outside in metal armor.")
 
     override val finished: String
         get() = "The sounds of thunder cease, and soon after, the shower as well."

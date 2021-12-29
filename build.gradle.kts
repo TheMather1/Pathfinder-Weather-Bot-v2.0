@@ -20,6 +20,7 @@ dependencies {
     implementation("javax.servlet", "jstl", "1.2")
     implementation("net.dv8tion", "JDA", "5.0.0-alpha.2")
     implementation("club.minnced", "jda-reactor", "1.2.0")
+    implementation("org.mapdb", "mapdb", "3.0.8")
 //    implementation("no.mather.temporal", "temporal-collections", "1.0.1")
     implementation("org.springframework.boot", "spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot", "spring-boot-starter-web")

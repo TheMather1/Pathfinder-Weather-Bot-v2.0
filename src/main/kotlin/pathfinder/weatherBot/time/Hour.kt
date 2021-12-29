@@ -12,8 +12,8 @@ class Hour(val day: Day, val time: LocalTime, prevHour: Hour? = null) : Serializ
         if (t == null || temp <= t) d
         else null
     }
-    val description = describeTemp(prevHour)
-        ?.plus("\n") + weather.description
+
+    val description = (describeTemp(prevHour)?.plus("\n") ?: "") + weather.description
 
     private fun describeTemp(prevHour: Hour?) = when {
         prevHour == null -> "The temperature is a $tempDescriptor $temp°F."

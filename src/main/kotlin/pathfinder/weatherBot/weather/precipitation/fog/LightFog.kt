@@ -10,12 +10,12 @@ class LightFog(weather: Weather, hours: Long) : Fog(weather, hours) {
     override val fireRetardance = 0
 
     override fun description(prev: Precipitation?) = when (prev) {
-        is LightFog -> "The hazy mist remains ."
+        is LightFog -> null
         is Fog -> "The fog fades to a thin veil."
         is Rain -> "As the clouds empty, a light mist hangs in the air..."
         is Snow -> "The snowfall relents and a fine mist remains in its place."
         else -> "A fine mist falls upon the area."
-    } + " (Sight is reduced to 3/4 range, and you suffer a -2 to perception and ranged attacks.)"
+    }?.plus(" (Sight is reduced to 3/4 range, and you suffer a -2 to perception and ranged attacks.)")
 
     override val finished: String
         get() = "The mist dissipates, we can see clearly now!"

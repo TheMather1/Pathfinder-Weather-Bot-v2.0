@@ -8,7 +8,7 @@ import pathfinder.weatherBot.weather.precipitation.snow.Snow
 class Drizzle(weather: Weather, hours: Long) : Rain(weather, hours) {
     override val fireRetardance = 5
     override fun description(prev: Precipitation?) = when (prev) {
-        is Drizzle -> "The drizzle continues."
+        is Drizzle -> null
         is Fog -> "The fog is washed away by a drizzle overhead."
         is Rain -> "The rain slows to a light drizzle."
         is Snow -> "As temperatures rise, the falling snowflakes turn into water droplets."

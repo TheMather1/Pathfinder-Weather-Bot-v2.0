@@ -14,7 +14,7 @@ class Channel(handler: CommandHandler) : Command(handler) {
         val channel = if (message.params.isEmpty()) message.textChannel
         else message.mentionedChannels.firstOrNull()
             ?: return message.channel.sendMessage("The channel has to be mentioned first.")
-        handler.client.outputChannel = channel
+        handler.client.channelId = channel.idLong
         return message.textChannel.sendMessage("Output channel set to ${channel.asMention}.")
     }
 

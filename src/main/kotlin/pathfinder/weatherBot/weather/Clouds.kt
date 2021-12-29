@@ -4,26 +4,40 @@ import pathfinder.weatherBot.d
 import pathfinder.weatherBot.dHundredException
 import pathfinder.weatherBot.time.Season
 
-enum class Clouds(val description: String) {
+enum class Clouds(protected val description: String) {
     NONE("The sky is completely clear.") {
-        override fun print(clouds: Clouds) = if (clouds > this) "The clouds have cleared up! $description" else null
-    },
-    LIGHT("There are a few small clouds.") {
-        override fun print(clouds: Clouds) = when (clouds.compareTo(this)) {
-            -1 -> "Some minor clouds are rolling in."
-            1 -> "The sky has cleared up somewhat. $description"
-            else -> null
+        override fun print(clouds: Clouds?) = when(clouds) {
+            null -> description
+            NONE -> null
+            LIGHT -> "The clouds clear up. $description"
+            else -> LIGHT.print(clouds)
         }
     },
-    MEDIUM("The sky is dotted with large clouds.") {
-        override fun print(clouds: Clouds) = when (clouds.compareTo(this)) {
-            -1 -> "Heavy clouds line the skies."
-            1 -> "The overcast disperses and the skies peek out."
-            else -> null
+    LIGHT("The sky is dotted with a few small clouds.") {
+        override fun print(clouds: Clouds?) = when(clouds) {
+            null -> description
+            NONE -> "Some minor clouds are rolling in."
+            LIGHT -> null
+            MEDIUM -> "The sky has cleared up somewhat. $description"
+            OVERCAST -> MEDIUM.print(clouds)
         }
     },
-    OVERCAST("It is entirely overcast.") {
-        override fun print(clouds: Clouds) = if (clouds < this) "The sky is obscured by heavy, dark clouds." else null
+    MEDIUM("The sky is crowded with large clouds.") {
+        override fun print(clouds: Clouds?) = when(clouds) {
+            null -> description
+            NONE -> LIGHT.print(clouds)
+            LIGHT -> "Heavy clouds start to cover the skies."
+            MEDIUM -> null
+            OVERCAST -> "The overcast breaks up and the skies peek out through the gaps."
+        }
+    },
+    OVERCAST("The sky is entirely overcast.") {
+        override fun print(clouds: Clouds?) = when(clouds) {
+            null -> description
+            MEDIUM -> "The sky is obscured by heavy, dark clouds."
+            OVERCAST -> null
+            else -> MEDIUM.print(clouds)
+        }
     };
 
     companion object {
@@ -36,7 +50,7 @@ enum class Clouds(val description: String) {
         }
     }
 
-    abstract fun print(clouds: Clouds): String?
+    abstract fun print(clouds: Clouds?): String?
 
     fun adjustTemp(season: Season): Long =
         if (this == OVERCAST && (season == Season.SPRING || season == Season.SUMMER)) -10 else 10
