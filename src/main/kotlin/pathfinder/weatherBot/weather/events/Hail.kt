@@ -1,8 +1,5 @@
 package pathfinder.weatherBot.weather.events
 
-import pathfinder.weatherBot.d
-import pathfinder.weatherBot.weather.Weather
-
 //class Hail : Event<Hail> {
 //    override fun progress(weather: Weather): Event<Hail>? {
 //        TODO("not implemented")

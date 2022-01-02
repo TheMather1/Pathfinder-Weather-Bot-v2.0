@@ -1,14 +1,14 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
-import pathfinder.weatherBot.weather.Weather
+import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
 import pathfinder.weatherBot.weather.precipitation.rain.Rain
 
-open class Blizzard(weather: Weather, hours: Long) : HeavySnow(weather, hours) {
+open class Blizzard(hour: Hour, hours: Long) : HeavySnow(hour, hours) {
 
     override fun fall() {
-        weather.hour.day.forecast.biome.snowLevel += 4
+        hour.day.forecast.biome.snowLevel += 4
     }
 
     override fun description(prev: Precipitation?) = when(prev) {

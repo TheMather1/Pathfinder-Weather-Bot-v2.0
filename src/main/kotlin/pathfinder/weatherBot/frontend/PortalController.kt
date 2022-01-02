@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.server.ResponseStatusException
 import pathfinder.weatherBot.interaction.Client
+import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.Weather
 import java.time.LocalTime
 import java.util.concurrent.ConcurrentMap
@@ -50,29 +51,31 @@ class PortalController(private val jda: JDA, private val registrations: Concurre
             addAttribute("forecast", true)
             addAttribute("config", true)
         } else if (member.roles.any { it.idLong == client.forecastRole }) addAttribute("forecast", true)
-        client.forecast.today.hours[LocalTime.now().hour].let {
-            addAttribute("temp", it.temp)
-            addAttributes(it.weather)
-            addAttribute("descr", it.description)
-        }
+        addAttributes(client.forecast.today.hours[LocalTime.now().hour])
+    }
+
+    private fun Model.addAttributes(hour: Hour){
+        addAttribute("temp", hour.temp)
+        addAttributes(hour.weather)
     }
 
     private fun Model.addAttributes(weather: Weather) {
         addAttribute(
-            "clouds", weather.clouds.name.capitalizedLowercase()
+            "clouds", weather.clouds.name.capitalizedLowercase(true)
         )
         addAttribute(
-            "wind", weather.wind.name.capitalizedLowercase()
+            "wind", weather.wind.name.capitalizedLowercase(true)
         )
         addAttribute("precip", weather.precipitation?.let {
             it::class.simpleName?.capitalizedLowercase()
         } ?: "None")
     }
 
-    private fun String.capitalizedLowercase() = mapIndexed { index, c ->
+    private fun String.capitalizedLowercase(enum: Boolean = false) = mapIndexed { index, c ->
         when {
             index == 0 -> c.uppercase()
-            c.isUpperCase() -> " " + c.lowercase()
+            c.isUpperCase() -> if(enum) c.lowercase() else " " + c.lowercase()
+            c == '_' -> if(enum) " " else c.toString()
             else -> c.toString()
         }
     }.reduce(String::plus)

@@ -1,7 +1,6 @@
 package pathfinder.weatherBot.interaction.commands
 
 import net.dv8tion.jda.api.entities.Message
-import net.dv8tion.jda.api.requests.restaction.MessageAction
 import pathfinder.weatherBot.interaction.CommandHandler
 
 class Status(handler: CommandHandler) : Command(handler) {

@@ -1,13 +1,5 @@
 package pathfinder.weatherBot.weather.events.tornado
 
-import pathfinder.weatherBot.d
-import pathfinder.weatherBot.weather.Weather
-import pathfinder.weatherBot.weather.events.Event
-import pathfinder.weatherBot.weather.precipitation.Precipitation
-import pathfinder.weatherBot.weather.precipitation.Thunder
-import pathfinder.weatherBot.weather.precipitation.snow.Snow
-import kotlin.reflect.full.primaryConstructor
-
 //open class Tornado(val hours: Long) : Event<Tornado> {
 //
 //    companion object {

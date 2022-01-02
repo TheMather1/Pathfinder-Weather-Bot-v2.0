@@ -1,15 +1,15 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
-import pathfinder.weatherBot.weather.Weather
+import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
 import pathfinder.weatherBot.weather.precipitation.rain.Rain
 
-class MediumSnow(weather: Weather, hours: Long) : Snow(weather, hours) {
+class MediumSnow(hour: Hour, hours: Long) : Snow(hour, hours) {
     override val fireRetardance = 25
 
     override fun fall() {
-        weather.hour.day.forecast.biome.snowLevel += 1
+        hour.day.forecast.biome.snowLevel += 1
     }
 
     override fun description(prev: Precipitation?) = when(prev) {

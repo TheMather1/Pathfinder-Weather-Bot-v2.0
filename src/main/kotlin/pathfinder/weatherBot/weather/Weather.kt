@@ -7,8 +7,8 @@ import pathfinder.weatherBot.weather.precipitation.Thunder
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
 import java.io.Serializable
 
-class Weather(val hour: Hour, prevWeather: Weather?) : Serializable {
-    val precipitation: Precipitation? = prevWeather?.precipitation?.next(this) ?: Precipitation(this)
+class Weather(hour: Hour, prevWeather: Weather?) : Serializable {
+    val precipitation: Precipitation? = prevWeather?.precipitation?.next(hour) ?: Precipitation(hour)
 
     private var cloudDuration = 0L
     val clouds: Clouds = when {
@@ -49,5 +49,5 @@ class Weather(val hour: Hour, prevWeather: Weather?) : Serializable {
             )?.plus("\n")
         ?: "") + (wind.print(prevWeather?.wind) ?: "")
 
-    fun keepWind(precip: Precipitation?) = windDuration > 0 && (precip !is Thunder || precipitation is Thunder)
+    private fun keepWind(precip: Precipitation?) = windDuration > 0 && (precip !is Thunder || precipitation is Thunder)
 }

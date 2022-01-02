@@ -1,16 +1,16 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
-import pathfinder.weatherBot.weather.Weather
+import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.Wind
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.Thunder
 import pathfinder.weatherBot.weather.precipitation.rain.Thunderstorm
 
-class Thundersnow(weather: Weather, hours: Long, override val wind: Wind) : HeavySnow(weather, hours), Thunder {
+class Thundersnow(hour: Hour, hours: Long, override val wind: Wind) : HeavySnow(hour, hours), Thunder {
     companion object {
-        operator fun invoke(weather: Weather, hours: Long): HeavySnow = Thunder.wind.let {
-            if (blizzard(it)) ThunderBlizzard(weather, hours, it)
-            else Thundersnow(weather, hours, it)
+        operator fun invoke(hour: Hour, hours: Long): HeavySnow = Thunder.wind.let {
+            if (blizzard(it)) ThunderBlizzard(hour, hours, it)
+            else Thundersnow(hour, hours, it)
         }
     }
 

@@ -1,11 +1,11 @@
 package pathfinder.weatherBot.weather.precipitation.rain
 
-import pathfinder.weatherBot.weather.Weather
+import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
 import pathfinder.weatherBot.weather.precipitation.snow.Snow
 
-class Drizzle(weather: Weather, hours: Long) : Rain(weather, hours) {
+class Drizzle(hour: Hour, hours: Long) : Rain(hour, hours) {
     override val fireRetardance = 5
     override fun description(prev: Precipitation?) = when (prev) {
         is Drizzle -> null

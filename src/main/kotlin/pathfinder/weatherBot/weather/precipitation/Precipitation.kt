@@ -3,26 +3,23 @@ package pathfinder.weatherBot.weather.precipitation
 import pathfinder.weatherBot.d
 import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.Described
-import pathfinder.weatherBot.weather.Weather
-import pathfinder.weatherBot.weather.precipitation.controller.frozen.Frozen
-import pathfinder.weatherBot.weather.precipitation.controller.wet.Wet
 import java.io.Serializable
 import kotlin.reflect.full.primaryConstructor
 
-abstract class Precipitation(val weather: Weather, val hours: Long): Described<Precipitation>, Serializable {
+abstract class Precipitation(val hour: Hour, val hours: Long): Described<Precipitation>, Serializable {
     companion object {
         private fun dry(hour: Hour): Boolean = (1 d 100) > hour.day.season.frequency(hour.day.forecast.biome).chance
         private fun frozen(temp: Long): Boolean = temp <= 32
         fun thunder(): Boolean = (1 d 100) <= 10
 
-        operator fun invoke(weather: Weather): Precipitation? = when {
-            dry(weather.hour) -> null
-            frozen(weather.hour.temp) -> Frozen(weather)
-            else -> Wet(weather)
+        operator fun invoke(hour: Hour): Precipitation? = when {
+            dry(hour) -> null
+            frozen(hour.temp) -> hour.day.forecast.biome.intensity.frozen(hour)
+            else -> hour.day.forecast.biome.intensity.wet(hour)
         }
     }
 
-    fun next(nextWeather: Weather): Precipitation? = if (hours > 0) this::class.primaryConstructor?.call(nextWeather, hours-1) else null
+    fun next(nextHour: Hour): Precipitation? = if (hours > 0) this::class.primaryConstructor?.call(nextHour, hours-1) else null
 
     abstract fun fall()
 

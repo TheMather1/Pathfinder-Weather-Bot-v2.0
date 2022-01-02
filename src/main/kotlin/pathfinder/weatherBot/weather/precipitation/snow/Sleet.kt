@@ -1,11 +1,11 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
-import pathfinder.weatherBot.weather.Weather
+import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
 import pathfinder.weatherBot.weather.precipitation.rain.Rain
 
-class Sleet(weather: Weather, hours: Long) : Snow(weather, hours) {
+class Sleet(hour: Hour, hours: Long) : Snow(hour, hours) {
     override val fireRetardance = 25
     override fun description(prev: Precipitation?) = when(prev) {
         is Sleet -> null

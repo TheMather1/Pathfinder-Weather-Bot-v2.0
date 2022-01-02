@@ -1,31 +1,31 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
 import pathfinder.weatherBot.d
-import pathfinder.weatherBot.weather.Weather
+import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.Wind
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
 import pathfinder.weatherBot.weather.precipitation.rain.Rain
 
 
-open class HeavySnow(weather: Weather, hours: Long) : Snow(weather, hours) {
+open class HeavySnow(hour: Hour, hours: Long) : Snow(hour, hours) {
     override val fireRetardance = 75
 
     companion object {
         fun blizzard(wind: Wind): Boolean = wind >= Wind.SEVERE && (1 d 100) <= 40
-        operator fun invoke(weather: Weather, hours: Long): HeavySnow {
+        operator fun invoke(hour: Hour, hours: Long): HeavySnow {
             val wind = Wind()
             fun blizzardDuration() = if ((1 d 100) <= 20) 2 d 12 else hours
             return when {
-                thunder() -> Thundersnow(weather, hours)
-                blizzard(wind) -> Blizzard(weather, blizzardDuration())
-                else -> HeavySnow(weather, hours)
+                thunder() -> Thundersnow(hour, hours)
+                blizzard(wind) -> Blizzard(hour, blizzardDuration())
+                else -> HeavySnow(hour, hours)
             }
         }
     }
 
     override fun fall() {
-        weather.hour.day.forecast.biome.snowLevel += (1 d 4)
+        hour.day.forecast.biome.snowLevel += (1 d 4)
     }
 
     override fun description(prev: Precipitation?) = when(prev) {
