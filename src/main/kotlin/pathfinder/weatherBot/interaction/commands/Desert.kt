@@ -1,21 +1,21 @@
 package pathfinder.weatherBot.interaction.commands
 
-import net.dv8tion.jda.api.entities.Message
-import net.dv8tion.jda.api.requests.restaction.MessageAction
-import pathfinder.weatherBot.interaction.CommandHandler
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
+import net.dv8tion.jda.api.interactions.commands.OptionType
+import net.dv8tion.jda.api.interactions.commands.build.CommandData
+import net.dv8tion.jda.api.requests.restaction.interactions.ReplyAction
+import org.springframework.stereotype.Service
+import pathfinder.weatherBot.interaction.Client
 
-class Desert(handler: CommandHandler) : Command(handler) {
-    override val command = "desert"
-    override val description = "Sets the desert boolean of the server."
-    override val supportedParameterCounts = listOf(1)
+@Service
+class Desert : Command{
+    override val commandData = CommandData("desert", "Sets the desert boolean of the server.")
+        .addOption(OptionType.BOOLEAN, "desert", "whether the region is a desert", true)
     override val sudo = true
 
-    override fun execute(message: Message): MessageAction {
-        val desert = message.params.first().toBoolean()
-        handler.client.biome.desert = desert
-        return message.channel.sendMessage("Desert set to $desert.")
+    override fun execute(event: SlashCommandEvent, client: Client): ReplyAction {
+        val desert = event.getOption("desert")!!.asBoolean
+        client.config.desert = desert
+        return event.reply("Desert set to $desert.")
     }
-
-    override fun help(message: Message) =
-        message.channel.sendMessage("If set to true, area is treated as a desert.")
 }

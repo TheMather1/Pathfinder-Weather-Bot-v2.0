@@ -25,7 +25,7 @@ open class HeavySnow(hour: Hour, hours: Long) : Snow(hour, hours) {
     }
 
     override fun fall() {
-        hour.day.forecast.biome.snowLevel += (1 d 4)
+//        hour.day.forecast.biome.snowLevel += (1 d 4)
     }
 
     override fun description(prev: Precipitation?) = when(prev) {

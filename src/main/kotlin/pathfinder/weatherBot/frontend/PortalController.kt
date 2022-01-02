@@ -50,7 +50,7 @@ class PortalController(private val jda: JDA, private val registrations: Concurre
         if (member.hasPermission(MANAGE_SERVER)) {
             addAttribute("forecast", true)
             addAttribute("config", true)
-        } else if (member.roles.any { it.idLong == client.forecastRole }) addAttribute("forecast", true)
+        } else if (member.roles.any { it.idLong == client.config.forecastRole }) addAttribute("forecast", true)
         addAttributes(client.forecast.today.hours[LocalTime.now().hour])
     }
 

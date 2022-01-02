@@ -1,14 +1,15 @@
 package pathfinder.weatherBot.weather
 
 import pathfinder.weatherBot.d
+import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.Thunder
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
 import java.io.Serializable
 
-class Weather(hour: Hour, prevWeather: Weather?) : Serializable {
-    val precipitation: Precipitation? = prevWeather?.precipitation?.next(hour) ?: Precipitation(hour)
+class Weather(config: GuildConfig, hour: Hour, prevWeather: Weather?) : Serializable {
+    val precipitation: Precipitation? = prevWeather?.precipitation?.next(hour) ?: Precipitation(config, hour)
 
     private var cloudDuration = 0L
     val clouds: Clouds = when {

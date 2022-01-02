@@ -1,38 +1,29 @@
 package pathfinder.weatherBot.interaction.commands
 
-import net.dv8tion.jda.api.Permission.ADMINISTRATOR
-import net.dv8tion.jda.api.entities.Message
-import net.dv8tion.jda.api.requests.restaction.MessageAction
+import net.dv8tion.jda.api.Permission.MANAGE_SERVER
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
+import net.dv8tion.jda.api.interactions.commands.build.CommandData
+import net.dv8tion.jda.api.requests.restaction.interactions.ReplyAction
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import pathfinder.weatherBot.interaction.CommandHandler
+import pathfinder.weatherBot.interaction.Client
 
-abstract class Command(val handler: CommandHandler) {
-    abstract val command: String
-    abstract val description: String
-    abstract val supportedParameterCounts: List<Int>
-    open val sudo = false
+interface Command {
+    val commandData: CommandData
+    val sudo: Boolean
 
-    internal abstract fun execute(message: Message): MessageAction
-    abstract fun help(message: Message): MessageAction
+    fun execute(event: SlashCommandEvent, client: Client): ReplyAction
 
-    internal fun evaluate(message: Message) = when {
-        sudo && !message.sudo -> message.channel.sendMessage("Only administrators may use this command.")
-        message.params.count() !in supportedParameterCounts -> message.channel.sendMessage(
-            "Unsupported number of parameters: ${message.params.count()}. Supported parameter counts: $supportedParameterCounts"
-        )
-        else -> execute(message)
-    }.also {
-        logger.info("Attempted command $command with parameters: ${message.params}")
+    fun evaluate(event: SlashCommandEvent, client: Client) = if (sudo && !event.sudo)
+        event.reply("Only moderators may use this command.")
+    else execute(event, client).also {
+        logger.info("Attempted command ${commandData.name} with options: ${event.options}")
     }
 
-    private val Message.sudo: Boolean
-        get() = member?.hasPermission(ADMINISTRATOR) ?: false
+    private val SlashCommandEvent.sudo: Boolean
+        get() = member?.hasPermission(MANAGE_SERVER) ?: false
 
-    internal val Message.params: List<String>
-        get() = contentRaw.substringAfter(command).split(' ').filterNot(String::isBlank)
-
-    companion object{
+    companion object {
         val logger: Logger = LoggerFactory.getLogger(Command::class.java)
     }
 }

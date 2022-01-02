@@ -1,22 +1,27 @@
 package pathfinder.weatherBot.interaction.commands
 
-import net.dv8tion.jda.api.entities.Message
-import pathfinder.weatherBot.interaction.CommandHandler
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
+import net.dv8tion.jda.api.interactions.commands.Command.Choice
+import net.dv8tion.jda.api.interactions.commands.OptionType
+import net.dv8tion.jda.api.interactions.commands.build.CommandData
+import net.dv8tion.jda.api.interactions.commands.build.OptionData
+import org.springframework.stereotype.Service
+import pathfinder.weatherBot.interaction.Client
 import pathfinder.weatherBot.location.Climate
 
-class SetClimate(handler: CommandHandler) : Command(handler) {
-    override val command = "climate"
-    override val description = "Sets the climate of the server."
-    override val supportedParameterCounts = listOf(1)
+@Service
+class SetClimate : Command {
+    override val commandData = CommandData("climate", "Sets the climate of the server.").addOptions(
+        OptionData(
+            OptionType.STRING, "climate", "The climate of the region.", true
+        ).addChoices(Climate.values().map { Choice(it.name, it.name) })
+    )
     override val sudo = true
 
-    override fun execute(message: Message) = try {
-        handler.client.biome.climate = Climate.valueOf(message.params.first())
-        message.channel.sendMessage("Climate has been set to ${handler.client.biome.climate}.")
+    override fun execute(event: SlashCommandEvent, client: Client) = try {
+        client.config.climate = Climate.valueOf(event.getOption("climate")!!.asString)
+        event.reply("Climate has been set to ${client.config.climate}.")
     } catch (_: Throwable) {
-        message.channel.sendMessage("That is not a supported climate.")
+        event.reply("That is not a supported climate.")
     }
-
-    override fun help(message: Message) =
-        message.channel.sendMessage("Sets the climate to COLD, TEMPERATE, or TROPICAL.")
 }

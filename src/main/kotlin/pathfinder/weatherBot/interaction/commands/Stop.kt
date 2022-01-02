@@ -1,15 +1,14 @@
 package pathfinder.weatherBot.interaction.commands
 
-import net.dv8tion.jda.api.entities.Message
-import pathfinder.weatherBot.interaction.CommandHandler
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
+import net.dv8tion.jda.api.interactions.commands.build.CommandData
+import org.springframework.stereotype.Service
+import pathfinder.weatherBot.interaction.Client
 
-class Stop(handler: CommandHandler) : Command(handler) {
-    override val command = "stop"
-    override val description = "Stops the bot."
-    override val supportedParameterCounts = listOf(0)
+@Service
+class Stop : Command{
+    override val commandData = CommandData("stop", "Stops the bot.")
     override val sudo = true
 
-    override fun execute(message: Message) = message.channel.sendMessage(handler.client.clock.stop())
-
-    override fun help(message: Message) = message.channel.sendMessage("Puts an end to the bot.")
+    override fun execute(event: SlashCommandEvent, client: Client) = event.reply(client.stop())
 }

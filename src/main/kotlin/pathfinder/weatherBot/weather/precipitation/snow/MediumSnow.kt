@@ -9,7 +9,7 @@ class MediumSnow(hour: Hour, hours: Long) : Snow(hour, hours) {
     override val fireRetardance = 25
 
     override fun fall() {
-        hour.day.forecast.biome.snowLevel += 1
+//        hour.day.forecast.biome.snowLevel += 1
     }
 
     override fun description(prev: Precipitation?) = when(prev) {

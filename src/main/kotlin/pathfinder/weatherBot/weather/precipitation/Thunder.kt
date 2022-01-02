@@ -19,9 +19,9 @@ interface Thunder {
 
     val tornado
         get() = wind == WINDSTORM && (1 d 100) <= 10
-
-    val haboob
-        get() = hour.day.forecast.biome.desert && (1 d 100) <= 20
+//
+//    val haboob
+//        get() = hour.day.forecast.biome.desert && (1 d 100) <= 20
 
     val hurricane
         get() = hour.temp > 85 && (1 d 100) <= 20

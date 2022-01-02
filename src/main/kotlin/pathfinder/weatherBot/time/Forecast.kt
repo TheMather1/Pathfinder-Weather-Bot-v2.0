@@ -1,11 +1,11 @@
 package pathfinder.weatherBot.time
 
-import pathfinder.weatherBot.location.Biome
+import pathfinder.weatherBot.interaction.GuildConfig
 import java.io.Serializable
 import java.time.LocalDate
 
-data class Forecast(val biome: Biome) : Serializable {
-    var today: Day = Day(this, LocalDate.now())
+class Forecast(config: GuildConfig) : Serializable {
+    var today: Day = Day(config, LocalDate.now())
         private set
     var tomorrow: Day = today.next()
         private set
@@ -18,8 +18,8 @@ data class Forecast(val biome: Biome) : Serializable {
         dayAfterTomorrow = tomorrow.next()
     }
 
-    fun reset() {
-        today = Day(this, LocalDate.now())
+    fun reset(config: GuildConfig) {
+        today = Day(config, LocalDate.now())
         tomorrow = today.next()
         dayAfterTomorrow = tomorrow.next()
     }

@@ -1,18 +1,19 @@
 package pathfinder.weatherBot.time
 
+import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.weather.Temperature
 import java.io.Serializable
 import java.time.LocalDate
 import java.time.LocalTime
 
-class Day(val forecast: Forecast, val date: LocalDate, oldTemp: Temperature? = null) : Serializable {
+class Day(val config: GuildConfig, val date: LocalDate, oldTemp: Temperature? = null) : Serializable {
     val season = Season(date)
-    val temperature = Temperature(this, oldTemp)
+    val temperature = Temperature(config, season, oldTemp)
     val hours: Array<Hour> = (0..23).fold(emptyArray()) { o, i ->
-        o + Hour(this, LocalTime.of(i, 0), o.lastOrNull())
+        o + Hour(config,this, LocalTime.of(i, 0), o.lastOrNull())
     }
 
-    fun next() = Day(forecast, date.plusDays(1), temperature)
+    fun next() = Day(config, date.plusDays(1), temperature)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

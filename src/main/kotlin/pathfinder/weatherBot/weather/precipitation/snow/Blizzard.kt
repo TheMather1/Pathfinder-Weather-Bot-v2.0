@@ -8,7 +8,7 @@ import pathfinder.weatherBot.weather.precipitation.rain.Rain
 open class Blizzard(hour: Hour, hours: Long) : HeavySnow(hour, hours) {
 
     override fun fall() {
-        hour.day.forecast.biome.snowLevel += 4
+//        hour.day.forecast.biome.snowLevel += 4
     }
 
     override fun description(prev: Precipitation?) = when(prev) {

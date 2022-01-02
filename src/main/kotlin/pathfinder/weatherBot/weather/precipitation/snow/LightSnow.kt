@@ -8,7 +8,7 @@ import pathfinder.weatherBot.weather.precipitation.rain.Rain
 class LightSnow(hour: Hour, hours: Long) : Snow(hour, hours) {
     override val fireRetardance = 5
     override fun fall() {
-        hour.day.forecast.biome.snowLevel += 0.5
+//        hour.day.forecast.biome.snowLevel += 0.5
     }
 
     override fun description(prev: Precipitation?) = when(prev) {

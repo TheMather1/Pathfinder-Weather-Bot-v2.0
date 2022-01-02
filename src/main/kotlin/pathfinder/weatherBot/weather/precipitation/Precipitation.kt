@@ -1,21 +1,23 @@
 package pathfinder.weatherBot.weather.precipitation
 
 import pathfinder.weatherBot.d
+import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.time.Hour
+import pathfinder.weatherBot.time.Season
 import pathfinder.weatherBot.weather.Described
 import java.io.Serializable
 import kotlin.reflect.full.primaryConstructor
 
 abstract class Precipitation(val hour: Hour, val hours: Long): Described<Precipitation>, Serializable {
     companion object {
-        private fun dry(hour: Hour): Boolean = (1 d 100) > hour.day.season.frequency(hour.day.forecast.biome).chance
+        private fun dry(season: Season, config: GuildConfig): Boolean = (1 d 100) > season.frequency(config).chance
         private fun frozen(temp: Long): Boolean = temp <= 32
         fun thunder(): Boolean = (1 d 100) <= 10
 
-        operator fun invoke(hour: Hour): Precipitation? = when {
-            dry(hour) -> null
-            frozen(hour.temp) -> hour.day.forecast.biome.intensity.frozen(hour)
-            else -> hour.day.forecast.biome.intensity.wet(hour)
+        operator fun invoke(config: GuildConfig, hour: Hour): Precipitation? = when {
+            dry(hour.day.season, config) -> null
+            frozen(hour.temp) -> config.intensity.frozen(hour)
+            else -> config.intensity.wet(hour)
         }
     }
 

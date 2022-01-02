@@ -1,12 +1,13 @@
 package pathfinder.weatherBot.time
 
+import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.weather.Weather
 import java.io.Serializable
 import java.time.LocalTime
 
-class Hour(val day: Day, val time: LocalTime, prevHour: Hour? = null) : Serializable {
+class Hour(config: GuildConfig, val day: Day, val time: LocalTime, prevHour: Hour? = null) : Serializable {
     var temp = day.temperature.tempAtHour(time)
-    val weather: Weather = Weather(this, prevHour?.weather)
+    val weather: Weather = Weather(config,this, prevHour?.weather)
 
     private val tempDescriptor = tempThresholds.firstNotNullOf { (t, d) ->
         if (t == null || temp <= t) d
