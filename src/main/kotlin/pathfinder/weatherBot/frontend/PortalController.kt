@@ -54,19 +54,19 @@ class PortalController(private val jda: JDA, private val registrations: Concurre
         addAttributes(client.forecast.today.hours[LocalTime.now().hour])
     }
 
-    private fun Model.addAttributes(hour: Hour){
-        addAttribute("temp", hour.temp)
-        addAttributes(hour.weather)
+    private fun Model.addAttributes(hour: Hour?){
+        addAttribute("temp", hour?.temp?.toString())
+        addAttributes(hour?.weather)
     }
 
-    private fun Model.addAttributes(weather: Weather) {
+    private fun Model.addAttributes(weather: Weather?) {
         addAttribute(
-            "clouds", weather.clouds.name.capitalizedLowercase(true)
+            "clouds", weather?.clouds?.name?.capitalizedLowercase(true)
         )
         addAttribute(
-            "wind", weather.wind.name.capitalizedLowercase(true)
+            "wind", weather?.wind?.name?.capitalizedLowercase(true)
         )
-        addAttribute("precip", weather.precipitation?.let {
+        addAttribute("precip", weather?.precipitation?.let {
             it::class.simpleName?.capitalizedLowercase()
         } ?: "None")
     }

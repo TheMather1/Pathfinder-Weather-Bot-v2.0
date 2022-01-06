@@ -1,20 +1,19 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
-import pathfinder.weatherBot.time.Hour
-import pathfinder.weatherBot.weather.Wind
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.Thunder
 import pathfinder.weatherBot.weather.precipitation.rain.Thunderstorm
+import java.time.LocalDateTime
 
-class Thundersnow(hour: Hour, hours: Long, override val wind: Wind) : HeavySnow(hour, hours), Thunder {
+class Thundersnow(start: LocalDateTime, end: LocalDateTime) : HeavySnow(start, end), Thunder {
     companion object {
-        operator fun invoke(hour: Hour, hours: Long): HeavySnow = Thunder.wind.let {
-            if (blizzard(it)) ThunderBlizzard(hour, hours, it)
-            else Thundersnow(hour, hours, it)
+        operator fun invoke(start: LocalDateTime, end: LocalDateTime): HeavySnow = Thunder.wind.let {
+            if (blizzard(it)) ThunderBlizzard(start, end)
+            else Thundersnow(start, end)
         }
     }
 
-    override fun description(prev: Precipitation?) = when(prev) {
+    override fun description(prev: Precipitation?) = when (prev) {
         is Thundersnow -> null
         is ThunderBlizzard -> "The blizzard ceases as the winds calm, but the snowfall and thunder still linger."
         is Thunderstorm -> "The rain freezes into a heavy snowfall, as thunder keeps roaring out in the distance."

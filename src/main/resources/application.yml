@@ -1,3 +1,4 @@
+
 spring:
   mvc.view:
     prefix: /WEB-INF/jsp/
@@ -20,3 +21,4 @@ spring:
       scope:
         - identify
 pathfinder.weather.bot.token: ${weatherbot-token}
+logging.level.pathfinder: debug

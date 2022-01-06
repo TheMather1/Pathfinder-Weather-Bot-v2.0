@@ -1,12 +1,12 @@
 package pathfinder.weatherBot.weather.precipitation.rain
 
-import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.Thunder
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
 import pathfinder.weatherBot.weather.precipitation.snow.Snow
+import java.time.LocalDateTime
 
-class Thunderstorm(hour: Hour, hours: Long) : HeavyRain(hour, hours),
+class Thunderstorm(start: LocalDateTime, end: LocalDateTime) : HeavyRain(start, end),
     Thunder {
     override fun description(prev: Precipitation?) = when (prev) {
         is Thunderstorm -> null

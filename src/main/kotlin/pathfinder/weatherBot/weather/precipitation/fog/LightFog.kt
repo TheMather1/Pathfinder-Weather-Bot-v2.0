@@ -1,11 +1,11 @@
 package pathfinder.weatherBot.weather.precipitation.fog
 
-import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.rain.Rain
 import pathfinder.weatherBot.weather.precipitation.snow.Snow
+import java.time.LocalDateTime
 
-class LightFog(hour: Hour, hours: Long) : Fog(hour, hours) {
+class LightFog(start: LocalDateTime, end: LocalDateTime) : Fog(start, end) {
 
     override val fireRetardance = 0
 

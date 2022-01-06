@@ -10,7 +10,7 @@ import pathfinder.weatherBot.interaction.Client
 import pathfinder.weatherBot.location.Climate
 
 @Service
-class SetClimate : Command {
+class SetClimate : WeatherCommand {
     override val commandData = CommandData("climate", "Sets the climate of the server.").addOptions(
         OptionData(
             OptionType.STRING, "climate", "The climate of the region.", true
@@ -20,8 +20,8 @@ class SetClimate : Command {
 
     override fun execute(event: SlashCommandEvent, client: Client) = try {
         client.config.climate = Climate.valueOf(event.getOption("climate")!!.asString)
-        event.reply("Climate has been set to ${client.config.climate}.")
+        "Climate has been set to ${client.config.climate}."
     } catch (_: Throwable) {
-        event.reply("That is not a supported climate.")
+        "That is not a supported climate."
     }
 }

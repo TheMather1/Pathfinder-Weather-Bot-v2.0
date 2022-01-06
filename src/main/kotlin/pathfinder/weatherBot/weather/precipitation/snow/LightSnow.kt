@@ -1,11 +1,11 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
-import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
 import pathfinder.weatherBot.weather.precipitation.rain.Rain
+import java.time.LocalDateTime
 
-class LightSnow(hour: Hour, hours: Long) : Snow(hour, hours) {
+class LightSnow(start: LocalDateTime, end: LocalDateTime) : Snow(start, end) {
     override val fireRetardance = 5
     override fun fall() {
 //        hour.day.forecast.biome.snowLevel += 0.5

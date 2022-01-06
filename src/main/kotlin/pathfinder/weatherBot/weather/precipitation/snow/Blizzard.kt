@@ -1,11 +1,11 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
-import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
 import pathfinder.weatherBot.weather.precipitation.rain.Rain
+import java.time.LocalDateTime
 
-open class Blizzard(hour: Hour, hours: Long) : HeavySnow(hour, hours) {
+open class Blizzard(start: LocalDateTime, end: LocalDateTime) : HeavySnow(start, end) {
 
     override fun fall() {
 //        hour.day.forecast.biome.snowLevel += 4

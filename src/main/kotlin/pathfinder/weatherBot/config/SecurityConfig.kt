@@ -1,4 +1,4 @@
-package pathfinder.weatherBot.frontend
+package pathfinder.weatherBot.config
 
 import net.dv8tion.jda.api.JDA
 import org.springframework.context.annotation.Configuration
@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.exchange
+import pathfinder.weatherBot.frontend.DiscordUser
 
 
 @Configuration
@@ -25,7 +26,7 @@ class SecurityConfig(
         http.run {
             authorizeRequests()
                 .antMatchers("/portal/**").authenticated()
-                .antMatchers("/").permitAll()
+                .anyRequest().permitAll()
             oauth2Login()
                 .tokenEndpoint()
                 .and().userInfoEndpoint().userService(::loadUser)

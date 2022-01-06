@@ -10,7 +10,7 @@ import pathfinder.weatherBot.interaction.Client
 import pathfinder.weatherBot.location.Elevation
 
 @Service
-class SetElevation : Command {
+class SetElevation : WeatherCommand {
     override val commandData = CommandData("elevation", "Sets the elevation of the server.").addOptions(
         OptionData(
             OptionType.STRING, "elevation", "The elevation of the region.", true
@@ -20,8 +20,8 @@ class SetElevation : Command {
 
     override fun execute(event: SlashCommandEvent, client: Client) = try {
         client.config.elevation = Elevation.valueOf(event.getOption("elevation")!!.asString)
-        event.reply("Elevation has been set to ${client.config.elevation}.")
+        "Elevation has been set to ${client.config.elevation}."
     } catch (_: Throwable) {
-        event.reply("That is not a supported climate.")
+        "That is not a supported climate."
     }
 }

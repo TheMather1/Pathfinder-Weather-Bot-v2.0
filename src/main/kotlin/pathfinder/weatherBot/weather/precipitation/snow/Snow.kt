@@ -1,6 +1,6 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
-import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.precipitation.Precipitation
+import java.time.LocalDateTime
 
-abstract class Snow(hour: Hour, hours: Long) : Precipitation(hour, hours)
+abstract class Snow(start: LocalDateTime, end: LocalDateTime) : Precipitation(start, end)

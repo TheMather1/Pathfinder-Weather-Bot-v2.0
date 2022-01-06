@@ -1,24 +1,50 @@
 package pathfinder.weatherBot.weather
 
-import pathfinder.weatherBot.d
-import pathfinder.weatherBot.interaction.GuildConfig
-import pathfinder.weatherBot.time.Season
 import java.io.Serializable
-import java.time.LocalTime
-import java.time.LocalTime.NOON
-import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.roundToLong
 
-class Temperature(config: GuildConfig, season: Season, oldTemp: Temperature? = null): Serializable {
-    val tempVar: TempVar = oldTemp?.tempVar?.next() ?: config.climate.tempVar()
-    val highTemp = season.temp(config) + tempVar()
-    val lowTemp = highTemp - (2 d 6) - 3
-    val tempPrev = oldTemp?.lowTemp ?: lowTemp
+data class Temperature(var temp: Long): Serializable {
+    val freezing
+        get() = temp <= 32
+    val cold
+        get() = !freezing && temp < 40
 
-    fun tempAtHour(time: LocalTime): Long {
-        val low = if(time < NOON) tempPrev else lowTemp
-        val halfDif = (highTemp - low)/2
-        return low + halfDif + cos((time.hour.toFloat()-12) / 12 * PI).roundToLong() * halfDif
+    val evaporationMod
+        get() = (70 - temp).times(0.001F).coerceAtMost(0F)
+
+    private val descriptor
+        get() = tempThresholds.firstNotNullOf { (t, d) ->
+            if (t == null || temp <= t) d
+            else null
+        }
+
+    override fun toString(): String {
+        return "$temp°F"
+    }
+
+    fun describe(prevTemp: Temperature?) = when {
+        prevTemp == null -> "The temperature is a $descriptor $this."
+        tempRise(prevTemp) -> "The temperature rises to a $descriptor $this."
+        tempFall(prevTemp) -> "The temperature drops to a $descriptor $this."
+        else -> null
+    }
+
+    private fun tempRise(prevTemp: Temperature) = tempThresholds.any { (t, _) ->
+        t != null && prevTemp.temp <= t && temp > t
+    }
+
+    private fun tempFall(prevTemp: Temperature) = tempThresholds.any { (t, _) ->
+        t != null && temp <= t && prevTemp.temp > t
+    }
+
+    companion object {
+        private val tempThresholds = mapOf(
+            32 to "freezing",
+            40 to "cold",
+            65 to "chilly",
+            85 to "comfortable",
+            105 to "warm",
+            120 to "sweltering",
+            null to "scorching"
+        )
     }
 }

@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service
 import pathfinder.weatherBot.interaction.Client
 
 @Service
-class Start : Command{
+class Start : WeatherCommand{
     override val commandData = CommandData("start", "Starts the bot.")
     override val sudo = true
 
-    override fun execute(event: SlashCommandEvent, client: Client) = event.reply(client.start())
+    override fun execute(event: SlashCommandEvent, client: Client) = client.start()
 }

@@ -59,7 +59,7 @@
                 <section class="guildInfo">
                     <span class="temp">
                         <h1>Temperature: </h1>
-                        ${temp}°F
+                        ${temp}
                     </span>
                     <span class="clouds">
                         <h1>Clouds: </h1>

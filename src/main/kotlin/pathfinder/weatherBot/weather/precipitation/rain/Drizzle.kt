@@ -1,11 +1,11 @@
 package pathfinder.weatherBot.weather.precipitation.rain
 
-import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
 import pathfinder.weatherBot.weather.precipitation.snow.Snow
+import java.time.LocalDateTime
 
-class Drizzle(hour: Hour, hours: Long) : Rain(hour, hours) {
+class Drizzle(start: LocalDateTime, end: LocalDateTime) : Rain(start, end) {
     override val fireRetardance = 5
     override fun description(prev: Precipitation?) = when (prev) {
         is Drizzle -> null

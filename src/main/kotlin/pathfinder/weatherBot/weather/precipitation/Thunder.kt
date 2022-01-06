@@ -2,7 +2,9 @@ package pathfinder.weatherBot.weather.precipitation
 
 import pathfinder.weatherBot.d
 import pathfinder.weatherBot.dHundredException
+import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.time.Hour
+import pathfinder.weatherBot.weather.Wind
 import pathfinder.weatherBot.weather.Wind.*
 
 interface Thunder {
@@ -14,21 +16,15 @@ interface Thunder {
                 in 91..100 -> WINDSTORM
                 else -> throw dHundredException
             }
+
+        fun tornado(wind: Wind) = wind == WINDSTORM && (1 d 100) <= 10
     }
-    val hour: Hour
 
-    val tornado
-        get() = wind == WINDSTORM && (1 d 100) <= 10
-//
-//    val haboob
-//        get() = hour.day.forecast.biome.desert && (1 d 100) <= 20
+    fun haboob(config: GuildConfig) = config.desert && (1 d 100) <= 20
 
-    val hurricane
-        get() = hour.temp > 85 && (1 d 100) <= 20
+    fun hurricane(hour: Hour) = hour.temp.temp > 85 && (1 d 100) <= 20
 
-    val wind
-        get() = Thunder.wind
-    fun lightning(){
+    fun lightning() {
         TODO()
     }
 }

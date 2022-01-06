@@ -1,11 +1,11 @@
 package pathfinder.weatherBot.weather.precipitation.rain
 
-import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
 import pathfinder.weatherBot.weather.precipitation.snow.Snow
+import java.time.LocalDateTime
 
-open class HeavyRain(hour: Hour, hours: Long) : Rain(hour, hours) {
+open class HeavyRain(start: LocalDateTime, end: LocalDateTime) : Rain(start, end) {
     override val fireRetardance = 25
     override fun description(prev: Precipitation?) = when (prev) {
         is Thunderstorm -> "The sound of thunder yields, but the rain remains."

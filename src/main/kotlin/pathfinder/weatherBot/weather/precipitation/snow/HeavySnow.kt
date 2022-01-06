@@ -6,20 +6,21 @@ import pathfinder.weatherBot.weather.Wind
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
 import pathfinder.weatherBot.weather.precipitation.rain.Rain
+import java.time.LocalDateTime
 
 
-open class HeavySnow(hour: Hour, hours: Long) : Snow(hour, hours) {
+open class HeavySnow(start: LocalDateTime, end: LocalDateTime) : Snow(start, end) {
     override val fireRetardance = 75
 
     companion object {
         fun blizzard(wind: Wind): Boolean = wind >= Wind.SEVERE && (1 d 100) <= 40
-        operator fun invoke(hour: Hour, hours: Long): HeavySnow {
+        operator fun invoke(start: LocalDateTime, end: LocalDateTime, hour: Hour): HeavySnow {
             val wind = Wind()
-            fun blizzardDuration() = if ((1 d 100) <= 20) 2 d 12 else hours
+            fun blizzardDuration() = if ((1 d 100) <= 20) hour.time.plusHours(2 d 12) else end
             return when {
-                thunder() -> Thundersnow(hour, hours)
-                blizzard(wind) -> Blizzard(hour, blizzardDuration())
-                else -> HeavySnow(hour, hours)
+                thunder() -> Thundersnow(start, end)
+                blizzard(wind) -> Blizzard(start, blizzardDuration())
+                else -> HeavySnow(start, end)
             }
         }
     }

@@ -1,13 +1,11 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
-import pathfinder.weatherBot.time.Hour
-import pathfinder.weatherBot.weather.Wind
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.Thunder
+import java.time.LocalDateTime
 
-class ThunderBlizzard(hour: Hour, hours: Long, override val wind: Wind) : Blizzard(hour, hours),
-        Thunder {
-    override fun description(prev: Precipitation?) = when(prev) {
+class ThunderBlizzard(start: LocalDateTime, end: LocalDateTime) : Blizzard(start, end), Thunder {
+    override fun description(prev: Precipitation?) = when (prev) {
         is ThunderBlizzard -> null
         is Blizzard -> "The blizzard holds strong as thunder starts to roar out in the distance."
         is Thundersnow -> "Intense winds turn the thundersnow into a thunder blizzard."
