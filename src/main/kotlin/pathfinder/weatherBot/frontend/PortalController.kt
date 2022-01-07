@@ -2,6 +2,7 @@ package pathfinder.weatherBot.frontend
 
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.Permission.MANAGE_SERVER
+import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
 import org.springframework.http.HttpStatus.*
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -23,43 +24,85 @@ class PortalController(private val jda: JDA, private val registrations: Concurre
 
     @GetMapping
     fun viewPortal(model: Model, @AuthenticationPrincipal user: DiscordUser): String {
-        val servers = user.mutualGuilds
-        model.addAttribute("servers", servers.associate { it.name to it.idLong })
+        model.asUser(user)
         return "portal"
     }
 
     @GetMapping("/{guildId}")
-    fun viewGuild(model: Model, @AuthenticationPrincipal user: DiscordUser, @PathVariable("guildId") guildId: Long): String {
+    fun viewGuild(
+        model: Model, @AuthenticationPrincipal user: DiscordUser, @PathVariable("guildId") guildId: Long
+    ): String {
+        model.asUser(user)
         val guild = jda.getGuildById(guildId)
-        guild?.loadMembers()?.get()
-        when {
-            guild == null -> throw ResponseStatusException(NOT_FOUND, "Server not found.")
-            !guild.isMember(user) -> throw ResponseStatusException(FORBIDDEN, "You are not a member of this server.")
-            else -> model.addAttributes(
-                guild.getMember(user)!!,
-                registrations.getOrPut(guildId) { Client(guild) }
-            )
-        }
-        model.addAttribute("guild", guildId)
-        val servers = user.mutualGuilds
-        model.addAttribute("servers", servers.associate { it.name to it.idLong })
+            ?: throw ResponseStatusException(NOT_FOUND, "Server not found.")
+        model.onGuild(guild)
+        val client = registrations.getOrPut(guildId) { Client(guild) }
+        val member = guild.getMember(user)
+            ?: throw ResponseStatusException(FORBIDDEN, "You are not a member of this server.")
+        model.asMember(member, client)
+        model.displayWeather(registrations.getOrPut(guildId) { Client(guild) })
         return "guild"
     }
 
-    private fun Model.addAttributes(member: Member, client: Client) {
+    @GetMapping("/{guildId}/forecast")
+    fun viewForecast(
+        model: Model, @AuthenticationPrincipal user: DiscordUser, @PathVariable("guildId") guildId: Long
+    ): String {
+        model.asUser(user)
+        val guild = jda.getGuildById(guildId)
+            ?: throw ResponseStatusException(NOT_FOUND, "Server not found.")
+        model.onGuild(guild)
+        val client = registrations.getOrPut(guildId) { Client(guild) }
+        val member = guild.getMember(user)
+            ?: throw ResponseStatusException(FORBIDDEN, "You are not a member of this server.")
+        model.asMember(member, client)
+        if (!member.hasPermission(MANAGE_SERVER) && member.roles.none { it.idLong == client.config.forecastRole })
+            throw ResponseStatusException(FORBIDDEN, "You do not have permission to read the forecast.")
+        return "forecast"
+    }
+
+    @GetMapping("/{guildId}/settings")
+    fun viewSettings(
+        model: Model, @AuthenticationPrincipal user: DiscordUser, @PathVariable("guildId") guildId: Long
+    ): String {
+        model.asUser(user)
+        val guild = jda.getGuildById(guildId)
+            ?: throw ResponseStatusException(NOT_FOUND, "Server not found.")
+        model.onGuild(guild)
+        val client = registrations.getOrPut(guildId) { Client(guild) }
+        val member = guild.getMember(user)
+            ?: throw ResponseStatusException(FORBIDDEN, "You are not a member of this server.")
+        model.asMember(member, client)
+        if (!member.hasPermission(MANAGE_SERVER))
+            throw ResponseStatusException(FORBIDDEN, "You do not have permission to access the settings.")
+        return "settings"
+    }
+
+    private fun Model.asUser(user: DiscordUser) {
+        addAttribute("servers", user.mutualGuilds.associate { it.name to it.idLong })
+    }
+
+    private fun Model.asMember(member: Member, client: Client) {
         if (member.hasPermission(MANAGE_SERVER)) {
             addAttribute("forecast", true)
-            addAttribute("config", true)
+            addAttribute("settings", true)
         } else if (member.roles.any { it.idLong == client.config.forecastRole }) addAttribute("forecast", true)
-        addAttributes(client.forecast.today.hours[LocalTime.now().hour])
     }
 
-    private fun Model.addAttributes(hour: Hour?){
+    private fun Model.onGuild(guild: Guild) {
+        addAttribute("guild", mapOf("id" to guild.idLong, "name" to guild.name))
+    }
+
+    private fun Model.displayWeather(client: Client) {
+        displayWeather(client.forecast.today.hours[LocalTime.now().hour])
+    }
+
+    private fun Model.displayWeather(hour: Hour?) {
         addAttribute("temp", hour?.temp?.toString())
-        addAttributes(hour?.weather)
+        displayWeather(hour?.weather)
     }
 
-    private fun Model.addAttributes(weather: Weather?) {
+    private fun Model.displayWeather(weather: Weather?) {
         addAttribute(
             "clouds", weather?.clouds?.name?.capitalizedLowercase(true)
         )
@@ -74,8 +117,8 @@ class PortalController(private val jda: JDA, private val registrations: Concurre
     private fun String.capitalizedLowercase(enum: Boolean = false) = mapIndexed { index, c ->
         when {
             index == 0 -> c.uppercase()
-            c.isUpperCase() -> if(enum) c.lowercase() else " " + c.lowercase()
-            c == '_' -> if(enum) " " else c.toString()
+            c.isUpperCase() -> if (enum) c.lowercase() else " " + c.lowercase()
+            c == '_' -> if (enum) " " else c.toString()
             else -> c.toString()
         }
     }.reduce(String::plus)
