@@ -17,7 +17,7 @@ enum class Clouds(protected val description: String) {
     LIGHT("The sky is dotted with a few small clouds.") {
         override fun print(prev: Clouds?) = when(prev) {
             null -> description
-            NONE -> "Some minor clouds forming."
+            NONE -> "Some minor clouds start forming."
             LIGHT -> null
             MEDIUM -> "The clouds thin out until only a few small ones remain."
             OVERCAST -> "The overcast breaks up and thins out until only a few small clouds remain."
