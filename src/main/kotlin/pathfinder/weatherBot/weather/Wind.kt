@@ -24,7 +24,7 @@ enum class Wind {
         override fun print(prevWind: Wind?) = when {
             prevWind == null -> "Gusts of strong wind buffet the area. (Incurs penalties based on the wind strength chart https://www.d20pfsrd.com/Gamemastering/environment/weather/#Wind)"
             prevWind > this -> "The wind slows to more bearable gusts. (Incurs penalties based on the wind strength chart https://www.d20pfsrd.com/Gamemastering/environment/weather/#Wind)"
-            prevWind < this -> "Large gusts of wind begin to buffet across the area, kicking up dust. (Incurs penalties based on the wind strength chart https://www.d20pfsrd.com/Gamemastering/environment/weather/#Wind)"
+            prevWind < this -> "Strong gusts of wind begin to buffet across the area, kicking up dust. (Incurs penalties based on the wind strength chart https://www.d20pfsrd.com/Gamemastering/environment/weather/#Wind)"
             else -> null
         }
     },
