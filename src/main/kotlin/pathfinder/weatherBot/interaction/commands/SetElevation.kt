@@ -3,19 +3,24 @@ package pathfinder.weatherBot.interaction.commands
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
 import net.dv8tion.jda.api.interactions.commands.Command.Choice
 import net.dv8tion.jda.api.interactions.commands.OptionType
-import net.dv8tion.jda.api.interactions.commands.build.CommandData
 import net.dv8tion.jda.api.interactions.commands.build.OptionData
 import org.springframework.stereotype.Service
 import pathfinder.weatherBot.interaction.Client
 import pathfinder.weatherBot.location.Elevation
+import javax.annotation.PostConstruct
 
 @Service
-class SetElevation : WeatherCommand {
-    override val commandData = CommandData("elevation", "Sets the elevation of the server.").addOptions(
-        OptionData(
-            OptionType.STRING, "elevation", "The elevation of the region.", true
-        ).addChoices(Elevation.values().map { Choice(it.name, it.name) })
-    )
+class SetElevation : WeatherCommand("elevation", "Sets the elevation of the server.") {
+
+    @PostConstruct
+    fun configureOptions() {
+        addOptions(
+            OptionData(
+                OptionType.STRING, "elevation", "The elevation of the region.", true
+            ).addChoices(Elevation.values().map { Choice(it.name, it.name) })
+        )
+    }
+
     override val sudo = true
 
     override fun execute(event: SlashCommandEvent, client: Client) = try {

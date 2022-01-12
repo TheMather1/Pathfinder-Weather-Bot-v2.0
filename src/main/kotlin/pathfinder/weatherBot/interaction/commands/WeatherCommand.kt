@@ -4,9 +4,8 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
 import net.dv8tion.jda.api.interactions.commands.build.CommandData
 import pathfinder.weatherBot.interaction.Client
 
-interface WeatherCommand {
-    val commandData: CommandData
-    val sudo: Boolean
+abstract class WeatherCommand(name: String, description: String) : CommandData(name, description) {
+    abstract val sudo: Boolean
 
-    fun execute(event: SlashCommandEvent, client: Client): String
+    abstract fun execute(event: SlashCommandEvent, client: Client): String
 }

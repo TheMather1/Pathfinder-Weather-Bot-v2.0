@@ -23,7 +23,7 @@ class BotService(val jda: JDA, val registrations: HTreeMap<Long, Client>, val we
     fun startBot() {
         jda.addEventListener(this)
         jda.awaitReady()
-        jda.updateCommands().addCommands(weatherCommands.map { it.commandData }).queue { commands ->
+        jda.updateCommands().addCommands(weatherCommands.map { it }).queue { commands ->
             logger.debug("Registered commands ${commands.map { it.name }}.")
         }
     }
@@ -53,13 +53,14 @@ class BotService(val jda: JDA, val registrations: HTreeMap<Long, Client>, val we
     }
 
     override fun onSlashCommand(event: SlashCommandEvent) {
-        logger.debug("Received command ${event.name} with options ${event.options} from server ${event.guild?.name}.")
-        val command = weatherCommands.first { event.name == it.commandData.name }
+        val guild = event.guild!!
+        logger.debug("Received command ${event.name} with options ${event.options} from server ${guild.name}.")
+        val command = weatherCommands.first { it.name == event.name }
         if (command.sudo && !event.sudo) event.reply("Only moderators may use this command.").queue()
         else event.deferReply().queue {
-            val client = registrations[event.guild!!.idLong] ?: Client(event.guild!!)
+            val client = registrations[guild.idLong] ?: Client(guild)
             it.editOriginal(command.execute(event, client)).queue()
-            registrations[event.guild?.idLong!!] = client
+            registrations[guild.idLong] = client
         }
         logger.debug("Command finished processing.")
     }

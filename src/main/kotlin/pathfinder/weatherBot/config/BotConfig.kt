@@ -9,7 +9,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import pathfinder.weatherBot.interaction.Client
-import pathfinder.weatherBot.interaction.commands.WeatherCommand
 
 @Configuration
 @ConfigurationProperties("pathfinder.weather.bot")
@@ -18,7 +17,7 @@ class BotConfig {
     lateinit var token: String
 
     @Bean
-    fun registrations(weatherCommands: List<WeatherCommand>): HTreeMap<Long, Client> {
+    fun registrations(): HTreeMap<Long, Client> {
         return db.hashMap("client_registrations").createOrOpen() as HTreeMap<Long, Client>
     }
 
