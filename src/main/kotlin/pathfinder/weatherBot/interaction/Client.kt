@@ -11,7 +11,7 @@ import java.time.temporal.ChronoUnit
 class Client(
     guild: Guild
 ) : Serializable {
-    internal val config = GuildConfig(guild.defaultChannel!!.idLong)
+    internal var config = GuildConfig(guild.defaultChannel!!.idLong)
     internal val forecast = Forecast(config)
 
     private val now

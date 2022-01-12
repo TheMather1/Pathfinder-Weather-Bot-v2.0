@@ -3,7 +3,8 @@
 <%@attribute name="title" required="true" %>
 
 <html lang="en"
-      xmlns="http://www.w3.org/1999/xhtml">
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>${title} - Pathfinder WeatherBot</title>
     <meta charset="UTF-8">
