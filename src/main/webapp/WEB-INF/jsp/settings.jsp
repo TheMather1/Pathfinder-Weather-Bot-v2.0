@@ -27,7 +27,7 @@
     <section class="settings">
         <sf:form modelAttribute="config" action="settings" method="post">
             <fieldset>
-                <legend>Settings</legend>
+                <legend><h1>Settings</h1></legend>
                 <label for="climate">Climate: </label>
                 <sf:select path="climate">
                     <sf:options items="${climateOptions}"/>
@@ -50,7 +50,7 @@
                 <sf:select path="outputChannel">
                     <sf:options items="${channelOptions}"/>
                 </sf:select>
-                <br>
+                <br><br>
                 <input type="submit" value="Save changes">
             </fieldset>
         </sf:form>

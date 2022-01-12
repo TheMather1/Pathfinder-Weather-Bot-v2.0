@@ -23,6 +23,36 @@ h1 {
     font-weight: bold;
 }
 
+.settings {
+    padding: 25px;
+}
+.settings fieldset legend {
+    font-size: 200%;
+    font-weight: bold;
+}
+
+.settings fieldset input {
+    padding: 7px 16px;
+    border-radius: 3px;
+    background-color: #5865F2;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: center;
+    transition-duration: .17s;
+    transition-property: all;
+    transition-timing-function: ease-out;
+}
+
+.settings fieldset input:hover {
+    background-color: rgb(60, 69, 165);
+}
+
+.settings fieldset input:active {
+    background-color: rgb(59, 165, 93);
+}
+
 .wrapper {
     align-items: center;
     display: flex;
