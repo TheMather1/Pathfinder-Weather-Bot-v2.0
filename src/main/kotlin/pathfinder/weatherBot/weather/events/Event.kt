@@ -1,16 +1,27 @@
 package pathfinder.weatherBot.weather.events
 
-import pathfinder.weatherBot.weather.Described
+import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.Weather
+import java.io.Serializable
+import java.time.LocalDateTime
 
-interface Event<in T> : Described<T> {
+abstract class Event<T : Event<T>>(
+    val start: LocalDateTime, var end: LocalDateTime
+) : Serializable {
+    abstract val finished: String
+    var active = false
+    val name: String
+        get() = this::class.simpleName!!
+
     companion object {
-        operator fun invoke(prevEvents: List<Event<*>>, weather: Weather): List<Event<*>> {
-            return prevEvents.mapNotNull { it.progress(weather) }.toMutableList().apply {
-                if (none { it is Wildfire }) Wildfire.invoke(weather)?.let { add(it) }
+        operator fun invoke(hour: Hour, prevEvents: List<Event<*>>, weather: Weather): List<Event<*>> {
+            return prevEvents.mapNotNull { it.progress(hour, weather) }.toMutableList().apply {
+                if (none { it is Wildfire }) Wildfire.invoke(hour)?.let { add(it) }
             }
         }
     }
 
-    fun progress(weather: Weather): Event<T>?
+    abstract fun description(prev: List<Event<*>>): String?
+
+    abstract fun progress(hour: Hour, weather: Weather): Event<T>?
 }

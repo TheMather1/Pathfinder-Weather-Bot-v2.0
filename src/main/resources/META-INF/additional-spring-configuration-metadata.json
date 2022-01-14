@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "pathfinder.weather.bot.token",
+      "type": "java.lang.String",
+      "description": "Token for bot application."
+  }
+] }

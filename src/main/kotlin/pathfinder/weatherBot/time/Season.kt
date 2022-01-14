@@ -1,6 +1,6 @@
 package pathfinder.weatherBot.time
 
-import pathfinder.weatherBot.location.Biome
+import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.location.Climate.TROPICAL
 import pathfinder.weatherBot.weather.precipitation.Frequency
 import pathfinder.weatherBot.weather.precipitation.Frequency.*
@@ -8,24 +8,24 @@ import java.time.LocalDate
 
 enum class Season {
     SPRING {
-        override fun temp(biome: Biome) = biome.climate.springTemp + biome.elevation.adjustTemp
-        override fun frequency(biome: Biome) = if (biome.desert) DROUGHT
-        else (if (biome.climate == TROPICAL) COMMON else INTERMITTENT) + biome.frequencyMod
+        override fun temp(config: GuildConfig) = config.climate.springTemp + config.elevation.adjustTemp
+        override fun frequency(config: GuildConfig) = if (config.desert) DROUGHT
+        else (if (config.climate == TROPICAL) COMMON else INTERMITTENT) + config.frequencyMod
     },
     SUMMER {
-        override fun temp(biome: Biome) = biome.climate.summerTemp + biome.elevation.adjustTemp
-        override fun frequency(biome: Biome) = if (biome.desert) DROUGHT
-        else (if (biome.climate == TROPICAL) INTERMITTENT else COMMON) + biome.frequencyMod
+        override fun temp(config: GuildConfig) = config.climate.summerTemp + config.elevation.adjustTemp
+        override fun frequency(config: GuildConfig) = if (config.desert) DROUGHT
+        else (if (config.climate == TROPICAL) INTERMITTENT else COMMON) + config.frequencyMod
     },
     FALL {
-        override fun temp(biome: Biome) = biome.climate.fallTemp + biome.elevation.adjustTemp
-        override fun frequency(biome: Biome) = if (biome.desert) DROUGHT
-        else (if (biome.climate == TROPICAL) COMMON else INTERMITTENT) + biome.frequencyMod
+        override fun temp(config: GuildConfig) = config.climate.fallTemp + config.elevation.adjustTemp
+        override fun frequency(config: GuildConfig) = if (config.desert) DROUGHT
+        else (if (config.climate == TROPICAL) COMMON else INTERMITTENT) + config.frequencyMod
     },
     WINTER {
-        override fun temp(biome: Biome) = biome.climate.winterTemp + biome.elevation.adjustTemp
-        override fun frequency(biome: Biome) = if (biome.desert) DROUGHT
-        else RARE + biome.frequencyMod
+        override fun temp(config: GuildConfig) = config.climate.winterTemp + config.elevation.adjustTemp
+        override fun frequency(config: GuildConfig) = if (config.desert) DROUGHT
+        else RARE + config.frequencyMod
     };
 
     companion object {
@@ -38,6 +38,6 @@ enum class Season {
         }
     }
 
-    abstract fun temp(biome: Biome): Long
-    abstract fun frequency(biome: Biome): Frequency
+    abstract fun temp(config: GuildConfig): Long
+    abstract fun frequency(config: GuildConfig): Frequency
 }

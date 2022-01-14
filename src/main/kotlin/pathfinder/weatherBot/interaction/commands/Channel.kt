@@ -1,23 +1,25 @@
 package pathfinder.weatherBot.interaction.commands
 
-import net.dv8tion.jda.api.entities.Message
-import net.dv8tion.jda.api.requests.restaction.MessageAction
-import pathfinder.weatherBot.interaction.CommandHandler
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
+import net.dv8tion.jda.api.interactions.commands.OptionType
+import org.springframework.stereotype.Service
+import pathfinder.weatherBot.interaction.Client
+import javax.annotation.PostConstruct
 
-class Channel(handler: CommandHandler) : Command(handler) {
-    override val command = "channel"
-    override val description = "Sets the output channel."
-    override val supportedParameterCounts = listOf(0, 1)
-    override val sudo = true
+@Service
+class Channel : WeatherCommand("channel", "Sets the output channel.") {
 
-    override fun execute(message: Message): MessageAction {
-        val channel = if (message.params.isEmpty()) message.textChannel
-        else message.mentionedChannels.firstOrNull()
-            ?: return message.channel.sendMessage("The channel has to be mentioned first.")
-        handler.client.outputChannel = channel
-        return message.textChannel.sendMessage("Output channel set to ${channel.asMention}.")
+
+    @PostConstruct
+    fun configureOptions() {
+        addOption(OptionType.CHANNEL, "channel", "output channel")
     }
 
-    override fun help(message: Message) =
-        message.channel.sendMessage("Sets the output channel to current or mentioned channel.")
+    override val sudo = true
+
+    override fun execute(event: SlashCommandEvent, client: Client): String {
+        val channel = event.getOption("channel")?.asGuildChannel ?: event.textChannel
+        client.config.outputChannel = channel.idLong
+        return "Output channel set to ${channel.asMention}."
+    }
 }

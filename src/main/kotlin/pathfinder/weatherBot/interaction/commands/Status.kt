@@ -1,15 +1,12 @@
 package pathfinder.weatherBot.interaction.commands
 
-import net.dv8tion.jda.api.entities.Message
-import net.dv8tion.jda.api.requests.restaction.MessageAction
-import pathfinder.weatherBot.interaction.CommandHandler
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
+import org.springframework.stereotype.Service
+import pathfinder.weatherBot.interaction.Client
 
-class Status(handler: CommandHandler) : Command(handler) {
-    override val command = "status"
-    override val description = "Checks bot status."
-    override val supportedParameterCounts = listOf(0)
+@Service
+class Status : WeatherCommand("status", "Returns the status of the bot.") {
+    override val sudo = false
 
-    override fun execute(message: Message) = message.channel.sendMessage("The bot is ${handler.client.clock.status}.")
-
-    override fun help(message: Message) = message.channel.sendMessage("Checks the status of the bot.")
+    override fun execute(event: SlashCommandEvent, client: Client) = "The bot is ${client.status()}."
 }

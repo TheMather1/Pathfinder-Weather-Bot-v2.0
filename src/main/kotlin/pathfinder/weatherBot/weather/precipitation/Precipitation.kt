@@ -1,31 +1,36 @@
 package pathfinder.weatherBot.weather.precipitation
 
 import pathfinder.weatherBot.d
+import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.time.Hour
+import pathfinder.weatherBot.time.Season
 import pathfinder.weatherBot.weather.Described
-import pathfinder.weatherBot.weather.Weather
-import pathfinder.weatherBot.weather.precipitation.controller.frozen.Frozen
-import pathfinder.weatherBot.weather.precipitation.controller.wet.Wet
-import kotlin.reflect.full.primaryConstructor
+import pathfinder.weatherBot.weather.Temperature
+import java.io.Serializable
+import java.time.LocalDateTime
 
-abstract class Precipitation(val weather: Weather, val hours: Long): Described<Precipitation> {
+abstract class Precipitation(val start: LocalDateTime, val end: LocalDateTime) : Described<Precipitation>,
+    Serializable {
     companion object {
-        private fun dry(hour: Hour): Boolean = (1 d 100) > hour.day.season.frequency(hour.day.forecast.biome).chance
-        private fun frozen(temp: Long): Boolean = temp <= 32
+        private fun dry(season: Season, config: GuildConfig): Boolean = (1 d 100) > season.frequency(config).chance
         fun thunder(): Boolean = (1 d 100) <= 10
 
-        operator fun invoke(weather: Weather): Precipitation? = when {
-            dry(weather.hour) -> null
-            frozen(weather.hour.temp) -> Frozen(weather)
-            else -> Wet(weather)
+        operator fun invoke(
+            config: GuildConfig, start: LocalDateTime, season: Season, temp: Temperature
+        ): Precipitation? = when {
+            dry(season, config) -> null
+            temp.freezing -> config.intensity.frozen(start)
+            else -> config.intensity.wet(start, temp)
         }
     }
 
-    fun next(nextWeather: Weather): Precipitation? = if (hours > 0) this::class.primaryConstructor?.call(nextWeather, hours-1) else null
+    fun coerceForTime(nextHour: Hour): Precipitation? = if (nextHour.time < end) this else null
 
     abstract fun fall()
 
     abstract val fireRetardance: Int
     val tempAdjust = 0
+
+    override fun toString() = "([A-Z])".toRegex().replace(this::class.simpleName!!, " $1").trim()
 }
 

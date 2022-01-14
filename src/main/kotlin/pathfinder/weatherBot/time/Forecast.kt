@@ -1,26 +1,32 @@
 package pathfinder.weatherBot.time
 
-import pathfinder.weatherBot.location.Biome
+import pathfinder.weatherBot.interaction.GuildConfig
+import pathfinder.weatherBot.weather.events.Event
 import java.io.Serializable
 import java.time.LocalDate
 
-data class Forecast(val biome: Biome) : Serializable {
-    var today: Day = Day(this, LocalDate.now())
+class Forecast(config: GuildConfig) : Serializable {
+    var today: Day = Day(config, LocalDate.now(), null)
         private set
-    var tomorrow: Day = today.next()
+    var tomorrow: Day = today.next(config)
         private set
-    var dayAfterTomorrow: Day = tomorrow.next()
+    var dayAfterTomorrow: Day = tomorrow.next(config)
         private set
 
-    fun progress() {
+    val allEvents: List<Event<*>>
+        get() = (today.hours.flatMap { it?.events ?: emptyList() } + tomorrow.hours.flatMap {
+            it?.events ?: emptyList()
+        } + dayAfterTomorrow.hours.flatMap { it?.events ?: emptyList() }).toSet().sortedBy { it.start }
+
+    fun progress(config: GuildConfig) {
         today = tomorrow
         tomorrow = dayAfterTomorrow
-        dayAfterTomorrow = tomorrow.next()
+        dayAfterTomorrow = tomorrow.next(config)
     }
 
-    fun reset() {
-        today = Day(this, LocalDate.now())
-        tomorrow = today.next()
-        dayAfterTomorrow = tomorrow.next()
+    fun reset(config: GuildConfig) {
+        today = Day(config, LocalDate.now(), null)
+        tomorrow = today.next(config)
+        dayAfterTomorrow = tomorrow.next(config)
     }
 }

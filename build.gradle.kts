@@ -2,28 +2,33 @@ group = "pathfinder"
 version = "2.0"
 
 plugins {
-    kotlin("jvm") version "1.4.30"
+    kotlin("jvm") version "1.6.0"
+    kotlin("plugin.spring") version "1.6.0"
+    id("org.springframework.boot") version "2.5.6"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
 }
 
 repositories {
+    mavenCentral()
     jcenter()
+//    maven("https://maven.pkg.github.com/TheMather1/temporal-collections")
 }
 
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
-    implementation("net.dv8tion", "JDA", "4.2.0_236")
-    implementation("org.slf4j", "slf4j-jdk14", "1.7.30")
-    implementation("club.minnced", "jda-reactor", "1.2.0")
+    implementation("javax.servlet", "jstl", "1.2")
+    implementation("net.dv8tion", "JDA", "5.0.0-alpha.3")
+    implementation("org.mapdb", "mapdb", "3.0.8")
+    implementation("org.springframework.boot", "spring-boot-starter-oauth2-client")
+    implementation("org.springframework.boot", "spring-boot-starter-web")
+    implementation("org.springframework.boot", "spring-boot-starter-tomcat")
+    implementation("org.apache.taglibs", "taglibs-standard-impl", "1.2.5")
+    implementation("org.apache.tomcat.embed", "tomcat-embed-jasper")
     testImplementation("org.junit.jupiter", "junit-jupiter", "5.5.2")
 }
 
 tasks {
-    compileKotlin {
-        kotlinOptions {
-            jvmTarget = "1.8"
-        }
-    }
     test {
         useJUnitPlatform()
     }

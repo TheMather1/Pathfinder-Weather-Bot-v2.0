@@ -1,9 +1,15 @@
 package pathfinder.weatherBot.weather.events.tornado
 
-class Snownado(hours: Long) : Tornado(hours) {
-    override val finished = "The tornado dissipates, leaving behind a nice heap of debris for us to remember it by."
+import pathfinder.weatherBot.weather.events.Event
+import java.time.LocalDateTime
 
-    override fun description(prev: Tornado?): String {
-       "Winds pick up and begin kicking a slurry of snow in a vortex. It's a snownado!"
+class Snownado(start: LocalDateTime, end: LocalDateTime) : Tornado(start, end) {
+    override val finished = "The snownado dissipates, leaving behind snow littered with debris."
+
+    override fun description(prev: List<Event<*>>) = when(prev.firstOrNull { it is Tornado }) {
+        null -> "Thrashing winds and falling snow combine into a terrifying tornado."
+        is Snownado -> "The snownado keeps rampaging across the landscape."
+        is Firenado -> ""
+        else -> "The tornado sucks up the falling snow, becoming a snownado."
     }
 }

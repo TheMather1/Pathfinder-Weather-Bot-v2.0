@@ -1,21 +1,41 @@
 package pathfinder.weatherBot.interaction
 
-import net.dv8tion.jda.api.entities.TextChannel
-import pathfinder.weatherBot.Bot
-import pathfinder.weatherBot.location.Biome
-import pathfinder.weatherBot.time.Clock
+import net.dv8tion.jda.api.JDA
+import net.dv8tion.jda.api.entities.Guild
 import pathfinder.weatherBot.time.Forecast
 import java.io.Serializable
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.temporal.ChronoUnit
 
-data class Client(internal val serverId: String, private var channelId: String) : Serializable {
-    internal val clock = Clock(this)
-    internal val biome = Biome()
-    internal val forecast = Forecast(biome)
-    internal var outputChannel: TextChannel
-        get() = Bot.botUser.getTextChannelById(channelId)!!
-        set(channel) {
-            channelId = channel.id
-        }
-    val commandHandler = CommandHandler(this)
-    var prefix = "w!"
+class Client(
+    guild: Guild
+) : Serializable {
+    internal var config = GuildConfig(guild.defaultChannel!!.idLong)
+    internal val forecast = Forecast(config)
+
+    private val now
+        get() = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS)
+    private val isMidnight
+        get() = now.toLocalTime() == LocalTime.MIDNIGHT
+    private val today
+        get() = forecast.apply { if (isMidnight) progress(config) }.today
+    private val thisHour
+        get() = today.hours[now.hour]
+
+    fun start() = if (!config.active) {
+        config.active = true
+        "Started bot."
+    } else "The bot is already running."
+
+    fun stop() = if (config.active) {
+        config.active = false
+        "Stopped bot."
+    } else "The bot is not currently running."
+
+    fun status() = if (config.active) "running" else "stopped"
+
+    fun execute(jda: JDA) = thisHour?.description?.takeUnless(String::isBlank)?.let {
+        jda.getTextChannelById(config.outputChannel)!!.sendMessage(it)
+    }
 }

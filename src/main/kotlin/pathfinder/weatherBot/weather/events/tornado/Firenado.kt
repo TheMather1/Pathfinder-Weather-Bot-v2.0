@@ -1,3 +1,5 @@
 package pathfinder.weatherBot.weather.events.tornado
 
-class Firenado(hours: Long) : Tornado(hours)
+import java.time.LocalDateTime
+
+class Firenado(start: LocalDateTime, end: LocalDateTime) : Tornado(start, end)

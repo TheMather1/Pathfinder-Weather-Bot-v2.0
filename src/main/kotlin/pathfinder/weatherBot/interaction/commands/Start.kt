@@ -1,15 +1,12 @@
 package pathfinder.weatherBot.interaction.commands
 
-import net.dv8tion.jda.api.entities.Message
-import pathfinder.weatherBot.interaction.CommandHandler
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
+import org.springframework.stereotype.Service
+import pathfinder.weatherBot.interaction.Client
 
-class Start(handler: CommandHandler) : Command(handler) {
-    override val command = "start"
-    override val description = "Starts the bot."
-    override val supportedParameterCounts = listOf(0)
+@Service
+class Start : WeatherCommand("start", "Starts the bot.") {
     override val sudo = true
 
-    override fun execute(message: Message) = message.channel.sendMessage(handler.client.clock.start())
-
-    override fun help(message: Message) = message.channel.sendMessage("Starts the bot.")
+    override fun execute(event: SlashCommandEvent, client: Client) = client.start()
 }

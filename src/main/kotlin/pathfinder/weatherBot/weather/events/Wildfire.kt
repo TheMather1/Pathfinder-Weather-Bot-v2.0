@@ -1,24 +1,34 @@
 package pathfinder.weatherBot.weather.events
 
 import pathfinder.weatherBot.d
+import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.Weather
 import pathfinder.weatherBot.weather.precipitation.rain.Thunderstorm
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit.HOURS
 
-open class Wildfire(private val weather: Weather) : Event<Wildfire> {
+open class Wildfire(start: LocalDateTime, end: LocalDateTime) : Event<Wildfire>(start, end) {
     companion object {
-        operator fun invoke(weather: Weather): Wildfire? {
-            return weather.hour.day.forecast.biome.humidity.let {
-                if (
-                    (weather.hour.temp - 90 - it - (weather.precipitation?.fireRetardance ?: 0)) / 2 <= 100
-                    || (weather.precipitation is Thunderstorm && (1 d 100) <= 60 - it)
-                ) Wildfire(weather) else null
-            }
+        operator fun invoke(hour: Hour): Wildfire? {
+            return if (hour.hotAndDry() || hour.lightningSpark()) Wildfire(
+                hour.time, hour.time.plusHours(1)
+            ) else null
         }
+
+        private fun Hour.hotAndDry() = (1 d 100) <= fireRisk
+
+        private fun Hour.lightningSpark() = weather.precipitation is Thunderstorm && (1 d 100) >= 60 - (humidity * 100)
     }
 
-    override fun progress(weather: Weather): Wildfire? =
-        if (TODO("extinguish?")) null else Wildfire(weather)
+    override fun progress(hour: Hour, weather: Weather): Event<Wildfire>? =
+        if ((1 d 10) + hour.fireRisk > start.until(hour.time, HOURS)) {
+            end = end.plusHours(1)
+            this
+        } else null
 
-    override fun description(prev: Wildfire?): String = "A fire has started in the wilderness and seems to be growing out of control!"
+    override fun description(prev: List<Event<*>>): String? =
+        if (prev.any { it is Wildfire }) "The wildfire keeps raging."
+        else "A wildfire erupts in the distance and quickly swallows the area."
+
     override val finished = "The wildfire is extinguished."
 }

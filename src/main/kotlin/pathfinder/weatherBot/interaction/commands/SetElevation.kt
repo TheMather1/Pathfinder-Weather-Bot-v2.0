@@ -1,22 +1,32 @@
 package pathfinder.weatherBot.interaction.commands
 
-import net.dv8tion.jda.api.entities.Message
-import pathfinder.weatherBot.interaction.CommandHandler
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
+import net.dv8tion.jda.api.interactions.commands.Command.Choice
+import net.dv8tion.jda.api.interactions.commands.OptionType
+import net.dv8tion.jda.api.interactions.commands.build.OptionData
+import org.springframework.stereotype.Service
+import pathfinder.weatherBot.interaction.Client
 import pathfinder.weatherBot.location.Elevation
+import javax.annotation.PostConstruct
 
-class SetElevation(handler: CommandHandler) : Command(handler) {
-    override val command = "elevation"
-    override val description = "Sets the elevation of the server."
-    override val supportedParameterCounts = listOf(1)
-    override val sudo = true
+@Service
+class SetElevation : WeatherCommand("elevation", "Sets the elevation of the server.") {
 
-    override fun execute(message: Message) = try {
-        handler.client.biome.elevation = Elevation.valueOf(message.params.first())
-        message.channel.sendMessage("Elevation has been set to ${handler.client.biome.elevation}.")
-    } catch (_: Throwable) {
-        message.channel.sendMessage("That is not a supported elevation.")
+    @PostConstruct
+    fun configureOptions() {
+        addOptions(
+            OptionData(
+                OptionType.STRING, "elevation", "The elevation of the region.", true
+            ).addChoices(Elevation.values().map { Choice(it.name, it.name) })
+        )
     }
 
-    override fun help(message: Message) =
-        message.channel.sendMessage("Sets elevation of area to SEA_LEVEL, LOWLAND, HIGHLAND, HIGHLAND_ARID, or HIGHLAND_MOUNTAIN")
+    override val sudo = true
+
+    override fun execute(event: SlashCommandEvent, client: Client) = try {
+        client.config.elevation = Elevation.valueOf(event.getOption("elevation")!!.asString)
+        "Elevation has been set to ${client.config.elevation}."
+    } catch (_: Throwable) {
+        "That is not a supported climate."
+    }
 }
