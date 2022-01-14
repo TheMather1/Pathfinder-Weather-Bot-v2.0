@@ -13,44 +13,15 @@
 body {
     background-color: #36393f;
     color: #b9bbbe;
-    font-family: Whitney,Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-family: Whitney, Helvetica Neue, Helvetica, Arial, sans-serif;
     font-style: normal;
     font-weight: 400;
     line-height: 1.5;
+    overflow: hidden;
 }
 
 h1 {
     font-weight: bold;
-}
-
-.settings {
-    padding: 25px;
-}
-.settings fieldset legend {
-    font-size: 200%;
-    font-weight: bold;
-}
-
-.settings fieldset input {
-    padding: 7px 16px;
-    border-radius: 3px;
-    background-color: #5865F2;
-    color: #ffffff;
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 18px;
-    text-align: center;
-    transition-duration: .17s;
-    transition-property: all;
-    transition-timing-function: ease-out;
-}
-
-.settings fieldset input:hover {
-    background-color: rgb(60, 69, 165);
-}
-
-.settings fieldset input:active {
-    background-color: rgb(59, 165, 93);
 }
 
 .wrapper {
@@ -86,20 +57,19 @@ h1 {
     -webkit-box-direction: normal;
 }
 
-.content {
+.contentWrapper {
     display: flex;
+    height: 100%;
     flex: 1 1 1440px;
     flex-direction: column;
-    background-color: #36393f;
-    height: 100%;
     z-index: 2;
     -webkit-box-flex: 1;
     -webkit-box-orient: vertical;
 }
 
-.content > header {
-    box-sizing: border-box;
+.contentWrapper > header {
     background-color: #2f3136;
+    box-sizing: border-box;
 }
 
 .contentNavbar, .contentNavbar li {
@@ -115,6 +85,74 @@ h1 {
     display: inline-block;
     color: #b9bbbe;
     text-decoration: none;
+}
+
+.contentNavbar a:hover {
+    color: #ffffff;
+}
+
+.content {
+    background-color: #36393f;
+    overflow-y: auto;
+    padding: 25px;
+}
+
+.content table {
+    width: 50%;
+    text-align: center;
+}
+
+.content th {
+    font-weight: 600;
+    background-color: #202225;
+}
+
+.content tr:nth-child(even) {
+    background-color: #18191c;
+}
+
+.content tr:nth-child(odd) {
+    background: #121315;
+}
+
+.content td {
+    border-width: 0;
+    outline-width: 0;
+    padding: 0;
+    font-weight: 300;
+    font-size: 14px;
+    border-collapse: collapse;
+    -webkit-border-horizontal-spacing: 0;
+    -webkit-border-vertical-spacing: 0;
+}
+
+.settings fieldset legend {
+    font-size: 200%;
+    font-weight: bold;
+}
+
+.settings fieldset input, .forecastReset {
+    padding: 7px 16px;
+    border-radius: 3px;
+    background-color: #5865F2;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: center;
+    transition-duration: .17s;
+    transition-property: all;
+    transition-timing-function: ease-out;
+}
+
+.settings fieldset input:hover, .forecastReset:hover {
+    background-color: rgb(60, 69, 165);
+}
+
+.forecastReset {
+    position: relative;
+    left: 25%;
+    cursor: pointer;
 }
 
 .guildInfo {
@@ -175,6 +213,7 @@ h1 {
 .sidebar li {
     list-style: none outside none;
 }
+
 /* The sidebar links */
 .sidebar a {
     display: flex;
@@ -199,6 +238,7 @@ h1 {
     -webkit-box-direction: normal;
     -webkit-box-pack: start;
 }
+
 .sidebar a:hover {
     color: #ffffff;
 }
@@ -235,17 +275,24 @@ h1 {
     -webkit-box-flex: 1;
     -webkit-box-pack: end;
 }
-.scroller::-webkit-scrollbar {
+
+.scroller::-webkit-scrollbar, .content::-webkit-scrollbar {
     width: 15px;
 }
-.scroller::-webkit-scrollbar-thumb,.scroller::-webkit-scrollbar-track {
+
+.scroller::-webkit-scrollbar-thumb, .scroller::-webkit-scrollbar-track, .content::-webkit-scrollbar-thumb, .content::-webkit-scrollbar-track {
     background-clip: padding-box;
     border-width: 3px;
     border-style: solid;
     border-radius: 30px;
     border-color: transparent;
 }
-.scroller::-webkit-scrollbar-track {
+
+.scroller::-webkit-scrollbar-thumb, .content::-webkit-scrollbar-thumb {
+    background-color: #202225;
+}
+
+.scroller::-webkit-scrollbar-track, .content::-webkit-scrollbar-track {
     border-width: initial;
     background-color: #1c1d20;
 }

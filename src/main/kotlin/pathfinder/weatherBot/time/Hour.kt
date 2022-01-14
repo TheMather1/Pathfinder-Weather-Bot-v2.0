@@ -8,7 +8,7 @@ import pathfinder.weatherBot.weather.events.tornado.Tornado
 import java.io.Serializable
 import java.time.LocalDateTime
 
-class Hour(config: GuildConfig, val day: Day, val time: LocalDateTime, prevHour: Hour? = null) : Serializable {
+class Hour(config: GuildConfig, day: Day, val time: LocalDateTime, prevHour: Hour? = null) : Serializable {
     private val prevEvents = prevHour?.events ?: emptyList()
     private val prevTemp = prevHour?.temp
     var temp = day.temperatureRange.tempAtHour(time.toLocalTime())

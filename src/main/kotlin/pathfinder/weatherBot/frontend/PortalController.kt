@@ -4,18 +4,19 @@ import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.Permission.MANAGE_SERVER
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
-import org.springframework.http.HttpStatus.*
+import org.springframework.http.HttpStatus.FORBIDDEN
+import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.web.servlet.view.RedirectView
 import pathfinder.weatherBot.interaction.Client
 import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.location.Climate
 import pathfinder.weatherBot.location.Elevation
 import pathfinder.weatherBot.time.Hour
-import pathfinder.weatherBot.weather.Weather
 import java.time.LocalTime
 import java.util.concurrent.ConcurrentMap
 
@@ -42,8 +43,19 @@ class PortalController(private val jda: JDA, private val registrations: Concurre
     fun viewForecast(
         model: Model, @AuthenticationPrincipal user: DiscordUser, @PathVariable("guildId") guildId: Long
     ): String {
-        val (_, client, _) = model.authenticateUser(user, guildId, Permissions.FORECAST)
+        val (_, client) = model.authenticateUser(user, guildId, Permissions.FORECAST)
+        model.addAttribute("forecast", client.forecast)
         return "forecast"
+    }
+
+    @GetMapping("/{guildId}/forecast/delete")
+    fun resetForecast(
+        model: Model, @AuthenticationPrincipal user: DiscordUser, @PathVariable("guildId") guildId: Long
+    ): RedirectView {
+        val (_, client) = model.authenticateUser(user, guildId, Permissions.MODERATOR)
+        client.forecast.reset(client.config)
+        registrations[guildId] = client
+        return RedirectView("/portal/$guildId/forecast")
     }
 
     @GetMapping("/{guildId}/settings")
@@ -99,9 +111,9 @@ class PortalController(private val jda: JDA, private val registrations: Concurre
 
     private fun Model.asMember(member: Member, client: Client) {
         if (member.hasPermission(MANAGE_SERVER)) {
-            addAttribute("forecast", true)
-            addAttribute("settings", true)
-        } else if (member.roles.any { it.idLong == client.config.forecastRole }) addAttribute("forecast", true)
+            addAttribute("canForecast", true)
+            addAttribute("isModerator", true)
+        } else if (member.roles.any { it.idLong == client.config.forecastRole }) addAttribute("canForecast", true)
     }
 
     private fun Model.onGuild(guild: Guild) {
@@ -114,27 +126,8 @@ class PortalController(private val jda: JDA, private val registrations: Concurre
 
     private fun Model.displayWeather(hour: Hour?) {
         addAttribute("temp", hour?.temp?.toString())
-        displayWeather(hour?.weather)
+        addAttribute("clouds", hour?.weather?.clouds)
+        addAttribute("wind", hour?.weather?.wind)
+        addAttribute("precip", hour?.weather?.precipitation ?: "None")
     }
-
-    private fun Model.displayWeather(weather: Weather?) {
-        addAttribute(
-            "clouds", weather?.clouds?.name?.capitalizedLowercase(true)
-        )
-        addAttribute(
-            "wind", weather?.wind?.name?.capitalizedLowercase(true)
-        )
-        addAttribute("precip", weather?.precipitation?.let {
-            it::class.simpleName?.capitalizedLowercase()
-        } ?: "None")
-    }
-
-    private fun String.capitalizedLowercase(enum: Boolean = false) = mapIndexed { index, c ->
-        when {
-            index == 0 -> c.uppercase()
-            c.isUpperCase() -> if (enum) c.lowercase() else " " + c.lowercase()
-            c == '_' -> if (enum) " " else c.toString()
-            else -> c.toString()
-        }
-    }.reduce(String::plus)
 }

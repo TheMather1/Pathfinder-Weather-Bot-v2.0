@@ -2,9 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@attribute name="title" required="true" %>
 
-<html lang="en"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>${title} - Pathfinder WeatherBot</title>
     <meta charset="UTF-8">
@@ -38,7 +36,7 @@
                     </div>
                 </div>
             </div>
-            <div class="content">
+            <div class="contentWrapper">
                 <jsp:doBody/>
             </div>
         </div>

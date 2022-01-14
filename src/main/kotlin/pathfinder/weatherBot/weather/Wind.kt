@@ -59,4 +59,5 @@ enum class Wind {
     abstract fun print(prevWind: Wind?): String?
     operator fun plus(i: Int) = values()[(ordinal + i).coerceAtMost(values().size - 1)]
     operator fun minus(i: Int) = values()[(ordinal - i).coerceAtLeast(0)]
+    override fun toString() = this.name.lowercase().replaceFirstChar { it.uppercaseChar() }
 }

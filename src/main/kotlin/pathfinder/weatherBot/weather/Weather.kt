@@ -9,8 +9,10 @@ import pathfinder.weatherBot.weather.precipitation.fog.Fog
 import java.io.Serializable
 import java.time.LocalDateTime
 
-class Weather(config: GuildConfig, season: Season, time: LocalDateTime, temp: Temperature, prevWeather: Weather?) : Serializable {
-    val precipitation: Precipitation? = prevWeather?.precipitation?.takeIf { time < it.end } ?: Precipitation(config, time, season, temp)
+class Weather(config: GuildConfig, season: Season, time: LocalDateTime, temp: Temperature, prevWeather: Weather?) :
+    Serializable {
+    val precipitation: Precipitation? =
+        prevWeather?.precipitation?.takeIf { time < it.end } ?: Precipitation(config, time, season, temp)
 
     private var cloudDuration = 0L
     val clouds: Clouds = when {

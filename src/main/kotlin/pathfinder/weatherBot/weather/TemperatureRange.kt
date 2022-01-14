@@ -19,9 +19,9 @@ class TemperatureRange(config: GuildConfig, date: LocalDate, season: Season, old
     private val tempPrev = oldTemp?.lowTemp ?: lowTemp
 
     fun tempAtHour(time: LocalTime): Temperature {
-        val low = if (time < NOON) tempPrev else lowTemp
+        val low = if (time.isBefore(NOON)) tempPrev else lowTemp
         val halfDif = (highTemp - low) / 2
         val cosine = cos((time.hour.toFloat() - 12) / 12 * PI).roundToLong()
-        return Temperature(low + halfDif + cosine * halfDif)
+        return Temperature(low + halfDif + (cosine * halfDif))
     }
 }

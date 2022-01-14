@@ -9,12 +9,15 @@ import pathfinder.weatherBot.weather.Temperature
 import java.io.Serializable
 import java.time.LocalDateTime
 
-abstract class Precipitation(val start: LocalDateTime, val end: LocalDateTime): Described<Precipitation>, Serializable {
+abstract class Precipitation(val start: LocalDateTime, val end: LocalDateTime) : Described<Precipitation>,
+    Serializable {
     companion object {
         private fun dry(season: Season, config: GuildConfig): Boolean = (1 d 100) > season.frequency(config).chance
         fun thunder(): Boolean = (1 d 100) <= 10
 
-        operator fun invoke(config: GuildConfig, start: LocalDateTime, season: Season, temp: Temperature): Precipitation? = when {
+        operator fun invoke(
+            config: GuildConfig, start: LocalDateTime, season: Season, temp: Temperature
+        ): Precipitation? = when {
             dry(season, config) -> null
             temp.freezing -> config.intensity.frozen(start)
             else -> config.intensity.wet(start, temp)
@@ -27,5 +30,7 @@ abstract class Precipitation(val start: LocalDateTime, val end: LocalDateTime): 
 
     abstract val fireRetardance: Int
     val tempAdjust = 0
+
+    override fun toString() = "([A-Z])".toRegex().replace(this::class.simpleName!!, " $1").trim()
 }
 

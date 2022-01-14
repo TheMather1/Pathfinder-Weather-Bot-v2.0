@@ -4,26 +4,7 @@
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
-<t:portal title="Settings - ${guild.name}">
-    <header>
-        <nav class="contentNavbar">
-            <ul>
-                <li>
-                    <a href="../${guild.id}">Weather</a>
-                </li>
-                <c:if test="${forecast}">
-                    <li>
-                        <a href="./forecast">Forecast</a>
-                    </li>
-                </c:if>
-                <c:if test="${settings}">
-                    <li class="activeContent">
-                        <a href="">Settings</a>
-                    </li>
-                </c:if>
-            </ul>
-        </nav>
-    </header>
+<t:server title="Settings - ${guild.name}" page="settings">
     <section class="settings">
         <sf:form modelAttribute="config" action="settings" method="post">
             <fieldset>
@@ -55,4 +36,4 @@
             </fieldset>
         </sf:form>
     </section>
-</t:portal>
+</t:server>
