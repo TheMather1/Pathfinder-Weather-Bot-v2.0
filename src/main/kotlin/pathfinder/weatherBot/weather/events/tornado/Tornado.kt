@@ -8,7 +8,7 @@ import pathfinder.weatherBot.weather.precipitation.Thunder
 import pathfinder.weatherBot.weather.precipitation.snow.Snow
 import java.time.LocalDateTime
 
-open class Tornado(override val start: LocalDateTime, override var end: LocalDateTime) : Event<Tornado> {
+open class Tornado(start: LocalDateTime, end: LocalDateTime) : Event<Tornado>(start, end) {
 
     companion object {
         operator fun invoke(hour: Hour): Tornado? {

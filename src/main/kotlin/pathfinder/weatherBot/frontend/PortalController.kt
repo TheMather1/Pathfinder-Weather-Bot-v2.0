@@ -17,6 +17,7 @@ import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.location.Climate
 import pathfinder.weatherBot.location.Elevation
 import pathfinder.weatherBot.time.Hour
+import pathfinder.weatherBot.weather.events.Event
 import java.time.LocalTime
 import java.util.concurrent.ConcurrentMap
 
@@ -79,6 +80,53 @@ class PortalController(private val jda: JDA, private val registrations: Concurre
         registrations[guildId] = client
         model.withSettings(config, guild)
         return "settings"
+    }
+
+    @GetMapping("/{guildId}/events")
+    fun viewEvents(
+        model: Model, @AuthenticationPrincipal user: DiscordUser, @PathVariable("guildId") guildId: Long
+    ): String {
+        val (_, client, _) = model.authenticateUser(user, guildId, Permissions.MODERATOR)
+        model.withEvents(client.forecast.allEvents)
+        return "events"
+    }
+
+    @PostMapping("/{guildId}/events")
+    fun updateEvent(
+        model: Model,
+        @AuthenticationPrincipal user: DiscordUser,
+        @PathVariable("guildId") guildId: Long,
+        @ModelAttribute("config") form: EventForm
+    ): String {
+        val (_, client, _) = model.authenticateUser(user, guildId, Permissions.MODERATOR)
+        form.events.forEach { formEvent ->
+            client.forecast.apply {
+                today.hours.firstNotNullOfOrNull { h ->
+                    h?.events?.firstOrNull { formEvent.isEvent(it) }?.apply {
+                        active = formEvent.active
+                    }
+                } ?: tomorrow.hours.firstNotNullOfOrNull { h ->
+                    h?.events?.firstOrNull { formEvent.isEvent(it) }?.apply {
+                        active = formEvent.active
+                    }
+                } ?: dayAfterTomorrow.hours.firstNotNullOfOrNull { h ->
+                    h?.events?.firstOrNull { formEvent.isEvent(it) }?.apply {
+                        active = formEvent.active
+                    }
+                }
+            }
+        }
+        registrations[guildId] = client
+        model.withEvents(client.forecast.allEvents)
+        return "events"
+    }
+
+    private fun Model.withEvents(events: List<Event<*>>) {
+        addAttribute("eventForm", EventForm(events))
+//        addAttribute("event_keys", events.mapIndexed { i, event ->
+//            addAttribute("event_$i", event)
+//            "event_$i"
+//        })
     }
 
     private fun Model.withSettings(config: GuildConfig, guild: Guild) {

@@ -79,7 +79,8 @@ guild.jsp
         </section>
         <c:if test="${isModerator}">
             <br>
-            <button class="forecastReset" onclick="window.location.href='forecast/delete';">Reset forecast</button>
+            <button class="inputButton tableSubmit" onclick="window.location.href='forecast/delete';">Reset forecast
+            </button>
         </c:if>
     </section>
 </t:server>

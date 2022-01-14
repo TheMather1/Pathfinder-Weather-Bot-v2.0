@@ -24,12 +24,12 @@ class Hour(config: GuildConfig, day: Day, val time: LocalDateTime, prevHour: Hou
         get() = (temp.temp - 100 - (weather.precipitation?.fireRetardance ?: 0)) * (1 - humidity)
 
 
-    val events: List<Event<*>> = (prevHour?.events?.toMutableList() ?: mutableListOf()).apply {
+    val events: MutableList<Event<*>> = (prevHour?.events?.toMutableList() ?: mutableListOf()).apply {
         if (none { it is Tornado }) Tornado(this@Hour)?.let(::add)
     }
 
     private val eventDescriptions
-        get() = listOfNotNull(events.mapNotNull { e -> e.description(prevEvents) },
+        get() = listOfNotNull(events.filter { it.active }.mapNotNull { e -> e.description(prevEvents) },
             prevEvents.filter { p -> events.none { it::class.isInstance(p) || p::class.isInstance(it) } }
                 .map { it.finished }).flatten()
 

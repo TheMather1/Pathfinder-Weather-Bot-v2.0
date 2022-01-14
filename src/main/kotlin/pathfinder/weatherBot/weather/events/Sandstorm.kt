@@ -4,7 +4,7 @@ import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.Weather
 import java.time.LocalDateTime
 
-open class Sandstorm(override val start: LocalDateTime, override val end: LocalDateTime) : Event<Sandstorm> {
+open class Sandstorm(start: LocalDateTime, end: LocalDateTime) : Event<Sandstorm>(start, end) {
     override fun progress(hour: Hour, weather: Weather): Event<Sandstorm>? {
         TODO("not implemented")
     }

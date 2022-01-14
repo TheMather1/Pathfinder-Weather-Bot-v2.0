@@ -21,6 +21,11 @@
                         <a href="/portal/${guild.id}/settings">Settings</a>
                     </li>
                 </c:if>
+                <c:if test="${isModerator}">
+                    <li <c:if test="${page == 'events'}">class="activeContent"</c:if>>
+                        <a href="/portal/${guild.id}/events">Events</a>
+                    </li>
+                </c:if>
             </ul>
         </nav>
     </header>

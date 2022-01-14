@@ -32,7 +32,7 @@
                     <sf:options items="${channelOptions}"/>
                 </sf:select>
                 <br><br>
-                <input type="submit" value="Save changes">
+                <input class="inputButton" type="submit" value="Save changes">
             </fieldset>
         </sf:form>
     </section>

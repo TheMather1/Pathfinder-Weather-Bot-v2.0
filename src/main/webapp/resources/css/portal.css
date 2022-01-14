@@ -126,12 +126,18 @@ h1 {
     -webkit-border-vertical-spacing: 0;
 }
 
+td input {
+    background-color: transparent;
+    text-align: center;
+    color: #ffffff;
+}
+
 .settings fieldset legend {
     font-size: 200%;
     font-weight: bold;
 }
 
-.settings fieldset input, .forecastReset {
+.inputButton {
     padding: 7px 16px;
     border-radius: 3px;
     background-color: #5865F2;
@@ -145,11 +151,11 @@ h1 {
     transition-timing-function: ease-out;
 }
 
-.settings fieldset input:hover, .forecastReset:hover {
+.inputButton:hover {
     background-color: rgb(60, 69, 165);
 }
 
-.forecastReset {
+.tableSubmit {
     position: relative;
     left: 25%;
     cursor: pointer;

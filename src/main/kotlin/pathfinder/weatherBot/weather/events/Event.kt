@@ -2,11 +2,16 @@ package pathfinder.weatherBot.weather.events
 
 import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.Weather
+import java.io.Serializable
 import java.time.LocalDateTime
 
-interface Event<T: Event<T>> {
-    val start: LocalDateTime
-    val end: LocalDateTime
+abstract class Event<T : Event<T>>(
+    val start: LocalDateTime, var end: LocalDateTime
+) : Serializable {
+    abstract val finished: String
+    var active = false
+    val name: String
+        get() = this::class.simpleName!!
 
     companion object {
         operator fun invoke(hour: Hour, prevEvents: List<Event<*>>, weather: Weather): List<Event<*>> {
@@ -16,8 +21,7 @@ interface Event<T: Event<T>> {
         }
     }
 
-    fun description(prev: List<Event<*>>): String?
-    val finished: String
+    abstract fun description(prev: List<Event<*>>): String?
 
-    fun progress(hour: Hour, weather: Weather): Event<T>?
+    abstract fun progress(hour: Hour, weather: Weather): Event<T>?
 }
