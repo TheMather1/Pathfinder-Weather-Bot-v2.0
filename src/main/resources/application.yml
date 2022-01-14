@@ -16,7 +16,7 @@ spring:
       client-id: 619946100723548171
       client-name: WeatherBot
       client-secret: dvuYOBEGeivNzeg2tagr3RSYBB40zGs5
-      redirectUri: http://localhost:8080/login/oauth2/code/discord
+      redirectUri: https://pathfinder-weather-bot.herokuapp.com/login/oauth2/code/discord
       provider: discord
       scope:
         - identify
