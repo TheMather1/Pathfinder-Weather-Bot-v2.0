@@ -1,6 +1,7 @@
 package pathfinder.weatherBot.config
 
 import net.dv8tion.jda.api.JDA
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -11,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.exchange
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import pathfinder.weatherBot.frontend.DiscordUser
 
 
@@ -43,5 +46,16 @@ class SecurityConfig(
             set(HttpHeaders.USER_AGENT, "WeatherBot")
         })
     ).body?.let { DiscordUser(it, jda) }
+
+    @Bean
+    fun corsConfigurationSource() = UrlBasedCorsConfigurationSource().apply {
+        registerCorsConfiguration("/**", CorsConfiguration().apply {
+            allowedOrigins = listOf("https://discord.com")
+            allowedHeaders = listOf("*")
+            maxAge = 3600L
+            allowedMethods = listOf("GET","POST", "OPTIONS")
+            allowCredentials = true
+        })
+    }
 
 }
