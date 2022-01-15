@@ -24,7 +24,6 @@ class SecurityConfig(
 
     override fun configure(http: HttpSecurity) {
         http.run {
-            csrf().disable()
             authorizeRequests()
                 .antMatchers("/portal/**").authenticated()
                 .anyRequest().permitAll()
