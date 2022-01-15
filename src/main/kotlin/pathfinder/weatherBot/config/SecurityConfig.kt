@@ -1,6 +1,7 @@
 package pathfinder.weatherBot.config
 
 import net.dv8tion.jda.api.JDA
+import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpEntity
@@ -67,5 +68,10 @@ class SecurityConfig(
     }
 
     class FailureEvent(authentication: Authentication, exception: AuthenticationException)
-        : AbstractAuthenticationFailureEvent(authentication, exception)
+        : AbstractAuthenticationFailureEvent(authentication, exception) {
+        private val logger = LoggerFactory.getLogger(javaClass)
+            init {
+                logger.error("Encountered OAuth2AuthenticationException.", exception)
+            }
+        }
 }
