@@ -6,10 +6,15 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
+import org.springframework.security.authentication.DefaultAuthenticationEventPublisher
+import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.AuthenticationException
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.exchange
 import org.springframework.web.cors.CorsConfiguration
@@ -20,7 +25,8 @@ import pathfinder.weatherBot.frontend.DiscordUser
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    val jda: JDA
+    val jda: JDA,
+    val publisher: DefaultAuthenticationEventPublisher
 ) : WebSecurityConfigurerAdapter() {
 
     private val restTemplate = RestTemplate()
@@ -37,6 +43,7 @@ class SecurityConfig(
                 .and().userInfoEndpoint().userService(::loadUser)
             logout().logoutUrl("/logout").logoutSuccessUrl("/")
         }
+        publisher.setAdditionalExceptionMappings(mapOf(OAuth2AuthenticationException::class.java to FailureEvent::class.java))
     }
 
     fun loadUser(userRequest: OAuth2UserRequest) = restTemplate.exchange<Map<String, String>>(
@@ -59,4 +66,6 @@ class SecurityConfig(
         })
     }
 
+    class FailureEvent(authentication: Authentication, exception: AuthenticationException)
+        : AbstractAuthenticationFailureEvent(authentication, exception)
 }

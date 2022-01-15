@@ -11,7 +11,6 @@ plugins {
 repositories {
     mavenCentral()
     jcenter()
-//    maven("https://maven.pkg.github.com/TheMather1/temporal-collections")
 }
 
 dependencies {
@@ -25,7 +24,6 @@ dependencies {
     implementation("org.springframework.boot", "spring-boot-starter-tomcat")
     implementation("org.apache.taglibs", "taglibs-standard-impl", "1.2.5")
     implementation("org.apache.tomcat.embed", "tomcat-embed-jasper")
-    testImplementation("org.junit.jupiter", "junit-jupiter", "5.5.2")
 }
 
 tasks {
