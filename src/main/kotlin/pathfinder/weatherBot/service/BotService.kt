@@ -29,7 +29,7 @@ class BotService(val jda: JDA, val registrations: HTreeMap<Long, Client>, val we
     }
 
     @Scheduled(cron = "@hourly")
-    fun botProcess() {
+    private fun botProcess() {
         logger.info("Executing scheduled weather report.")
         jda.guilds.forEach { guild ->
             val client = registrations[guild.idLong] ?: Client(guild)

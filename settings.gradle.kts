@@ -1,1 +1,1 @@
-rootProject.name = "weatherBot"
+rootProject.name = "Pathfinder-weather-bot"
