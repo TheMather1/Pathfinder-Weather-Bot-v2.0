@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import org.mapdb.HTreeMap
 import org.slf4j.LoggerFactory
@@ -52,7 +52,7 @@ class BotService(val jda: JDA, val registrations: HTreeMap<Long, Client>, val we
         registrations.computeIfAbsent(event.guild.idLong) { Client(event.guild) }
     }
 
-    override fun onSlashCommand(event: SlashCommandEvent) {
+    override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent) {
         val guild = event.guild!!
         logger.debug("Received command ${event.name} with options ${event.options} from server ${guild.name}.")
         val command = weatherCommands.first { it.name == event.name }
@@ -65,7 +65,7 @@ class BotService(val jda: JDA, val registrations: HTreeMap<Long, Client>, val we
         logger.debug("Command finished processing.")
     }
 
-    private val SlashCommandEvent.sudo: Boolean
+    private val SlashCommandInteractionEvent.sudo: Boolean
         get() = member?.hasPermission(Permission.MANAGE_SERVER) ?: false
 
 }

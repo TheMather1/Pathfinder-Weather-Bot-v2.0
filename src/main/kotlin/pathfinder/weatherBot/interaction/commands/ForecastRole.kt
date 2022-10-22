@@ -1,6 +1,6 @@
 package pathfinder.weatherBot.interaction.commands
 
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.interactions.commands.OptionType
 import org.springframework.stereotype.Service
 import pathfinder.weatherBot.interaction.Client
@@ -16,7 +16,7 @@ class ForecastRole : WeatherCommand("forecast_role", "Sets the role allowed to v
 
     override val sudo = true
 
-    override fun execute(event: SlashCommandEvent, client: Client): String {
+    override fun execute(event: SlashCommandInteractionEvent, client: Client): String {
         return event.getOption("role")?.asRole?.let { role ->
             client.config.forecastRole = role.idLong
             "Members with the ${role.asMention} role can now view the forecast."

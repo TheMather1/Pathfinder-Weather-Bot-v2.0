@@ -1,6 +1,6 @@
 package pathfinder.weatherBot.interaction.commands
 
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.interactions.commands.OptionType
 import org.springframework.stereotype.Service
 import pathfinder.weatherBot.interaction.Client
@@ -16,7 +16,7 @@ class Desert : WeatherCommand("desert", "Sets the desert boolean of the server."
 
     override val sudo = true
 
-    override fun execute(event: SlashCommandEvent, client: Client): String {
+    override fun execute(event: SlashCommandInteractionEvent, client: Client): String {
         val desert = event.getOption("desert")!!.asBoolean
         client.config.desert = desert
         return "Desert set to $desert."

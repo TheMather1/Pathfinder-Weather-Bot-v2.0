@@ -1,6 +1,6 @@
 package pathfinder.weatherBot.interaction.commands
 
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.interactions.commands.Command.Choice
 import net.dv8tion.jda.api.interactions.commands.OptionType
 import net.dv8tion.jda.api.interactions.commands.build.OptionData
@@ -23,7 +23,7 @@ class SetClimate : WeatherCommand("climate", "Sets the climate of the server.") 
 
     override val sudo = true
 
-    override fun execute(event: SlashCommandEvent, client: Client) = try {
+    override fun execute(event: SlashCommandInteractionEvent, client: Client) = try {
         client.config.climate = Climate.valueOf(event.getOption("climate")!!.asString)
         "Climate has been set to ${client.config.climate}."
     } catch (_: Throwable) {

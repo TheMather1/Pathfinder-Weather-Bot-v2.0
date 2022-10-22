@@ -23,4 +23,4 @@ spring:
 pathfinder.weather.bot.token: ${weatherbot_token}
 logging.level:
   pathfinder: debug
-  org.springframework.security: debug
+  org.springframework.security: info
