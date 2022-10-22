@@ -61,6 +61,7 @@ class BotService(val jda: JDA, val registrations: HTreeMap<Long, Client>, val we
             val client = registrations[guild.idLong] ?: Client(guild)
             it.editOriginal(command.execute(event, client)).queue()
             registrations[guild.idLong] = client
+            registrations.clear()
         }
         logger.debug("Command finished processing.")
     }

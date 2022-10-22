@@ -30,7 +30,7 @@ dependencies {
 
 tasks {
     war {
-        webAppDirName = "src/main/webapp"
+        webAppDirName = "src/main"
     }
     test {
         useJUnitPlatform()

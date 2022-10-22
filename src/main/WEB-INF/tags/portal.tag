@@ -6,7 +6,7 @@
 <head>
     <title>${title} - Pathfinder WeatherBot</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/portal.css"/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value="/css/portal.css"/>">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 </head>
 <body>
