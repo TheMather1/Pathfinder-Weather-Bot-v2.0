@@ -4,6 +4,8 @@ import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.Permission.MANAGE_SERVER
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
+import org.mapdb.DB
+import org.mapdb.HTreeMap
 import org.springframework.http.HttpStatus.FORBIDDEN
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -19,11 +21,10 @@ import pathfinder.weatherBot.location.Elevation
 import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.events.Event
 import java.time.LocalTime
-import java.util.concurrent.ConcurrentMap
 
 @Controller
 @RequestMapping("/portal")
-class PortalController(private val jda: JDA, private val registrations: ConcurrentMap<Long, Client>) {
+class PortalController(private val jda: JDA, private val registrations: HTreeMap<Long, Client>, private val fileDB: DB) {
 
     @GetMapping
     fun viewPortal(model: Model, @AuthenticationPrincipal user: DiscordUser): String {
@@ -56,6 +57,7 @@ class PortalController(private val jda: JDA, private val registrations: Concurre
         val (_, client) = model.authenticateUser(user, guildId, Permissions.MODERATOR)
         client.forecast.reset(client.config)
         registrations[guildId] = client
+        fileDB.commit()
         return RedirectView("/portal/$guildId/forecast")
     }
 
@@ -78,6 +80,7 @@ class PortalController(private val jda: JDA, private val registrations: Concurre
         val (guild, client, _) = model.authenticateUser(user, guildId, Permissions.MODERATOR)
         client.config = config
         registrations[guildId] = client
+        fileDB.commit()
         model.withSettings(config, guild)
         return "settings"
     }
@@ -117,6 +120,7 @@ class PortalController(private val jda: JDA, private val registrations: Concurre
             }
         }
         registrations[guildId] = client
+        fileDB.commit()
         model.withEvents(client.forecast.allEvents)
         return "events"
     }

@@ -13,7 +13,8 @@ import pathfinder.weatherBot.interaction.Client
 @Configuration
 @ConfigurationProperties("pathfinder.weather.bot")
 class BotConfig {
-    private val db = DBMaker.fileDB("session_data.db").closeOnJvmShutdown().make()
+    @get:Bean
+    val db = DBMaker.fileDB("session_data.db").closeOnJvmShutdown().make()
     lateinit var token: String
 
     @Bean

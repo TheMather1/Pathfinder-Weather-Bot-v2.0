@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.events.guild.GuildJoinEvent
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
+import org.mapdb.DB
 import org.mapdb.HTreeMap
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
@@ -15,7 +16,7 @@ import pathfinder.weatherBot.interaction.commands.WeatherCommand
 import javax.annotation.PostConstruct
 
 @Service
-class BotService(val jda: JDA, val registrations: HTreeMap<Long, Client>, val weatherCommands: List<WeatherCommand>) :
+class BotService(val jda: JDA, val registrations: HTreeMap<Long, Client>, val weatherCommands: List<WeatherCommand>, val fileDB: DB) :
     ListenerAdapter() {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -40,16 +41,19 @@ class BotService(val jda: JDA, val registrations: HTreeMap<Long, Client>, val we
                 } ?: logger.debug("No update.")
             } else logger.debug("Skipping server: ${guild.name}")
             registrations[guild.idLong] = client
+            fileDB.commit()
         }
         logger.debug("Weather report completed.")
     }
 
     override fun onGuildReady(event: GuildReadyEvent) {
         registrations.computeIfAbsent(event.guild.idLong) { Client(event.guild) }
+        fileDB.commit()
     }
 
     override fun onGuildJoin(event: GuildJoinEvent) {
         registrations.computeIfAbsent(event.guild.idLong) { Client(event.guild) }
+        fileDB.commit()
     }
 
     override fun onSlashCommandInteraction(event: SlashCommandInteractionEvent) {
@@ -61,7 +65,7 @@ class BotService(val jda: JDA, val registrations: HTreeMap<Long, Client>, val we
             val client = registrations[guild.idLong] ?: Client(guild)
             it.editOriginal(command.execute(event, client)).queue()
             registrations[guild.idLong] = client
-            registrations.clear()
+            fileDB.commit()
         }
         logger.debug("Command finished processing.")
     }
