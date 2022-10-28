@@ -20,7 +20,10 @@ spring:
       provider: discord
       scope:
         - identify
-pathfinder.weather.bot.token: ${weatherbot_token}
+pathfinder.weather.bot:
+  token: ${weatherbot_token}
+  shardId: ${shard_id:0}
+  shardTotal: ${shard_total:1}
 logging.level:
   pathfinder: debug
   org.springframework.security: info
