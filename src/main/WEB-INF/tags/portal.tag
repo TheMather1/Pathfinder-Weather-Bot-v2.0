@@ -29,6 +29,14 @@
                                                 </a>
                                             </li>
                                         </c:forEach>
+                                        <li>
+                                            <a class="sidebarLink botInvite"
+                                               target="_blank"
+                                               rel="noopener noreferrer"
+                                               href="https://discord.com/api/oauth2/authorize?client_id=619946100723548171&permissions=3072&scope=applications.commands%20bot">
+                                                + Add Server
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

@@ -257,6 +257,13 @@ td input {
     cursor: pointer;
 }
 
+.sidebar a.botInvite {
+    background-color: #2e8b57;
+    border-color: #ffffff;
+    border-radius: 3px;
+    border-image-width: 1;
+}
+
 .sidebarList {
     margin-left: -10px;
 }
