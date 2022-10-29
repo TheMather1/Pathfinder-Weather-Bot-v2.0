@@ -4,11 +4,12 @@ guild.jsp
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
+<%--@elvariable id="guild" type="net.dv8tion.jda.api.entities.Guild"--%>
 <t:server title="Forecast - ${guild.name}" page="forecast">
     <section class="forecast">
         <section id="today">
             <h1>Today</h1>
-            <table>
+            <table aria-label="Weather for today.">
                 <tbody>
                 <tr>
                     <th>Time</th>
@@ -17,6 +18,7 @@ guild.jsp
                     <th>Wind</th>
                     <th>Temperature</th>
                 </tr>
+                <%--@elvariable id="forecast" type="pathfinder.weatherBot.time.Forecast"--%>
                 <c:forEach var="hour" items="${forecast.today.hours}">
                     <tr>
                         <td>${hour.time.toLocalTime()}</td>
@@ -32,7 +34,7 @@ guild.jsp
         <br>
         <section id="tomorrow">
             <h1>Tomorrow</h1>
-            <table>
+            <table aria-label="Weather for tomorrow.">
                 <tbody>
                 <tr>
                     <th>Time</th>
@@ -56,7 +58,7 @@ guild.jsp
         <br>
         <section id="nextDay">
             <h1>Day after</h1>
-            <table>
+            <table aria-label="Weather for the day after tomorrow.">
                 <tbody>
                 <tr>
                     <th>Time</th>
@@ -77,6 +79,7 @@ guild.jsp
                 </tbody>
             </table>
         </section>
+        <%--@elvariable id="isModerator" type="boolean"--%>
         <c:if test="${isModerator}">
             <br>
             <button class="inputButton tableSubmit" onclick="window.location.href='forecast/delete';">Reset forecast

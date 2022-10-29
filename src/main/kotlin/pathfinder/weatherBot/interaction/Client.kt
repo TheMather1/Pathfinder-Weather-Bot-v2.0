@@ -20,7 +20,7 @@ class Client(
         get() = now.toLocalTime() == LocalTime.MIDNIGHT
     private val today
         get() = forecast.apply { if (isMidnight) progress(config) }.today
-    private val thisHour
+    val thisHour
         get() = today.hours[now.hour]
 
     fun start() = if (!config.active) {

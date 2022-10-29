@@ -3,6 +3,7 @@ package pathfinder.weatherBot.weather
 import pathfinder.weatherBot.d
 import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.time.Season
+import pathfinder.weatherBot.weather.precipitation.None
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.Thunder
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
@@ -11,12 +12,12 @@ import java.time.LocalDateTime
 
 class Weather(config: GuildConfig, season: Season, time: LocalDateTime, temp: Temperature, prevWeather: Weather?) :
     Serializable {
-    val precipitation: Precipitation? =
+    val precipitation: Precipitation =
         prevWeather?.precipitation?.takeIf { time < it.end } ?: Precipitation(config, time, season, temp)
 
     private var cloudDuration = 0L
     val clouds: Clouds = when {
-        precipitation != null -> Clouds.OVERCAST
+        precipitation !is None -> Clouds.OVERCAST
         prevWeather != null && prevWeather.cloudDuration > 0 -> {
             cloudDuration = prevWeather.cloudDuration - 1
             prevWeather.clouds.also { temp.temp += it.adjustTemp(season) }
@@ -46,10 +47,9 @@ class Weather(config: GuildConfig, season: Season, time: LocalDateTime, temp: Te
         }
     }
 
-    val descriptions = listOfNotNull(
+    fun describe(prevWeather: Weather?) = listOfNotNull(
         clouds.print(prevWeather?.clouds),
-        if (precipitation == null) prevWeather?.precipitation?.finished
-        else precipitation.description(prevWeather?.precipitation),
+        precipitation.print(prevWeather?.precipitation),
         wind.print(prevWeather?.wind),
     )
 

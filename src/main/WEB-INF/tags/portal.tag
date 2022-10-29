@@ -21,8 +21,10 @@
                                 <div class="serverContainer">
                                     <p class="sidebarHeading">Servers</p>
                                     <ul class="sidebarList">
+                                        <%--@elvariable id="servers" type="java.util.Map<String, long>"--%>
                                         <c:forEach var="server" items="${servers}">
                                             <li>
+                                                <%--@elvariable id="guild" type="net.dv8tion.jda.api.entities.Guild"--%>
                                                 <a class="sidebarLink<c:if test="${guild.id == server.value}"> activeLink</c:if>"
                                                    href="/portal/<c:out value="${server.value}"/>">
                                                     <c:out value="${server.key}"/>

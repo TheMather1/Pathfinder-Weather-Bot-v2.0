@@ -1,5 +1,6 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
+import pathfinder.weatherBot.weather.precipitation.None
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
 import pathfinder.weatherBot.weather.precipitation.rain.Rain
@@ -11,12 +12,13 @@ open class Blizzard(start: LocalDateTime, end: LocalDateTime) : HeavySnow(start,
 //        hour.day.forecast.biome.snowLevel += 4
     }
 
-    override fun description(prev: Precipitation?) = when(prev) {
+    override fun print(prev: Precipitation?) = when(prev) {
         is Blizzard -> null
         is Snow -> "Intense winds turns the snow into a blizzard."
         is Rain -> "The rain freezes as a blizzard picks up."
         is Fog -> "The fog is blown away as a blizzard picks up."
-        else -> "Heavy snow and high winds combine into a blizzard."
+        is None -> "Heavy snow and high winds combine into a blizzard."
+        else -> "There is a blizzard buffeting the area."
     }
 
     override val finished: String

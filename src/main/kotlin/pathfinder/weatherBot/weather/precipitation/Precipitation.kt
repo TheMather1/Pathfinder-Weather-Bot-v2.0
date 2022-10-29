@@ -17,8 +17,8 @@ abstract class Precipitation(val start: LocalDateTime, val end: LocalDateTime) :
 
         operator fun invoke(
             config: GuildConfig, start: LocalDateTime, season: Season, temp: Temperature
-        ): Precipitation? = when {
-            dry(season, config) -> null
+        ): Precipitation = when {
+            dry(season, config) -> None(start)
             temp.freezing -> config.intensity.frozen(start)
             else -> config.intensity.wet(start, temp)
         }
