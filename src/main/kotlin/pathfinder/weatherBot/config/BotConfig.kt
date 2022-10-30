@@ -24,6 +24,7 @@ class BotConfig {
 
     @Bean
     fun registrations(): HTreeMap<Long, Client> {
+        @Suppress("UNCHECKED_CAST")
         return db.hashMap("client_registrations").createOrOpen() as HTreeMap<Long, Client>
     }
 

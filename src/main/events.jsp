@@ -4,10 +4,12 @@
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
+<%--@elvariable id="guild" type="net.dv8tion.jda.api.entities.Guild"--%>
 <t:server title="Events - ${guild.name}" page="events">
     <section class="settings">
+        <%--@elvariable id="eventForm" type="pathfinder.weatherBot.frontend.EventForm"--%>
         <sf:form modelAttribute="eventForm" action="events" method="post">
-            <table>
+            <table aria-label="Scheduled weather events.">
                 <tr>
                     <th>Type</th>
                     <th>Start</th>
@@ -17,20 +19,28 @@
                 <c:forEach var="event" varStatus="s" items="${eventForm.events}">
                     <tr>
                         <td>
-                            <input type="text" readonly="readonly" name="events[${s.index}].name"
-                                   value="${event.name}"/>
+                            <label>
+                                <input type="text" readonly="readonly" name="events[${s.index}].name"
+                                       value="${event.name}"/>
+                            </label>
                         </td>
                         <td>
-                            <input type="datetime-local" readonly="readonly" name="events[${s.index}].start" size="17"
-                                   value="${event.start}"/>
+                            <label>
+                                <input type="datetime-local" readonly="readonly" name="events[${s.index}].start" size="17"
+                                       value="${event.start}"/>
+                            </label>
                         </td>
                         <td>
-                            <input type="datetime-local" readonly="readonly" name="events[${s.index}].end" size="17"
-                                   value="${event.end}"/>
+                            <label>
+                                <input type="datetime-local" readonly="readonly" name="events[${s.index}].end" size="17"
+                                       value="${event.end}"/>
+                            </label>
                         </td>
                         <td>
-                            <input type="checkbox" name="events[${s.index}].active" align="center"
-                                   <c:if test="${event.active}">checked="checked"</c:if>/>
+                            <label>
+                                <input type="checkbox" name="events[${s.index}].active" style="display: block; margin: 0 auto;"
+                                       <c:if test="${event.active}">checked="checked"</c:if>/>
+                            </label>
                         </td>
                     </tr>
                 </c:forEach>
