@@ -20,11 +20,15 @@ import pathfinder.weatherBot.location.Climate
 import pathfinder.weatherBot.location.Elevation
 import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.events.Event
-import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
+@Suppress("SpringMVCViewInspection") //IntelliJ fails to detect .jsp views in root folder.
 @Controller
 @RequestMapping("/portal")
 class PortalController(private val jda: JDA, private val registrations: HTreeMap<Long, Client>, private val fileDB: DB) {
+
+    private val timezoneRegex = Regex("^(Africa|America|Asia|Atlantic|Australia|Europe|Indian|Pacific)/.*")
 
     @GetMapping
     fun viewPortal(model: Model, @AuthenticationPrincipal user: DiscordUser): String {
@@ -139,6 +143,7 @@ class PortalController(private val jda: JDA, private val registrations: HTreeMap
         addAttribute("elevationOptions", Elevation.values())
         addAttribute("roleOptions", guild.roles.associate { it.idLong to it.name } + (null to "--Disabled--"))
         addAttribute("channelOptions", guild.textChannels.associate { it.idLong to it.name })
+        addAttribute("timezoneOptions", ZoneId.getAvailableZoneIds().filter { it.contains(timezoneRegex) }.sorted())
     }
 
     private fun Model.authenticateUser(
@@ -173,7 +178,7 @@ class PortalController(private val jda: JDA, private val registrations: HTreeMap
     }
 
     private fun Model.displayWeather(client: Client) {
-        displayWeather(client.forecast.today.hours[LocalTime.now().hour])
+        displayWeather(client.forecast.today.hours[ZonedDateTime.now(client.config.timezone).hour])
     }
 
     private fun Model.displayWeather(hour: Hour?) {

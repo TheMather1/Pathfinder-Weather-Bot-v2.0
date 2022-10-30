@@ -4,8 +4,7 @@ import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
 import pathfinder.weatherBot.time.Forecast
 import java.io.Serializable
-import java.time.LocalDateTime
-import java.time.LocalTime
+import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
 class Client(
@@ -15,9 +14,9 @@ class Client(
     internal val forecast = Forecast(config)
 
     private val now
-        get() = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS)
+        get() = ZonedDateTime.now(config.timezone).truncatedTo(ChronoUnit.HOURS)
     private val isMidnight
-        get() = now.toLocalTime() == LocalTime.MIDNIGHT
+        get() = now.hour == 0
     private val today
         get() = forecast.apply { if (isMidnight) progress(config) }.today
     val thisHour

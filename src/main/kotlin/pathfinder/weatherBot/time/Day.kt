@@ -4,19 +4,13 @@ import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.weather.TemperatureRange
 import java.io.Serializable
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit.HOURS
 
 class Day(config: GuildConfig, val date: LocalDate, prevDay: Day?) : Serializable {
     val season = Season(date)
     val temperatureRange: TemperatureRange = TemperatureRange(config, date, season, prevDay?.temperatureRange)
     val hours: Array<Hour?> = (0..23).fold(emptyArray()) { o, i ->
         val dateTime = date.atTime(i, 0)
-        val now = LocalDateTime.now().truncatedTo(HOURS)
-        o + when {
-            !dateTime.isAfter(now) -> null
-            else -> Hour(config, this, dateTime, o.lastOrNull() ?: prevDay?.hours?.lastOrNull())
-        }
+        o + Hour(config, this, dateTime, o.lastOrNull() ?: prevDay?.hours?.lastOrNull())
     }
 
     fun next(config: GuildConfig) = Day(config, date.plusDays(1), this)
