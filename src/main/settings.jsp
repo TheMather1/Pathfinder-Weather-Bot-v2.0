@@ -11,6 +11,15 @@
         <sf:form modelAttribute="config" action="settings" method="post">
             <fieldset>
                 <legend><h1>Settings</h1></legend>
+                <label for="outputChannel">Output channel: </label>
+                <sf:select path="outputChannel">
+                    <%--@elvariable id="channelOptions" type="java.util.List"--%>
+                    <sf:options items="${channelOptions}"/>
+                </sf:select>
+                <br>
+                <label for="active">Active: </label>
+                <sf:checkbox path="active" id="active"/>
+                <br>
                 <label for="climate">Climate: </label>
                 <sf:select path="climate">
                     <%--@elvariable id="climateOptions" type="java.util.List"--%>
