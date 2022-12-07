@@ -19,6 +19,16 @@
                     <div class="scroller">
                         <div class="sidebarInner">
                             <div class="sidebarContainer">
+                                <div class="userContainer">
+                                    <%--@elvariable id="avatar" type="String"--%>
+                                    <%--@elvariable id="username" type="String"--%>
+                                    <img class="avatar" src="${avatar}" alt="${username}">
+                                    ${username}
+                                    <a class="logoutLink" href="/logout">
+                                        logout
+                                    </a>
+                                </div>
+                                <br>
                                 <div class="serverContainer">
                                     <p class="sidebarHeading">Servers</p>
                                     <ul class="sidebarList">

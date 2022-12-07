@@ -163,6 +163,8 @@ class PortalController(private val jda: JDA, private val registrations: HTreeMap
     }
 
     private fun Model.asUser(user: DiscordUser) {
+        addAttribute("avatar", user.avatarUrl)
+        addAttribute("username", user.name)
         addAttribute("servers", user.mutualGuilds.associate { it.name to it.idLong })
     }
 

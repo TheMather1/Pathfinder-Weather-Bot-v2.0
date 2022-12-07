@@ -41,12 +41,6 @@
                     <sf:options items="${roleOptions}"/>
                 </sf:select>
                 <br>
-                <label for="outputChannel">Output channel: </label>
-                <sf:select path="outputChannel">
-                    <%--@elvariable id="channelOptions" type="java.util.List"--%>
-                    <sf:options items="${channelOptions}"/>
-                </sf:select>
-                <br>
                 <label for="timezone">Timezone: </label>
                 <sf:select path="timezone">
                     <%--@elvariable id="timezoneOptions" type="java.util.List"--%>
