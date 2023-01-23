@@ -1,7 +1,6 @@
 package pathfinder.weatherBot.service
 
 import net.dv8tion.jda.api.JDA
-import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
@@ -60,8 +59,7 @@ class BotService(val jda: JDA, val registrations: HTreeMap<Long, Client>, val we
         val guild = event.guild!!
         logger.debug("Received command ${event.name} with options ${event.options} from server ${guild.name}.")
         val command = weatherCommands.first { it.name == event.name }
-        if (command.sudo && !event.sudo) event.reply("Only moderators may use this command.").queue()
-        else event.deferReply().queue {
+        event.deferReply(command.ephemeral).queue {
             val client = registrations[guild.idLong] ?: Client(guild)
             it.editOriginal(command.execute(event, client)).queue()
             registrations[guild.idLong] = client
@@ -69,8 +67,5 @@ class BotService(val jda: JDA, val registrations: HTreeMap<Long, Client>, val we
         }
         logger.debug("Command finished processing.")
     }
-
-    private val SlashCommandInteractionEvent.sudo: Boolean
-        get() = member?.hasPermission(Permission.MANAGE_SERVER) ?: false
 
 }

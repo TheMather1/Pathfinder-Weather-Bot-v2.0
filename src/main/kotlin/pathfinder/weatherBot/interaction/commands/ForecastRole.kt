@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionType
 import org.springframework.stereotype.Service
 import pathfinder.weatherBot.interaction.Client
+import pathfinder.weatherBot.moderatorPermission
 import javax.annotation.PostConstruct
 
 @Service
@@ -12,14 +13,13 @@ class ForecastRole : WeatherCommand("forecast_role", "Sets the role allowed to v
     @PostConstruct
     fun configureOptions() {
         addOption(OptionType.ROLE, "role", "Role to view forecast.")
+        defaultPermissions = moderatorPermission
     }
 
-    override val sudo = true
-
     override fun execute(event: SlashCommandInteractionEvent, client: Client): String {
-        return event.getOption("role")?.asRole?.let { role ->
-            client.config.forecastRole = role.idLong
-            "Members with the ${role.asMention} role can now view the forecast."
-        } ?: "Forecast role has been disabled."
+        return event.getOption("role")?.asRole.also {
+            client.config.forecastRole = it?.idLong
+        }?.run { "Members with the $asMention role can now view the forecast." }
+            ?: "Forecast role has been disabled."
     }
 }

@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionType
 import org.springframework.stereotype.Service
 import pathfinder.weatherBot.interaction.Client
+import pathfinder.weatherBot.moderatorPermission
 import javax.annotation.PostConstruct
 
 @Service
@@ -12,9 +13,8 @@ class Desert : WeatherCommand("desert", "Sets the desert boolean of the server."
     @PostConstruct
     fun configureOptions() {
         addOption(OptionType.BOOLEAN, "desert", "whether the region is a desert", true)
+        defaultPermissions = moderatorPermission
     }
-
-    override val sudo = true
 
     override fun execute(event: SlashCommandInteractionEvent, client: Client): String {
         val desert = event.getOption("desert")!!.asBoolean

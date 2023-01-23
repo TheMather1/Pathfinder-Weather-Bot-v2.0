@@ -15,11 +15,14 @@ import pathfinder.weatherBot.interaction.Client
 class BotConfig {
     @get:Bean
     val db = DBMaker.fileDB("/efs/session_data.db")
+        .fileLockDisable()
+        .cleanerHackEnable()
         .closeOnJvmShutdown()
         .checksumHeaderBypass()
         .fileMmapEnableIfSupported()
         .fileChannelEnable()
         .make()
+
     lateinit var token: String
 
     @Bean
