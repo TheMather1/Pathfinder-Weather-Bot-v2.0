@@ -17,7 +17,7 @@
 
         <div class="indexText">
             A Discord bot for procedurally generating weather according to the <a
-                href="https://aonprd.com/Rules.aspx?Name=Weather&Category=Environment">Weather Rules</a> of the first
+                href="https://aonprd.com/Rules.aspx?Name=Weather%20in%20the%20Wilderness&Category=Mastering%20the%20Wild">Weather Rules</a> of the first
             edition of Pathfinder RPG, modified for hourly reports.
             <br>
             This is primarily intended for use in living worlds, and will provide weather updates in real-time.

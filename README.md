@@ -1,5 +1,5 @@
 # Pathfinder Weather Bot
-A Discord bot for procedurally generating weather according to the [Weather Rules](https://aonprd.com/Rules.aspx?Name=Weather&Category=Environment) of the first edition of Pathfinder RPG, modified for hourly reports.
+A Discord bot for procedurally generating weather according to the [Weather Rules](https://aonprd.com/Rules.aspx?Name=Weather%20in%20the%20Wilderness&Category=Mastering%20the%20Wild) of the first edition of Pathfinder RPG, modified for hourly reports.
 \
 This is primarily intended for use in living worlds, and will provide weather updates in real-time.
 \
