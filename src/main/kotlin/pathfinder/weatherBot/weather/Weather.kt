@@ -7,6 +7,7 @@ import pathfinder.weatherBot.weather.precipitation.None
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.Thunder
 import pathfinder.weatherBot.weather.precipitation.fog.Fog
+import pathfinder.weatherBot.weather.precipitation.snow.HeavySnow
 import java.io.Serializable
 import java.time.LocalDateTime
 
@@ -31,6 +32,7 @@ class Weather(config: GuildConfig, season: Season, time: LocalDateTime, temp: Te
     private var windDuration = 0L
     val wind: Wind = when (precipitation) {
         is Fog -> Wind.LIGHT
+        is HeavySnow -> precipitation.wind
         is Thunder -> if (prevWeather?.keepWind(precipitation) == true) {
             windDuration = prevWeather.windDuration - 1
             prevWeather.wind

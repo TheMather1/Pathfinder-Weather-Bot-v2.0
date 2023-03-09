@@ -1,11 +1,12 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
+import pathfinder.weatherBot.weather.Wind
 import pathfinder.weatherBot.weather.precipitation.None
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.Thunder
 import java.time.LocalDateTime
 
-class ThunderBlizzard(start: LocalDateTime, end: LocalDateTime) : Blizzard(start, end), Thunder {
+class ThunderBlizzard(start: LocalDateTime, end: LocalDateTime, wind: Wind) : Blizzard(start, end, wind), Thunder {
     override fun print(prev: Precipitation?) = when (prev) {
         is ThunderBlizzard -> null
         is Blizzard -> "The blizzard holds strong as thunder starts to roar out in the distance."

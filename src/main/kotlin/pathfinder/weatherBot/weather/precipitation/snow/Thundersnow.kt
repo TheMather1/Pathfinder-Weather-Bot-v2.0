@@ -1,16 +1,17 @@
 package pathfinder.weatherBot.weather.precipitation.snow
 
+import pathfinder.weatherBot.weather.Wind
 import pathfinder.weatherBot.weather.precipitation.None
 import pathfinder.weatherBot.weather.precipitation.Precipitation
 import pathfinder.weatherBot.weather.precipitation.Thunder
 import pathfinder.weatherBot.weather.precipitation.rain.Thunderstorm
 import java.time.LocalDateTime
 
-class Thundersnow(start: LocalDateTime, end: LocalDateTime) : HeavySnow(start, end), Thunder {
+class Thundersnow(start: LocalDateTime, end: LocalDateTime, wind: Wind) : HeavySnow(start, end, wind), Thunder {
     companion object {
         operator fun invoke(start: LocalDateTime, end: LocalDateTime): HeavySnow = Thunder.wind.let {
-            if (blizzard(it)) ThunderBlizzard(start, end)
-            else Thundersnow(start, end)
+            if (blizzard(it)) ThunderBlizzard(start, end, it)
+            else Thundersnow(start, end, it)
         }
     }
 
