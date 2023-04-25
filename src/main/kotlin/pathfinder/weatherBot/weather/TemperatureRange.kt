@@ -13,7 +13,7 @@ import kotlin.math.roundToLong
 
 class TemperatureRange(config: GuildConfig, date: LocalDate, season: Season, oldTemp: TemperatureRange? = null) :
     Serializable {
-    private val temperatureWave: TemperatureWave = oldTemp?.temperatureWave?.next(date) ?: config.climate.tempWave(date)
+    private val temperatureWave: TemperatureWave = oldTemp?.temperatureWave?.progress(date) ?: config.climate.tempWave(date)
     private val highTemp = season.temp(config) + temperatureWave()
     private val lowTemp = highTemp - (2 d 6) - 3
     private val tempPrev = oldTemp?.lowTemp ?: lowTemp

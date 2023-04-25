@@ -13,7 +13,7 @@ class MediumSnow(start: LocalDateTime, end: LocalDateTime) : Snow(start, end) {
 //        hour.day.forecast.biome.snowLevel += 1
     }
 
-    override fun print(prev: Precipitation?) = when(prev) {
+    override fun describeChange(prev: Precipitation?) = when(prev) {
         is MediumSnow -> null
         is Blizzard -> "The blizzard yields, and only a moderate snowfall remains."
         is HeavySnow -> "The snowfall slows slightly, but is still rapidly blanketing the ground."

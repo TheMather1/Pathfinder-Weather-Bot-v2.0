@@ -24,7 +24,7 @@
                                     <%--@elvariable id="username" type="String"--%>
                                     <img class="avatar" src="${avatar}" alt="${username}">
                                     ${username}
-                                    <a class="logoutLink" href="/logout">
+                                    <a class="logoutLink" href="<c:url value="/logout"/>">
                                         logout
                                     </a>
                                 </div>

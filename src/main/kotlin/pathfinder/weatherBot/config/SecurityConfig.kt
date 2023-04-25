@@ -11,11 +11,11 @@ import org.springframework.security.authentication.DefaultAuthenticationEventPub
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException
+import org.springframework.security.web.SecurityFilterChain
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.exchange
 import org.springframework.web.cors.CorsConfiguration
@@ -28,23 +28,25 @@ import pathfinder.weatherBot.frontend.DiscordUser
 class SecurityConfig(
     val jda: JDA,
     val publisher: DefaultAuthenticationEventPublisher
-) : WebSecurityConfigurerAdapter() {
+) {
 
     private val restTemplate = RestTemplate()
 
-    override fun configure(http: HttpSecurity) {
-        http.run {
+    @Bean
+    fun configure(http: HttpSecurity): SecurityFilterChain {
+        publisher.setAdditionalExceptionMappings(mapOf(OAuth2AuthenticationException::class.java to FailureEvent::class.java))
+        return http.run {
             cors().configurationSource(corsConfigurationSource())
             csrf().disable()
-            authorizeRequests()
-                .antMatchers("/portal/**").authenticated()
+            authorizeHttpRequests()
+                .requestMatchers("/portal/**").authenticated()
                 .anyRequest().permitAll()
             oauth2Login()
                 .tokenEndpoint()
                 .and().userInfoEndpoint().userService(::loadUser)
             logout().logoutUrl("/logout").logoutSuccessUrl("/")
+            build()
         }
-        publisher.setAdditionalExceptionMappings(mapOf(OAuth2AuthenticationException::class.java to FailureEvent::class.java))
     }
 
     fun loadUser(userRequest: OAuth2UserRequest) = restTemplate.exchange<Map<String, String>>(

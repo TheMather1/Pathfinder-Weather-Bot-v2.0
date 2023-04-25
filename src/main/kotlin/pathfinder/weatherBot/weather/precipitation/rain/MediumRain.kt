@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 
 class MediumRain(start: LocalDateTime, end: LocalDateTime) : Rain(start, end) {
     override val fireRetardance = 15
-    override fun print(prev: Precipitation?) = when (prev) {
+    override fun describeChange(prev: Precipitation?) = when (prev) {
         is MediumRain -> null
         is Fog -> "Rain pours down, washing away the fog."
         is Thunderstorm -> "The sound of thunder yields, and the rain calms somewhat."

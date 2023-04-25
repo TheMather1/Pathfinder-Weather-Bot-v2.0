@@ -18,7 +18,7 @@ class Client(
     private val isMidnight
         get() = now.hour == 0
     private val today
-        get() = forecast.apply { if (isMidnight) progress(config) }.today
+        get() = forecast.apply { if (isMidnight) advanceDay(config) }.today
     val thisHour
         get() = today.hours[now.hour]
 
@@ -34,7 +34,7 @@ class Client(
 
     fun status() = if (config.active) "running" else "stopped"
 
-    fun execute(jda: JDA) = thisHour?.description?.takeUnless(String::isBlank)?.let {
+    fun reportWeather(jda: JDA) = thisHour?.report?.let {
         jda.getTextChannelById(config.outputChannel)!!.sendMessage(it)
     }
 }

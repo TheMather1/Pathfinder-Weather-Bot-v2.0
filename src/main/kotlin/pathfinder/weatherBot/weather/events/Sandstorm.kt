@@ -9,7 +9,7 @@ open class Sandstorm(start: LocalDateTime, end: LocalDateTime) : Event<Sandstorm
         TODO("not implemented")
     }
 
-    override fun description(prev: List<Event<*>>): String? {
+    override fun describeChange(prev: List<Event<*>>): String? {
         TODO("not implemented")
     }
 

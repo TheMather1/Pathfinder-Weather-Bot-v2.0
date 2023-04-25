@@ -8,9 +8,9 @@ import java.time.LocalDate
 class Forecast(config: GuildConfig) : Serializable {
     var today: Day = Day(config, LocalDate.now(), null)
         private set
-    var tomorrow: Day = today.next(config)
+    var tomorrow: Day = today.nextDay(config)
         private set
-    var dayAfterTomorrow: Day = tomorrow.next(config)
+    var dayAfterTomorrow: Day = tomorrow.nextDay(config)
         private set
 
     val allEvents: List<Event<*>>
@@ -18,15 +18,15 @@ class Forecast(config: GuildConfig) : Serializable {
             it?.events ?: emptyList()
         } + dayAfterTomorrow.hours.flatMap { it?.events ?: emptyList() }).toSet().sortedBy { it.start }
 
-    fun progress(config: GuildConfig) {
+    fun advanceDay(config: GuildConfig) {
         today = tomorrow
         tomorrow = dayAfterTomorrow
-        dayAfterTomorrow = tomorrow.next(config)
+        dayAfterTomorrow = tomorrow.nextDay(config)
     }
 
     fun reset(config: GuildConfig) {
         today = Day(config, LocalDate.now(), null)
-        tomorrow = today.next(config)
-        dayAfterTomorrow = tomorrow.next(config)
+        tomorrow = today.nextDay(config)
+        dayAfterTomorrow = tomorrow.nextDay(config)
     }
 }

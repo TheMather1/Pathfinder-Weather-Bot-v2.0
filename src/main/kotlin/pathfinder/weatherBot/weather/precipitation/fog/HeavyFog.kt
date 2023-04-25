@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 
 class HeavyFog(start: LocalDateTime, end: LocalDateTime) : Fog(start, end) {
     override val fireRetardance = 10
-    override fun print(prev: Precipitation?) = when (prev) {
+    override fun describeChange(prev: Precipitation?) = when (prev) {
         is HeavyFog -> null
         is Fog -> "The fog thickens into a smothering brume."
         is Rain -> "The rain stops, allowing a heavy fog to form."

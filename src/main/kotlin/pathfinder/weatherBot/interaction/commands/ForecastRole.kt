@@ -1,11 +1,11 @@
 package pathfinder.weatherBot.interaction.commands
 
+import jakarta.annotation.PostConstruct
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.interactions.commands.OptionType
 import org.springframework.stereotype.Service
 import pathfinder.weatherBot.interaction.Client
 import pathfinder.weatherBot.moderatorPermission
-import javax.annotation.PostConstruct
 
 @Service
 class ForecastRole : WeatherCommand("forecast_role", "Sets the role allowed to view the forecast.") {

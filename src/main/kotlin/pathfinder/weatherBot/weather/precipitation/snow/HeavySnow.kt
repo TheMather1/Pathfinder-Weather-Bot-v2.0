@@ -29,7 +29,7 @@ open class HeavySnow(start: LocalDateTime, end: LocalDateTime, val wind: Wind) :
 //        hour.day.forecast.biome.snowLevel += (1 d 4)
     }
 
-    override fun print(prev: Precipitation?) = when(prev) {
+    override fun describeChange(prev: Precipitation?) = when(prev) {
         is Blizzard -> "The blizzard yields, but the air is still heavy with snow."
         is HeavySnow -> null
         is Snow -> "The snow intensifies into a thick blanket in the air, piling onto the ground."

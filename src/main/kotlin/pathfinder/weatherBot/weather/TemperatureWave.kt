@@ -10,5 +10,5 @@ data class TemperatureWave(
 
     operator fun invoke() = diceFun()
 
-    fun next(date: LocalDate) = if (date < end) this else climate.tempWave(date)
+    fun progress(date: LocalDate) = if (date < end) this else climate.tempWave(date)
 }

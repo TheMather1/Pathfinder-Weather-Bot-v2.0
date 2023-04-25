@@ -10,7 +10,7 @@ class LightFog(start: LocalDateTime, end: LocalDateTime) : Fog(start, end) {
 
     override val fireRetardance = 0
 
-    override fun print(prev: Precipitation?) = when (prev) {
+    override fun describeChange(prev: Precipitation?) = when (prev) {
         is LightFog -> null
         is Fog -> "The fog fades to a thin veil."
         is Rain -> "As the clouds empty, a light mist hangs in the air..."

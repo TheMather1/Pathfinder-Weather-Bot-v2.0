@@ -15,7 +15,7 @@ class Thundersnow(start: LocalDateTime, end: LocalDateTime, wind: Wind) : HeavyS
         }
     }
 
-    override fun print(prev: Precipitation?) = when (prev) {
+    override fun describeChange(prev: Precipitation?) = when (prev) {
         is Thundersnow -> null
         is ThunderBlizzard -> "The blizzard ceases as the winds calm, but the snowfall and thunder still linger."
         is Thunderstorm -> "The rain freezes into a heavy snowfall, as thunder keeps roaring out in the distance."

@@ -23,7 +23,7 @@ import pathfinder.weatherBot.weather.events.Event
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-@Suppress("SpringMVCViewInspection") //IntelliJ fails to detect .jsp views in root folder.
+@Suppress("SameReturnValue")
 @Controller
 @RequestMapping("/portal")
 class PortalController(private val jda: JDA, private val registrations: HTreeMap<Long, Client>, private val fileDB: DB) {

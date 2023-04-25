@@ -30,7 +30,7 @@
                 </svg>
             </a>
             <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=VAUMSQBBYEUBY">
-                <img src="https://www.paypalobjects.com/en_US/NO/i/btn/btn_donateCC_LG.gif" title="Donate">
+                <img src="https://www.paypalobjects.com/en_US/NO/i/btn/btn_donateCC_LG.gif" title="Donate" alt="Paypal donate button">
             </a>
         </div>
     </div>

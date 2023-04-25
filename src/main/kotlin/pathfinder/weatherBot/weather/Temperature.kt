@@ -21,7 +21,7 @@ data class Temperature(var temp: Long): Serializable {
         return "$temp°F"
     }
 
-    fun describe(prevTemp: Temperature?) = when {
+    fun describeChange(prevTemp: Temperature?) = when {
         prevTemp == null -> "The temperature is a $descriptor $this."
         tempRise(prevTemp) -> "The temperature rises to a $descriptor $this."
         tempFall(prevTemp) -> "The temperature drops to a $descriptor $this."

@@ -12,7 +12,7 @@ class LightSnow(start: LocalDateTime, end: LocalDateTime) : Snow(start, end) {
 //        hour.day.forecast.biome.snowLevel += 0.5
     }
 
-    override fun print(prev: Precipitation?) = when(prev) {
+    override fun describeChange(prev: Precipitation?) = when(prev) {
         is LightSnow -> null
         is Blizzard -> "The blizzard yields, and only a light snowfall remains."
         is Sleet -> "The sleet freezes into a light dusting of snow."

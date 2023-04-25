@@ -26,7 +26,7 @@ open class Wildfire(start: LocalDateTime, end: LocalDateTime) : Event<Wildfire>(
             this
         } else null
 
-    override fun description(prev: List<Event<*>>): String? =
+    override fun describeChange(prev: List<Event<*>>): String? =
         if (prev.any { it is Wildfire }) "The wildfire keeps raging."
         else "A wildfire erupts in the distance and quickly swallows the area."
 

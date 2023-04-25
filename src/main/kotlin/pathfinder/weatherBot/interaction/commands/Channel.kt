@@ -1,11 +1,11 @@
 package pathfinder.weatherBot.interaction.commands
 
+import jakarta.annotation.PostConstruct
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.interactions.commands.OptionType
 import org.springframework.stereotype.Service
 import pathfinder.weatherBot.interaction.Client
 import pathfinder.weatherBot.moderatorPermission
-import javax.annotation.PostConstruct
 
 @Service
 class Channel : WeatherCommand("channel", "Sets the output channel.") {

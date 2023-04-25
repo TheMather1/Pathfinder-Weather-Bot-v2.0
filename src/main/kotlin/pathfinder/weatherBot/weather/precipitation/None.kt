@@ -7,7 +7,7 @@ class None(start: LocalDateTime) : Precipitation(start, start.plusHours(1)) {
 
     override val fireRetardance: Int = 0
 
-    override fun print(prev: Precipitation?): String?  = prev?.takeUnless { it is None }?.finished
+    override fun describeChange(prev: Precipitation?): String?  = prev?.takeUnless { it is None }?.finished
 
     override val finished: String
         get() = throw IllegalStateException("Precipitation type None has no end description.")

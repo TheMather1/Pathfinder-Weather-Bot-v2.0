@@ -31,19 +31,19 @@ class Hour(config: GuildConfig, day: Day, val time: LocalDateTime, prevHour: Hou
         if (none { it is Tornado }) Tornado(this@Hour)?.let(::add)
     }
 
-    private fun eventDescriptions(prevEvents: List<Event<*>>) =
-        listOfNotNull(events.filter { it.active }.mapNotNull { e -> e.description(prevEvents) },
+    private fun describeEvents(prevEvents: List<Event<*>>) =
+        listOfNotNull(events.filter { it.active }.mapNotNull { e -> e.describeChange(prevEvents) },
             prevEvents.filter { p -> events.none { it::class.isInstance(p) || p::class.isInstance(it) } }
                 .map { it.finished }).flatten()
 
-    val singleDescription
-        get() = describe(null, null, emptyList())
-
     val description
-        get() = describe(prevTemp, prevWeather, prevEvents)
+        get() = describeChange(null, null, emptyList())
 
-    private fun describe(prevTemp: Temperature?, prevWeather: Weather?, prevEvents: List<Event<*>>) =
-        (listOfNotNull(temp.describe(prevTemp)) + weather.describe(prevWeather) + eventDescriptions(prevEvents))
+    val report
+        get() = describeChange(prevTemp, prevWeather, prevEvents).takeUnless(String::isBlank)
+
+    private fun describeChange(prevTemp: Temperature?, prevWeather: Weather?, prevEvents: List<Event<*>>) =
+        (listOfNotNull(temp.describeChange(prevTemp)) + weather.describeChanges(prevWeather) + describeEvents(prevEvents))
             .joinToString("\n")
 
     private val humidMod

@@ -1,5 +1,6 @@
 package pathfinder.weatherBot.interaction.commands
 
+import jakarta.annotation.PostConstruct
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.interactions.commands.Command.Choice
 import net.dv8tion.jda.api.interactions.commands.OptionType
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service
 import pathfinder.weatherBot.interaction.Client
 import pathfinder.weatherBot.location.Climate
 import pathfinder.weatherBot.moderatorPermission
-import javax.annotation.PostConstruct
 
 @Service
 class SetClimate : WeatherCommand("climate", "Sets the climate of the server.") {

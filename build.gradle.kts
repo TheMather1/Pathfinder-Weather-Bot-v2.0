@@ -3,10 +3,10 @@ version = "2.0"
 
 plugins {
     war
-    kotlin("jvm") version "1.6.0"
-    kotlin("plugin.spring") version "1.6.0"
-    id("org.springframework.boot") version "2.6.2"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    kotlin("jvm") version "1.8.21"
+    kotlin("plugin.spring") version "1.8.21"
+    id("org.springframework.boot") version "3.0.6"
+    id("io.spring.dependency-management") version "1.1.0"
 }
 
 repositories {
@@ -28,10 +28,11 @@ dependencies {
     implementation("org.apache.tomcat.embed", "tomcat-embed-jasper")
 }
 
+war {
+    webAppDirName = "src/main"
+}
+
 tasks {
-    war {
-        webAppDirName = "src/main"
-    }
     test {
         useJUnitPlatform()
     }

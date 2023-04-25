@@ -1,5 +1,6 @@
 package pathfinder.weatherBot.service
 
+import jakarta.annotation.PostConstruct
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent
@@ -12,7 +13,6 @@ import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import pathfinder.weatherBot.interaction.Client
 import pathfinder.weatherBot.interaction.commands.WeatherCommand
-import javax.annotation.PostConstruct
 
 @Service
 class BotService(val jda: JDA, val registrations: HTreeMap<Long, Client>, val weatherCommands: List<WeatherCommand>, val fileDB: DB) :
@@ -35,7 +35,7 @@ class BotService(val jda: JDA, val registrations: HTreeMap<Long, Client>, val we
             val client = registrations[guild.idLong] ?: Client(guild)
             if (client.config.active) {
                 logger.debug("Reporting weather for server: ${guild.name}")
-                client.execute(jda)?.queue {
+                client.reportWeather(jda)?.queue {
                     logger.debug("Weather updated.")
                 } ?: logger.debug("No update.")
             } else logger.debug("Skipping server: ${guild.name}")

@@ -49,10 +49,10 @@ class Weather(config: GuildConfig, season: Season, time: LocalDateTime, temp: Te
         }
     }
 
-    fun describe(prevWeather: Weather?) = listOfNotNull(
-        clouds.print(prevWeather?.clouds),
-        precipitation.print(prevWeather?.precipitation),
-        wind.print(prevWeather?.wind),
+    fun describeChanges(prevWeather: Weather?) = listOfNotNull(
+        clouds.describeChange(prevWeather?.clouds),
+        precipitation.describeChange(prevWeather?.precipitation),
+        wind.describeChange(prevWeather?.wind),
     )
 
     private fun keepWind(precip: Precipitation?) = windDuration > 0 && (precip !is Thunder || precipitation is Thunder)

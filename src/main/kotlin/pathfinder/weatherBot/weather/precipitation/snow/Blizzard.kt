@@ -13,7 +13,7 @@ open class Blizzard(start: LocalDateTime, end: LocalDateTime, wind: Wind) : Heav
 //        hour.day.forecast.biome.snowLevel += 4
     }
 
-    override fun print(prev: Precipitation?) = when(prev) {
+    override fun describeChange(prev: Precipitation?) = when(prev) {
         is Blizzard -> null
         is Snow -> "Intense winds turns the snow into a blizzard."
         is Rain -> "The rain freezes as a blizzard picks up."

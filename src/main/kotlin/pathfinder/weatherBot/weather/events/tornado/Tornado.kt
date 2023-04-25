@@ -28,7 +28,7 @@ open class Tornado(start: LocalDateTime, end: LocalDateTime) : Event<Tornado>(st
 
     override val finished = "The tornado peters out and disappears, leaving only debris behind."
 
-    override fun description(prev: List<Event<*>>): String? = when (prev.firstOrNull { it is Tornado }) {
+    override fun describeChange(prev: List<Event<*>>): String? = when (prev.firstOrNull { it is Tornado }) {
         null -> "Thrashing winds from opposing directions form into a tornado."
         is Snownado -> ""
         is Firenado -> ""

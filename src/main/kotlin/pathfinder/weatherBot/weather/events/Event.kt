@@ -21,7 +21,7 @@ abstract class Event<T : Event<T>>(
         }
     }
 
-    abstract fun description(prev: List<Event<*>>): String?
+    abstract fun describeChange(prev: List<Event<*>>): String?
 
     abstract fun progress(hour: Hour, weather: Weather): Event<T>?
 }

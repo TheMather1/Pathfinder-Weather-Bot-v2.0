@@ -7,7 +7,7 @@ import pathfinder.weatherBot.weather.precipitation.Thunder
 import java.time.LocalDateTime
 
 class ThunderBlizzard(start: LocalDateTime, end: LocalDateTime, wind: Wind) : Blizzard(start, end, wind), Thunder {
-    override fun print(prev: Precipitation?) = when (prev) {
+    override fun describeChange(prev: Precipitation?) = when (prev) {
         is ThunderBlizzard -> null
         is Blizzard -> "The blizzard holds strong as thunder starts to roar out in the distance."
         is Thundersnow -> "Intense winds turn the thundersnow into a thunder blizzard."

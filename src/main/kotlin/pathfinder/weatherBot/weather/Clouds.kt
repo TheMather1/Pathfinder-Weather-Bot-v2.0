@@ -6,7 +6,7 @@ import pathfinder.weatherBot.time.Season
 
 enum class Clouds(protected val description: String) {
     NONE("The sky is completely clear.") {
-        override fun print(prev: Clouds?) = when (prev) {
+        override fun describeChange(prev: Clouds?) = when (prev) {
             null -> description
             NONE -> null
             LIGHT -> "The clouds dissipate. $description"
@@ -15,7 +15,7 @@ enum class Clouds(protected val description: String) {
         }
     },
     LIGHT("The sky is dotted with a few small clouds.") {
-        override fun print(prev: Clouds?) = when (prev) {
+        override fun describeChange(prev: Clouds?) = when (prev) {
             null -> description
             NONE -> "Some minor clouds start forming."
             LIGHT -> null
@@ -24,7 +24,7 @@ enum class Clouds(protected val description: String) {
         }
     },
     MEDIUM("The sky is crowded with large clouds.") {
-        override fun print(prev: Clouds?) = when (prev) {
+        override fun describeChange(prev: Clouds?) = when (prev) {
             null -> description
             NONE -> "Large, heavy clouds roll in from the horizon."
             LIGHT -> "The clouds condense until they crowd the skies."
@@ -33,7 +33,7 @@ enum class Clouds(protected val description: String) {
         }
     },
     OVERCAST("The sky is entirely overcast.") {
-        override fun print(prev: Clouds?) = when (prev) {
+        override fun describeChange(prev: Clouds?) = when (prev) {
             null -> description
             NONE -> "A heavy blanket of clouds rolls in from the horizon. $description"
             LIGHT -> "A heavy blanket of clouds rolls in from the horizon. $description"
@@ -52,7 +52,7 @@ enum class Clouds(protected val description: String) {
         }
     }
 
-    abstract fun print(prev: Clouds?): String?
+    abstract fun describeChange(prev: Clouds?): String?
 
     fun adjustTemp(season: Season): Long =
         if (this == OVERCAST && (season == Season.SPRING || season == Season.SUMMER)) -10 else 10

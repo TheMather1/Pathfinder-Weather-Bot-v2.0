@@ -1,10 +1,10 @@
 package pathfinder.weatherBot.interaction.commands
 
+import jakarta.annotation.PostConstruct
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import org.springframework.stereotype.Service
 import pathfinder.weatherBot.interaction.Client
 import pathfinder.weatherBot.moderatorPermission
-import javax.annotation.PostConstruct
 
 @Service
 class Start : WeatherCommand("start", "Starts the bot.") {

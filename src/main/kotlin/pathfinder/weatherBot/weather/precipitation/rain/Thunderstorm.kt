@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 
 class Thunderstorm(start: LocalDateTime, end: LocalDateTime) : HeavyRain(start, end),
     Thunder {
-    override fun print(prev: Precipitation?) = when (prev) {
+    override fun describeChange(prev: Precipitation?) = when (prev) {
         is Thunderstorm -> null
         is Fog -> "With a earth-shaking boom, a thunderstorm scares off the fog."
         is HeavyRain -> "The downpour grows into a thunderstorm!"

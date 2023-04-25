@@ -8,6 +8,6 @@ import pathfinder.weatherBot.interaction.Client
 class Weather : WeatherCommand("weather", "Prints the current weather.") {
     override val ephemeral = false
 
-    override fun execute(event: SlashCommandInteractionEvent, client: Client) = client.thisHour?.singleDescription
+    override fun execute(event: SlashCommandInteractionEvent, client: Client) = client.thisHour?.description
         ?: "The current weather has not been defined."
 }

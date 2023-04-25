@@ -13,7 +13,7 @@ class Day(config: GuildConfig, val date: LocalDate, prevDay: Day?) : Serializabl
         o + Hour(config, this, dateTime, o.lastOrNull() ?: prevDay?.hours?.lastOrNull())
     }
 
-    fun next(config: GuildConfig) = Day(config, date.plusDays(1), this)
+    fun nextDay(config: GuildConfig) = Day(config, date.plusDays(1), this)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -22,9 +22,7 @@ class Day(config: GuildConfig, val date: LocalDate, prevDay: Day?) : Serializabl
         other as Day
 
         if (!hours.contentEquals(other.hours)) return false
-        if (date != other.date) return false
-
-        return true
+        return date == other.date
     }
 
     override fun hashCode(): Int {
