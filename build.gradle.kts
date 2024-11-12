@@ -2,12 +2,11 @@ group = "pathfinder"
 version = "2.0"
 
 plugins {
-//    war
-    kotlin("jvm") version "1.9.23"
-    kotlin("plugin.spring") version "1.9.23"
-    kotlin("plugin.jpa") version "1.9.23"
-    id("org.springframework.boot") version "3.2.5"
-    id("io.spring.dependency-management") version "1.1.4"
+    kotlin("jvm") version "2.0.21"
+    kotlin("plugin.spring") version "2.0.21"
+    kotlin("plugin.jpa") version "2.0.21"
+    id("org.springframework.boot") version "3.3.5"
+    id("io.spring.dependency-management") version "1.1.6"
 }
 
 java {
@@ -31,23 +30,17 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
-    implementation("com.h2database", "h2", "2.2.224")
-    implementation("javax.servlet", "jstl", "1.2")
-    implementation("net.dv8tion", "JDA", "5.0.0-beta.23")
+    implementation("com.h2database", "h2", "2.3.232")
+    implementation("net.dv8tion", "JDA", "5.2.1")
     implementation("no.mather.ttrpg", "dice-syntax", "0.2.0")
-    implementation("org.postgresql", "postgresql", "42.6.0")
+    implementation("org.postgresql", "postgresql", "42.7.4")
     implementation("org.springframework.boot", "spring-boot-starter-actuator")
     implementation("org.springframework.boot", "spring-boot-starter-data-jpa")
     implementation("org.springframework.boot", "spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot", "spring-boot-starter-web")
     implementation("org.springframework.boot", "spring-boot-starter-thymeleaf")
-//    providedRuntime("org.springframework.boot", "spring-boot-starter-tomcat")
     implementation("pw.chew", "jda-chewtils", "2.0")
 }
-//
-//war {
-//    webAppDirName = "src/main"
-//}
 
 tasks {
     test {

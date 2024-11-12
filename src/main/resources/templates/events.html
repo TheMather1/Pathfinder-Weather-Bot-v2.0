@@ -35,17 +35,17 @@
                                 </td>
                                 <td>
                                     <label>
-                                        <input type="datetime-local" readonly="readonly" th:field="*{events[__${s.index}__].start" size="17"/>
+                                        <input type="datetime-local" readonly="readonly" th:field="*{events[__${s.index}__].start}" size="17"/>
                                     </label>
                                 </td>
                                 <td>
                                     <label>
-                                        <input type="datetime-local" readonly="readonly" th:field="*{events[__${s.index}__].end" size="17"/>
+                                        <input type="datetime-local" readonly="readonly" th:field="*{events[__${s.index}__].end}" size="17"/>
                                     </label>
                                 </td>
                                 <td>
                                     <label>
-                                        <input type="checkbox" th:field="*{events[__${s.index}__].active" style="display: block; margin: 0 auto;" checked="checked"
+                                        <input type="checkbox" th:field="*{events[__${s.index}__].active}" style="display: block; margin: 0 auto;" checked="checked"
                                                th:attrappend="checked=${event.active} ? 'checked'"/>
                                     </label>
                                 </td>

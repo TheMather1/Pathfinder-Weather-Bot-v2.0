@@ -5,9 +5,8 @@ import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.Weather
 import pathfinder.weatherBot.weather.events.Event
 import pathfinder.weatherBot.weather.events.EventType
-import pathfinder.weatherBot.weather.precipitation.Thunder
 import pathfinder.weatherBot.weather.precipitation.Snow
-import java.time.LocalDateTime
+import pathfinder.weatherBot.weather.precipitation.Thunder
 
 open class Tornado : EventType<Tornado> {
 

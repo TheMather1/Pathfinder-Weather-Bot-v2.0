@@ -1,8 +1,6 @@
 package pathfinder.weatherBot.weather.events.tornado
 
 import pathfinder.weatherBot.weather.events.Event
-import pathfinder.weatherBot.weather.events.EventType
-import java.time.LocalDateTime
 
 class Snownado : Tornado() {
     override fun finished() = "The snownado dissipates, leaving behind snow littered with debris."

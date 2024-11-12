@@ -2,10 +2,9 @@ package pathfinder.weatherBot.weather.events
 
 import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.Weather
-import java.time.LocalDateTime
 
 open class Sandstorm : EventType<Sandstorm> {
-    override fun progress(hour: Hour, weather: Weather, event: Event): Event {
+    override fun progress(hour: Hour, weather: Weather, event: Event): Event? {
         TODO("not implemented")
     }
 

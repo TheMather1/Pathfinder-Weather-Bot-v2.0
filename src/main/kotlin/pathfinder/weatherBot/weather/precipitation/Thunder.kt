@@ -24,7 +24,5 @@ interface Thunder {
 
     fun hurricane(hour: Hour) = hour.temp.temp > 85 && (1 d 100).toInt() <= 20
 
-    fun lightning() {
-        TODO()
-    }
+    fun lightning() { }
 }

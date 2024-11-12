@@ -1,7 +1,6 @@
 package pathfinder.weatherBot.location
 
 import pathfinder.diceSyntax.components.DiceComponent
-import pathfinder.diceSyntax.components.DiceFunction
 import pathfinder.diceSyntax.components.DiceNumber
 import pathfinder.diceSyntax.d
 import pathfinder.diceSyntax.plus

@@ -1,7 +1,6 @@
 package pathfinder.weatherBot.frontend
 
 import pathfinder.weatherBot.weather.events.Event
-import pathfinder.weatherBot.weather.events.EventType
 import java.time.LocalDateTime.parse
 
 class EventForm(events: List<Event> = emptyList()) {

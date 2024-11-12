@@ -18,7 +18,6 @@ import pathfinder.weatherBot.location.Elevation
 import pathfinder.weatherBot.repository.ClientRepository
 import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.events.Event
-import pathfinder.weatherBot.weather.events.EventType
 import java.time.ZoneId
 import java.time.ZonedDateTime
 

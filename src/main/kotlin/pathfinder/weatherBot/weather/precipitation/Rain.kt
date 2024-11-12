@@ -64,6 +64,7 @@ enum class Rain : Precipitation {
     },
     THUNDERSTORM {
         override val fireRetardance = HEAVY_RAIN.fireRetardance
+        override val isThunder = true
         override fun describeChange(prev: Precipitation?) = when (prev) {
             THUNDERSTORM -> null
             is Fog -> "With a earth-shaking boom, a thunderstorm scares off the fog."

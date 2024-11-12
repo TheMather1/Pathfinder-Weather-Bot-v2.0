@@ -93,6 +93,7 @@ enum class Snow : Precipitation {
     },
     THUNDERSNOW {
         override val fireRetardance = HEAVY_SNOW.fireRetardance
+        override val isThunder = true
         override fun describeChange(prev: Precipitation?) = when (prev) {
             THUNDERSNOW -> null
             THUNDER_BLIZZARD -> "The blizzard ceases as the winds calm, but the snowfall and thunder still linger."
@@ -108,6 +109,7 @@ enum class Snow : Precipitation {
     },
     THUNDER_BLIZZARD {
         override val fireRetardance = BLIZZARD.fireRetardance
+        override val isThunder = true
         override fun describeChange(prev: Precipitation?) = when (prev) {
             THUNDER_BLIZZARD -> null
             BLIZZARD -> "The blizzard holds strong as thunder starts to roar out in the distance."
