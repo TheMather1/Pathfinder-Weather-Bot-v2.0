@@ -1,18 +1,19 @@
 package pathfinder.weatherBot.interaction.commands
 
-import jakarta.annotation.PostConstruct
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
+import com.jagrosh.jdautilities.command.SlashCommandEvent
 import org.springframework.stereotype.Service
-import pathfinder.weatherBot.interaction.Client
-import pathfinder.weatherBot.moderatorPermission
+import pathfinder.weatherBot.service.ClientService
 
 @Service
-class Stop : WeatherCommand("stop", "Stops the bot.") {
+class Stop(
+    private val clientService: ClientService
+) : SlashCommandInterface("stop", "Stops the bot.") {
 
-    @PostConstruct
-    fun configureOptions() {
-        defaultPermissions = moderatorPermission
+    override fun execute(event: SlashCommandEvent) {
+        event.deferReply(true).queue { hook ->
+            clientService.perform(event.guild!!) { client ->
+                hook.editOriginal(client.stop()).queue()
+            }
+        }
     }
-
-    override fun execute(event: SlashCommandInteractionEvent, client: Client) = client.stop()
 }

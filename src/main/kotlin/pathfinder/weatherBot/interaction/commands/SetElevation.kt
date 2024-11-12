@@ -1,32 +1,37 @@
 package pathfinder.weatherBot.interaction.commands
 
-import jakarta.annotation.PostConstruct
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
+import com.jagrosh.jdautilities.command.SlashCommandEvent
 import net.dv8tion.jda.api.interactions.commands.Command.Choice
 import net.dv8tion.jda.api.interactions.commands.OptionType
 import net.dv8tion.jda.api.interactions.commands.build.OptionData
 import org.springframework.stereotype.Service
-import pathfinder.weatherBot.interaction.Client
 import pathfinder.weatherBot.location.Elevation
-import pathfinder.weatherBot.moderatorPermission
+import pathfinder.weatherBot.service.ClientService
 
 @Service
-class SetElevation : WeatherCommand("elevation", "Sets the elevation of the server.") {
+class SetElevation(
+    private val clientService: ClientService
+) : SlashCommandInterface("elevation", "Sets the elevation of the server.") {
 
-    @PostConstruct
-    fun configureOptions() {
-        addOptions(
+    init {
+        options.add(
             OptionData(
                 OptionType.STRING, "elevation", "The elevation of the region.", true
             ).addChoices(Elevation.entries.map { Choice(it.name, it.name) })
         )
-        defaultPermissions = moderatorPermission
     }
 
-    override fun execute(event: SlashCommandInteractionEvent, client: Client) = try {
-        client.config.elevation = event.getOption("elevation") { Elevation.valueOf(it.asString) }!!
-        "Elevation has been set to ${client.config.elevation}."
-    } catch (_: Throwable) {
-        "That is not a supported climate."
+    override fun execute(event: SlashCommandEvent) {
+        event.deferReply(true).queue { hook ->
+            try {
+                val elevation = event.getOption("elevation") { Elevation.valueOf(it.asString) }!!
+                clientService.perform(event.guild!!) { client ->
+                    client.config.elevation = elevation
+                }
+                hook.editOriginal("Elevation has been set to $elevation.")
+            } catch (_: Throwable) {
+                hook.editOriginal("That is not a supported elevation.")
+            }.queue()
+        }
     }
 }

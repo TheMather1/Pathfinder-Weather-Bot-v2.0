@@ -1,11 +1,19 @@
 package pathfinder.weatherBot.interaction.commands
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
+import com.jagrosh.jdautilities.command.SlashCommandEvent
 import org.springframework.stereotype.Service
-import pathfinder.weatherBot.interaction.Client
+import pathfinder.weatherBot.service.ClientService
 
 @Service
-class Status : WeatherCommand("status", "Returns the status of the bot.") {
+class Status(
+    private val clientService: ClientService
+) : SlashCommandInterface("status", "Returns the status of the bot.") {
 
-    override fun execute(event: SlashCommandInteractionEvent, client: Client) = "The bot is ${client.status()}."
+    override fun execute(event: SlashCommandEvent) {
+        event.deferReply(true).queue { hook ->
+            clientService.perform(event.guild!!) { client ->
+                hook.editOriginal("The bot is ${client.status()}.").queue()
+            }
+        }
+    }
 }

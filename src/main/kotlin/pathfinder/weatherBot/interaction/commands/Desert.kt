@@ -1,24 +1,27 @@
 package pathfinder.weatherBot.interaction.commands
 
-import jakarta.annotation.PostConstruct
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
+import com.jagrosh.jdautilities.command.SlashCommandEvent
 import net.dv8tion.jda.api.interactions.commands.OptionType
+import net.dv8tion.jda.api.interactions.commands.build.OptionData
 import org.springframework.stereotype.Service
-import pathfinder.weatherBot.interaction.Client
-import pathfinder.weatherBot.moderatorPermission
+import pathfinder.weatherBot.service.ClientService
 
 @Service
-class Desert : WeatherCommand("desert", "Sets the desert boolean of the server.") {
+class Desert(
+    private val clientService: ClientService
+) : SlashCommandInterface("desert", "Sets the desert boolean of the server.") {
 
-    @PostConstruct
-    fun configureOptions() {
-        addOption(OptionType.BOOLEAN, "desert", "whether the region is a desert", true)
-        defaultPermissions = moderatorPermission
+    init {
+        options.add(OptionData(OptionType.BOOLEAN, "desert", "whether the region is a desert", true))
     }
 
-    override fun execute(event: SlashCommandInteractionEvent, client: Client): String {
-        val desert = event.getOption("desert")!!.asBoolean
-        client.config.desert = desert
-        return "Desert set to $desert."
+    override fun execute(event: SlashCommandEvent) {
+        event.deferReply(true).queue { hook ->
+            val desert = event.getOption("desert")!!.asBoolean
+            clientService.perform(event.guild!!) { client ->
+                client.config.desert = desert
+            }
+            hook.editOriginal("Desert set to $desert.").queue()
+        }
     }
 }

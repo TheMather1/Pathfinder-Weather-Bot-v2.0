@@ -51,10 +51,17 @@ class Client(
         forecast = it
     }
 
-    fun reportWeather(jda: JDA, dryRun: Boolean = false) = thisHour?.report(lastHour)?.let {
+    fun reportWeather(jda: JDA, dryRun: Boolean = false) = thisHour.report(lastHour)?.let {
         jda.getTextChannelById(config.outputChannel)!!.sendMessage(it)
     }.also {
         if (isMidnight && !dryRun) forecast.advanceDay(config)
+        val prevEventIds = forecast.tomorrow.events.map { it.id }
+        if (forecast.dayAfterTomorrow.events.any { it.id !in prevEventIds }) {
+            val guild = jda.getGuildById(guildId)!!
+            guild.owner!!.user.openPrivateChannel().queue { hook ->
+                hook.sendMessage("New events require review in ${guild.name}.")
+            }
+        }
     }
 
     companion object {

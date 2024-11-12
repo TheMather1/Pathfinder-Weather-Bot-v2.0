@@ -23,10 +23,13 @@ class Day(
     @Embedded
     val temperatureRange: TemperatureRange,
     @OneToMany(cascade = [(CascadeType.ALL)], orphanRemoval = true)
-    val hours: Array<Hour?>
+    val hours: Array<Hour>
 ) {
     @Transient
     val season = Season(date)
+
+    val events: List<Event>
+        get() = hours.flatMap { it.events }
 
     fun nextDay(config: GuildConfig) = fromConfig(config, date.plusDays(1), temperatureRange, hours.lastOrNull())
 
