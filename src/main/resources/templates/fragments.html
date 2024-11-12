@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<div id="navbar" class="sidebar" xmlns:th="http://www.thymeleaf.org" th:fragment="sidebar">
+  <!--/*@thymesVar id="avatar" type="java.net.URL"*/-->
+  <!--/*@thymesVar id="username" type="String"*/-->
+  <!--/*@thymesVar id="servers" type="java.util.Map<Long, String>"*/-->
+  <!--/*@thymesVar id="guild" type="kotlin.Pair<Long, String>"*/-->
+  <div class="scrollerWrapper">
+    <div class="scroller">
+      <div class="sidebarInner">
+        <div class="sidebarContainer">
+          <div class="userContainer">
+            <img class="avatar" th:src="${avatar}" th:alt="${username}"/>
+            <th:block th:text="${username}"/>
+            <a class="logoutLink" href="/logout">
+              logout
+            </a>
+          </div>
+          <br/>
+          <div class="serverContainer">
+            <p class="sidebarHeading">Servers</p>
+            <ul class="sidebarList">
+              <li th:each="server: ${servers}">
+                <a class="sidebarLink" th:href="@{'/portal/{id}'(id=${server.value})}" th:text="${server.key}" th:classappend="${guild != null && guild.first == server.value} ? 'activeLink'"/>
+              </li>
+              <li>
+                <a class="sidebarLink botInvite"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   href="https://discord.com/api/oauth2/authorize?client_id=619946100723548171&amp;permissions=3072&amp;scope=applications.commands%20bot">
+                  + Add Server
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<header xmlns:th="http://www.thymeleaf.org" th:fragment="navbar(page)">
+  <!--/*@thymesVar id="guild" type="kotlin.Pair<Long, String>"*/-->
+  <!--/*@thymesVar id="canForecast" type="Boolean"*/-->
+  <!--/*@thymesVar id="isModerator" type="Boolean"*/-->
+  <nav class="contentNavbar">
+    <ul>
+      <li th:classappend="${page == 'guild'} ? 'activeContent'">
+        <a th:href="@{'/portal/{id}'(id=${guild.first})}">Weather</a>
+      </li>
+      <li th:if="${canForecast}" th:classappend="${page == 'forecast'} ? 'activeContent'">
+        <a th:href="@{'/portal/{id}/forecast'(id=${guild.first})}">Forecast</a>
+      </li>
+      <li th:if="${isModerator}" th:classappend="${page == 'moderator'} ? 'activeContent'">
+        <a th:href="@{'/portal/{id}/settings'(id=${guild.first})}">Settings</a>
+      </li>
+      <li th:if="${isModerator}" th:classappend="${page == 'events'} ? 'activeContent'">
+        <a th:href="@{'/portal/{id}/events'(id=${guild.first})}">Events</a>
+      </li>
+    </ul>
+  </nav>
+</header>

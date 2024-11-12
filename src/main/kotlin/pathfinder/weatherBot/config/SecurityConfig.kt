@@ -35,18 +35,21 @@ class SecurityConfig(
     @Bean
     fun configure(http: HttpSecurity): SecurityFilterChain {
         publisher.setAdditionalExceptionMappings(mapOf(OAuth2AuthenticationException::class.java to FailureEvent::class.java))
-        return http.run {
-            cors().configurationSource(corsConfigurationSource())
-            csrf().disable()
-            authorizeHttpRequests()
-                .requestMatchers("/portal/**").authenticated()
+        return http.cors {
+            it.configurationSource(corsConfigurationSource())
+        }.csrf {
+            it.disable()
+        }.authorizeHttpRequests {
+            it.requestMatchers("/portal/**").authenticated()
                 .anyRequest().permitAll()
-            oauth2Login()
-                .tokenEndpoint()
-                .and().userInfoEndpoint().userService(::loadUser)
-            logout().logoutUrl("/logout").logoutSuccessUrl("/")
-            build()
-        }
+        }.oauth2Login {
+            it.tokenEndpoint {
+            }.userInfoEndpoint {
+                it.userService(::loadUser)
+            }
+        }.logout {
+            it.logoutUrl("/login").logoutSuccessUrl("/")
+        }.build()
     }
 
     fun loadUser(userRequest: OAuth2UserRequest) = restTemplate.exchange<Map<String, String>>(

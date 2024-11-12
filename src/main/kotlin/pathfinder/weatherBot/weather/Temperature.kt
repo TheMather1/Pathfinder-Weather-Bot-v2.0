@@ -1,7 +1,9 @@
 package pathfinder.weatherBot.weather
 
+import jakarta.persistence.Embeddable
 import java.io.Serializable
 
+@Embeddable
 data class Temperature(var temp: Long): Serializable {
     val freezing
         get() = temp <= 32

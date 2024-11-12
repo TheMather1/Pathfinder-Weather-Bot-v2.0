@@ -1,10 +1,10 @@
 package pathfinder.weatherBot.weather
 
-import pathfinder.weatherBot.d
+import pathfinder.diceSyntax.d
 import pathfinder.weatherBot.dHundredException
 import pathfinder.weatherBot.time.Season
 
-enum class Clouds(protected val description: String) {
+enum class Clouds(val description: String) {
     NONE("The sky is completely clear.") {
         override fun describeChange(prev: Clouds?) = when (prev) {
             null -> description
@@ -43,7 +43,7 @@ enum class Clouds(protected val description: String) {
     };
 
     companion object {
-        operator fun invoke() = when (1 d 100) {
+        operator fun invoke() = when ((1 d 100).toInt()) {
             in 1..50 -> NONE
             in 51..70 -> LIGHT
             in 71..85 -> MEDIUM
@@ -57,6 +57,6 @@ enum class Clouds(protected val description: String) {
     fun adjustTemp(season: Season): Long =
         if (this == OVERCAST && (season == Season.SPRING || season == Season.SUMMER)) -10 else 10
 
-    operator fun plus(i: Int): Clouds = values()[(ordinal + i).coerceAtMost(values().size - 1)]
+    operator fun plus(i: Int): Clouds = entries[(ordinal + i).coerceAtMost(entries.size - 1)]
     override fun toString() = this.name.lowercase().replaceFirstChar { it.uppercaseChar() }
 }

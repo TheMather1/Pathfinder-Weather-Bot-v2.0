@@ -1,19 +1,27 @@
 package pathfinder.weatherBot.time
 
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.OneToOne
 import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.weather.events.Event
-import java.io.Serializable
-import java.time.LocalDate
 
-class Forecast(config: GuildConfig) : Serializable {
-    var today: Day = Day(config, LocalDate.now(), null)
-        private set
-    var tomorrow: Day = today.nextDay(config)
-        private set
-    var dayAfterTomorrow: Day = tomorrow.nextDay(config)
-        private set
+@Entity(name = "FORECASTS")
+class Forecast(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0,
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
+    var today: Day,
+    @OneToOne(cascade = [CascadeType.ALL])
+    var tomorrow: Day,
+    @OneToOne(cascade = [CascadeType.ALL])
+    var dayAfterTomorrow: Day
+) {
 
-    val allEvents: List<Event<*>>
+    val allEvents: List<Event>
         get() = (today.hours.flatMap { it?.events ?: emptyList() } + tomorrow.hours.flatMap {
             it?.events ?: emptyList()
         } + dayAfterTomorrow.hours.flatMap { it?.events ?: emptyList() }).toSet().sortedBy { it.start }
@@ -24,9 +32,11 @@ class Forecast(config: GuildConfig) : Serializable {
         dayAfterTomorrow = tomorrow.nextDay(config)
     }
 
-    fun reset(config: GuildConfig) {
-        today = Day(config, LocalDate.now(), null)
-        tomorrow = today.nextDay(config)
-        dayAfterTomorrow = tomorrow.nextDay(config)
+    companion object {
+        fun fromConfig(config: GuildConfig): Forecast {
+            val today = Day.fromConfig(config)
+            val tomorrow = today.nextDay(config)
+            return Forecast(0, today, tomorrow, tomorrow.nextDay(config))
+        }
     }
 }

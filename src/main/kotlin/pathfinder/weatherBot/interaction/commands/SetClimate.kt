@@ -18,7 +18,7 @@ class SetClimate : WeatherCommand("climate", "Sets the climate of the server.") 
         addOptions(
             OptionData(
                 OptionType.STRING, "climate", "The climate of the region.", true
-            ).addChoices(Climate.values().map { Choice(it.name, it.name) })
+            ).addChoices(Climate.entries.map { Choice(it.name, it.name) })
         )
         defaultPermissions = moderatorPermission
     }

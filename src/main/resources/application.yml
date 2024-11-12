@@ -1,26 +1,32 @@
-server.port: ${PORT:5000}
 spring:
-  mvc.view:
-    prefix: /
-    suffix: .jsp
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: true
+  datasource:
+    url: jdbc:h2:file:./Database_new;AUTO_SERVER=TRUE
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
   security.oauth2.client:
     provider.discord:
       authorizationUri: https://discord.com/api/oauth2/authorize
       tokenUri: https://discord.com/api/oauth2/token
       userInfoUri: https://discord.com/api/users/@me
       userNameAttribute: username
-      scope:
-        - identify
     registration.discord:
       authorization-grant-type: authorization_code
       client-id: 619946100723548171
       client-name: WeatherBot
       client-secret: dvuYOBEGeivNzeg2tagr3RSYBB40zGs5
-      redirectUri: http://pathfinder-weather-bot.us-east-1.elasticbeanstalk.com/login/oauth2/code/discord
+      redirectUri: http://localhost:8080/login/oauth2/code/discord
       provider: discord
       scope:
         - identify
-pathfinder.weather.bot.token: ${weatherbot_token}
 logging.level:
   pathfinder: debug
   org.springframework.security: info
+
+server:
+  port: ${PORT:8080}

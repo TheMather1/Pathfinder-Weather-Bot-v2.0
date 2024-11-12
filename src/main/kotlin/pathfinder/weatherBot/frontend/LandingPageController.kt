@@ -12,5 +12,5 @@ import org.springframework.web.bind.annotation.RequestMapping
 class LandingPageController {
 
     @GetMapping
-    fun landingPage() = "index"
+    fun landingPage() = "index.html"
 }

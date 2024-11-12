@@ -1,7 +1,10 @@
 package pathfinder.weatherBot.weather
 
-import pathfinder.weatherBot.d
+import jakarta.persistence.Embeddable
+import jakarta.persistence.Embedded
+import pathfinder.diceSyntax.d
 import pathfinder.weatherBot.interaction.GuildConfig
+import pathfinder.weatherBot.location.Climate
 import pathfinder.weatherBot.time.Season
 import java.io.Serializable
 import java.time.LocalDate
@@ -11,11 +14,12 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.roundToLong
 
-class TemperatureRange(config: GuildConfig, date: LocalDate, season: Season, oldTemp: TemperatureRange? = null) :
-    Serializable {
-    private val temperatureWave: TemperatureWave = oldTemp?.temperatureWave?.progress(date) ?: config.climate.tempWave(date)
+@Embeddable
+class TemperatureRange(config: GuildConfig, date: LocalDate, season: Season, climate: Climate, oldTemp: TemperatureRange? = null) {
+    @Embedded
+    private val temperatureWave: TemperatureWave = oldTemp?.temperatureWave?.progress(date, config.climate) ?: config.climate.tempWave(date)
     private val highTemp = season.temp(config) + temperatureWave()
-    private val lowTemp = highTemp - (2 d 6) - 3
+    private val lowTemp = highTemp - (2 d 6).toLong() - 3
     private val tempPrev = oldTemp?.lowTemp ?: lowTemp
 
     fun tempAtHour(time: LocalTime): Temperature {

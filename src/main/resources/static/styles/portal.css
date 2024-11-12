@@ -204,7 +204,7 @@ td input {
     text-align: center;
 }
 
-.guildInfo > span {
+.guildInfo > div {
     background-color: #2f3136;
     border-radius: 10px;
     margin: 25px;

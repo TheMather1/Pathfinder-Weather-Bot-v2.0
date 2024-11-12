@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="|${guild.second} - Pathfinder WeatherBot|"/>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/portal.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="window">
+        <div class="container">
+            <div th:replace="~{fragments :: sidebar}"></div>
+            <header th:replace="~{fragments :: navbar(page='guild')}"></header>
+            <div class="content">
+            <section class="guildInfo">
+            <div class="temp">
+                <h1>Temperature: </h1>
+                <th:block th:text="${temp}"/>
+            </div>
+            <div class="clouds">
+                <h1>Clouds: </h1>
+                <th:block th:text="${clouds}"/>
+            </div>
+            <div class="wind">
+                <h1>Wind: </h1>
+                <th:block th:text="${wind}"/>
+            </div>
+            <div class="precip">
+                <h1>Precipitation: </h1>
+                <th:block th:text="${precip}"/>
+            </div>
+            </section>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

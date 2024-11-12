@@ -1,14 +1,21 @@
 package pathfinder.weatherBot.weather
 
+import jakarta.persistence.Column
+import jakarta.persistence.Embeddable
+import pathfinder.diceSyntax.components.DiceComponent
 import pathfinder.weatherBot.location.Climate
 import java.io.Serializable
 import java.time.LocalDate
 
+@Embeddable
 data class TemperatureWave(
-    private val climate: Climate, private val end: LocalDate, private val diceFun: () -> Long
-) : Serializable {
+    @Column(name = "TEMP_WAVE_END")
+    private val end: LocalDate,
+    @Column(name = "TEMP_WAVE_FUN")
+    private val diceFun: DiceComponent<*,*,*>
+) {
 
-    operator fun invoke() = diceFun()
+    operator fun invoke() = diceFun.toLong()
 
-    fun progress(date: LocalDate) = if (date < end) this else climate.tempWave(date)
+    fun progress(date: LocalDate, climate: Climate) = if (date < end) this else climate.tempWave(date)
 }

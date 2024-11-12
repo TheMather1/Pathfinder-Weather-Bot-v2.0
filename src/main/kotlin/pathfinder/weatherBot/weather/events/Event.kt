@@ -1,27 +1,25 @@
 package pathfinder.weatherBot.weather.events
 
-import pathfinder.weatherBot.time.Hour
-import pathfinder.weatherBot.weather.Weather
-import java.io.Serializable
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
 import java.time.LocalDateTime
 
-abstract class Event<T : Event<T>>(
-    val start: LocalDateTime, var end: LocalDateTime
-) : Serializable {
-    abstract val finished: String
+@Entity
+class Event(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0,
+    @Column(name = "EVENT_START")
+    val start: LocalDateTime,
+    @Column(name = "EVENT_END")
+    var end: LocalDateTime,
+    @Column(name = "EVENT_TYPE")
+    val type: EventType<*>
+) {
     var active = false
+
     val name: String
-        get() = this::class.simpleName!!
-
-    companion object {
-        operator fun invoke(hour: Hour, prevEvents: List<Event<*>>, weather: Weather): List<Event<*>> {
-            return prevEvents.mapNotNull { it.progress(hour, weather) }.toMutableList().apply {
-                if (none { it is Wildfire }) Wildfire.invoke(hour)?.let { add(it) }
-            }
-        }
-    }
-
-    abstract fun describeChange(prev: List<Event<*>>): String?
-
-    abstract fun progress(hour: Hour, weather: Weather): Event<T>?
+        get() = type.name
 }

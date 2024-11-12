@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="|Forecast - ${guild.second} - Pathfinder WeatherBot|"/>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/portal.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="window">
+        <div class="container">
+            <div th:replace="~{fragments :: sidebar}"></div>
+            <header th:replace="~{fragments :: navbar(page='forecast')}"></header>
+            <div class="content">
+                <section class="forecast">
+                    <section id="today">
+                        <h1>Today</h1>
+                        <table aria-label="Weather for today.">
+                            <tbody>
+                            <tr>
+                                <th>Time</th>
+                                <th>Clouds</th>
+                                <th>Precipitation</th>
+                                <th>Wind</th>
+                                <th>Temperature</th>
+                            </tr>
+                            <tr th:each="hour : ${forecast.today.hours}">
+                                <td><span th:text="${hour.time.toLocalTime()}">Time</span></td>
+                                <td><span th:text="${hour.weather.clouds}">Clouds</span></td>
+                                <td><span th:text="${hour.weather.precipitation.toString()}">Precipitation</span></td>
+                                <td><span th:text="${hour.weather.wind}">Wind</span></td>
+                                <td><span th:text="${hour.temp}">Temperature</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <br>
+                    <section id="tomorrow">
+                        <h1>Tomorrow</h1>
+                        <table aria-label="Weather for tomorrow.">
+                            <tbody>
+                            <tr>
+                                <th>Time</th>
+                                <th>Clouds</th>
+                                <th>Precipitation</th>
+                                <th>Wind</th>
+                                <th>Temperature</th>
+                            </tr>
+                            <tr th:each="hour : ${forecast.tomorrow.hours}">
+                                <td><span th:text="${hour.time.toLocalTime()}">Time</span></td>
+                                <td><span th:text="${hour.weather.clouds}">Clouds</span></td>
+                                <td><span th:text="${hour.weather.precipitation.toString()}">Precipitation</span></td>
+                                <td><span th:text="${hour.weather.wind}">Wind</span></td>
+                                <td><span th:text="${hour.temp}">Temperature</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <br>
+                    <section id="nextDay">
+                        <h1>Day after</h1>
+                        <table aria-label="Weather for the day after tomorrow.">
+                            <tbody>
+                            <tr>
+                                <th>Time</th>
+                                <th>Clouds</th>
+                                <th>Precipitation</th>
+                                <th>Wind</th>
+                                <th>Temperature</th>
+                            </tr>
+                            <tr th:each="hour : ${forecast.dayAfterTomorrow.hours}">
+                                <td><span th:text="${hour.time.toLocalTime()}">Time</span></td>
+                                <td><span th:text="${hour.weather.clouds}">Clouds</span></td>
+                                <td><span th:text="${hour.weather.precipitation.toString()}">Precipitation</span></td>
+                                <td><span th:text="${hour.weather.wind}">Wind</span></td>
+                                <td><span th:text="${hour.temp}">Temperature</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <br>
+                    <form action="#" th:if="${isModerator}" th:action="@{'/portal/{guild}/forecast'(guild=${guild.first})}" th:method="DELETE">
+                        <button type=submit class="inputButton tableSubmit">Reset forecast</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -18,7 +18,7 @@ class SetElevation : WeatherCommand("elevation", "Sets the elevation of the serv
         addOptions(
             OptionData(
                 OptionType.STRING, "elevation", "The elevation of the region.", true
-            ).addChoices(Elevation.values().map { Choice(it.name, it.name) })
+            ).addChoices(Elevation.entries.map { Choice(it.name, it.name) })
         )
         defaultPermissions = moderatorPermission
     }

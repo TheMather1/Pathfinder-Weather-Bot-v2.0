@@ -4,8 +4,6 @@ import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.Permission.MANAGE_SERVER
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
-import org.mapdb.DB
-import org.mapdb.HTreeMap
 import org.springframework.http.HttpStatus.FORBIDDEN
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -13,20 +11,21 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
-import org.springframework.web.servlet.view.RedirectView
 import pathfinder.weatherBot.interaction.Client
 import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.location.Climate
 import pathfinder.weatherBot.location.Elevation
+import pathfinder.weatherBot.repository.ClientRepository
 import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.events.Event
+import pathfinder.weatherBot.weather.events.EventType
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
 @Suppress("SameReturnValue")
 @Controller
 @RequestMapping("/portal")
-class PortalController(private val jda: JDA, private val registrations: HTreeMap<Long, Client>, private val fileDB: DB) {
+class PortalController(private val jda: JDA, private val clientRepository: ClientRepository) {
 
     private val timezoneRegex = Regex("^(Africa|America|Asia|Atlantic|Australia|Europe|Indian|Pacific)/.*")
 
@@ -54,15 +53,14 @@ class PortalController(private val jda: JDA, private val registrations: HTreeMap
         return "forecast"
     }
 
-    @GetMapping("/{guildId}/forecast/delete")
+    @DeleteMapping("/{guildId}/forecast")
     fun resetForecast(
         model: Model, @AuthenticationPrincipal user: DiscordUser, @PathVariable("guildId") guildId: Long
-    ): RedirectView {
+    ): String {
         val (_, client) = model.authenticateUser(user, guildId, Permissions.MODERATOR)
-        client.forecast.reset(client.config)
-        registrations[guildId] = client
-        fileDB.commit()
-        return RedirectView("/portal/$guildId/forecast")
+        model.addAttribute("forecast", client.resetForecast())
+        clientRepository.saveAndFlush(client)
+        return "forecast"
     }
 
     @GetMapping("/{guildId}/settings")
@@ -82,9 +80,8 @@ class PortalController(private val jda: JDA, private val registrations: HTreeMap
         @ModelAttribute("config") config: GuildConfig
     ): String {
         val (guild, client, _) = model.authenticateUser(user, guildId, Permissions.MODERATOR)
-        client.config = config
-        registrations[guildId] = client
-        fileDB.commit()
+        client.config.override(config)
+        clientRepository.saveAndFlush(client)
         model.withSettings(config, guild)
         return "settings"
     }
@@ -123,13 +120,12 @@ class PortalController(private val jda: JDA, private val registrations: HTreeMap
                 }
             }
         }
-        registrations[guildId] = client
-        fileDB.commit()
+        clientRepository.saveAndFlush(client)
         model.withEvents(client.forecast.allEvents)
         return "events"
     }
 
-    private fun Model.withEvents(events: List<Event<*>>) {
+    private fun Model.withEvents(events: List<Event>) {
         addAttribute("eventForm", EventForm(events))
 //        addAttribute("event_keys", events.mapIndexed { i, event ->
 //            addAttribute("event_$i", event)
@@ -139,9 +135,9 @@ class PortalController(private val jda: JDA, private val registrations: HTreeMap
 
     private fun Model.withSettings(config: GuildConfig, guild: Guild) {
         addAttribute("config", config)
-        addAttribute("climateOptions", Climate.values())
-        addAttribute("elevationOptions", Elevation.values())
-        addAttribute("roleOptions", guild.roles.associate { it.idLong to it.name } + (null to "--Disabled--"))
+        addAttribute("climateOptions", Climate.entries)
+        addAttribute("elevationOptions", Elevation.entries)
+        addAttribute("roleOptions", guild.roles.associate { it.idLong to it.name })
         addAttribute("channelOptions", guild.textChannels.associate { it.idLong to it.name })
         addAttribute("timezoneOptions", ZoneId.getAvailableZoneIds().filter { it.contains(timezoneRegex) }.sorted())
     }
@@ -152,7 +148,7 @@ class PortalController(private val jda: JDA, private val registrations: HTreeMap
         asUser(user)
         val guild = jda.getGuildById(guildId) ?: throw ResponseStatusException(NOT_FOUND, "Server not found.")
         onGuild(guild)
-        val client = registrations.getOrPut(guildId) { Client(guild) }
+        val client = clientRepository.findByGuildId(guildId) ?: clientRepository.saveAndFlush(Client.forGuild(guild))
         val member =
             guild.getMember(user) ?: throw ResponseStatusException(FORBIDDEN, "You are not a member of this server.")
         asMember(member, client)
@@ -176,7 +172,7 @@ class PortalController(private val jda: JDA, private val registrations: HTreeMap
     }
 
     private fun Model.onGuild(guild: Guild) {
-        addAttribute("guild", mapOf("id" to guild.idLong, "name" to guild.name))
+        addAttribute("guild", guild.idLong to guild.name)
     }
 
     private fun Model.displayWeather(client: Client) {

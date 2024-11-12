@@ -1,6 +1,6 @@
 package pathfinder.weatherBot.weather
 
-import pathfinder.weatherBot.d
+import pathfinder.diceSyntax.d
 import pathfinder.weatherBot.dHundredException
 
 enum class Wind {
@@ -46,7 +46,7 @@ enum class Wind {
     };
 
     companion object {
-        operator fun invoke() = when (1 d 100) {
+        operator fun invoke() = when ((1 d 100).toLong()) {
             in 1..50 -> LIGHT
             in 51..80 -> MODERATE
             in 81..90 -> STRONG
@@ -57,7 +57,7 @@ enum class Wind {
     }
 
     abstract fun describeChange(prevWind: Wind?): String?
-    operator fun plus(i: Int) = values()[(ordinal + i).coerceAtMost(values().size - 1)]
-    operator fun minus(i: Int) = values()[(ordinal - i).coerceAtLeast(0)]
+    operator fun plus(i: Int) = entries[(ordinal + i).coerceAtMost(entries.size - 1)]
+    operator fun minus(i: Int) = entries[(ordinal - i).coerceAtLeast(0)]
     override fun toString() = this.name.lowercase().replaceFirstChar { it.uppercaseChar() }
 }

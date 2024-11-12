@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="|Settings - ${guild.second} - Pathfinder WeatherBot|"/>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/portal.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="window">
+        <div class="container">
+            <div th:replace="~{fragments :: sidebar}"></div>
+            <header th:replace="~{fragments :: navbar(page='settings')}"></header>
+            <div class="content">
+                <section class="settings">
+                    <form action="#" th:action="@{settings}" th:object="${config}" method="post">
+                        <fieldset>
+                            <legend><h1>Settings</h1></legend>
+                            <label for="outputChannel">Output channel: </label>
+                            <select id="outputChannel" th:field="*{outputChannel}">
+                                <option th:each="channel : ${channelOptions}"
+                                        th:text="${channel.value}"
+                                        th:value="${channel.key}"
+                                        th:selected="${channel.key == config.outputChannel}"/>
+                            </select>
+                            <br>
+                            <label for="active">Active: </label>
+                            <input type="checkbox" id="active" th:field="*{active}"/>
+                            <br>
+                            <label for="climate">Climate: </label>
+                            <select id="climate" th:field="*{climate}">
+                                <option th:each="c : ${climateOptions}"
+                                        th:text="${c}"
+                                        th:value="${c}"
+                                        th:selected="${c == config.climate}"/>
+                            </select>
+                            <br>
+                            <label for="elevation">Elevation: </label>
+                            <select id="elevation" th:field="*{elevation}">
+                                <option th:each="e : ${elevationOptions}"
+                                        th:text="${e}"
+                                        th:value="${e}"
+                                        th:selected="${e == config.elevation}"/>
+                            </select>
+                            <br>
+                            <label for="desert">Desert: </label>
+                            <input type="checkbox" id="desert" th:field="*{desert}"/>
+                            <br>
+                            <label for="forecastRole">Forecast role: </label>
+                            <select id="forecastRole" th:field="*{forecastRole}">
+                                <option value="" th:selected="${config.forecastRole == null}">--Disabled--</option>
+                                <option th:each="role : ${roleOptions}"
+                                        th:text="${role.value}"
+                                        th:value="${role.key}"
+                                        th:selected="${role.key == config.forecastRole}"/>
+                            </select>
+                            <br>
+                            <label for="timezone">Timezone: </label>
+                            <select id="timezone" th:field="*{timezone}">
+                                <option th:each="t : ${timezoneOptions}"
+                                        th:text="${t}"
+                                        th:value="${t}"
+                                        th:selected="${t == config.timezone}"/>
+                            </select>
+                            <br><br>
+                            <input class="inputButton" type="submit" value="Save changes">
+                        </fieldset>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

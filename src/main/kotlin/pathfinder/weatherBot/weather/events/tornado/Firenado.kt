@@ -1,5 +1,5 @@
 package pathfinder.weatherBot.weather.events.tornado
 
-import java.time.LocalDateTime
-
-class Firenado(start: LocalDateTime, end: LocalDateTime) : Tornado(start, end)
+class Firenado : Tornado() {
+    override fun finished() = "The firenado peters out and disappears, leaving only smoldering debris behind."
+}
