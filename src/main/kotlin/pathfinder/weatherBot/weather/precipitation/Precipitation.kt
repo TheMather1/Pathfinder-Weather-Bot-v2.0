@@ -11,4 +11,10 @@ interface Precipitation : Described<Precipitation> {
 
     val isThunder: Boolean
         get() = false
+
+    val warn: String?
+        get() = null
+
+    val iconUrl: String?
+        get() = null
 }

@@ -7,11 +7,17 @@ interface EventType<T : EventType<T>> {
     val name: String
         get() = this::class.simpleName!!
 
+    val description: String?
+        get() = "TODO"
+
     fun finished(): String
 
     fun describeChange(prev: List<Event>): String?
 
     fun progress(hour: Hour, weather: Weather, event: Event): Event?
+
+    val warn: String?
+        get() = null
 
     companion object {
         operator fun invoke(hour: Hour, prevEvents: List<Event>, weather: Weather): List<Event> {

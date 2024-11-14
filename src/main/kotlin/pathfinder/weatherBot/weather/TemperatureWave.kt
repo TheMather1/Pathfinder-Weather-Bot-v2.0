@@ -4,7 +4,6 @@ import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
 import pathfinder.diceSyntax.components.DiceComponent
 import pathfinder.weatherBot.location.Climate
-import java.io.Serializable
 import java.time.LocalDate
 
 @Embeddable

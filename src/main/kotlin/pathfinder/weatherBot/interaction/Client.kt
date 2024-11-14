@@ -1,12 +1,6 @@
 package pathfinder.weatherBot.interaction
 
-import jakarta.persistence.CascadeType
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.OneToOne
+import jakarta.persistence.*
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
 import org.hibernate.annotations.NaturalId
@@ -35,34 +29,19 @@ class Client(
     val lastHour
         get() = forecast.today.hours[if (isMidnight) 23 else now.hour - 1]
 
-    fun start() = if (!config.active) {
-        config.active = true
-        "Started bot."
-    } else "The bot is already running."
-
-    fun stop() = if (config.active) {
-        config.active = false
-        "Stopped bot."
-    } else "The bot is not currently running."
-
     fun status() = if (config.active) "running" else "stopped"
 
     fun resetForecast() = Forecast.fromConfig(config).also {
         forecast = it
     }
 
-    fun reportWeather(jda: JDA, dryRun: Boolean = false) = thisHour.report(lastHour)?.let {
-        jda.getTextChannelById(config.outputChannel)!!.sendMessage(it)
-    }.also {
-        if (isMidnight && !dryRun) forecast.advanceDay(config)
+    fun reportWeather(jda: JDA, dryRun: Boolean = false) = thisHour.reportEmbed(lastHour)?.let {
+        jda.getTextChannelById(config.outputChannel)!!.sendMessageEmbeds(it)
+    } to if (isMidnight && !dryRun) {
+        forecast.advanceDay(config)
         val prevEventIds = forecast.tomorrow.events.map { it.id }
-        if (forecast.dayAfterTomorrow.events.any { it.id !in prevEventIds }) {
-            val guild = jda.getGuildById(guildId)!!
-            guild.owner!!.user.openPrivateChannel().queue { hook ->
-                hook.sendMessage("New events require review in ${guild.name}.")
-            }
-        }
-    }
+        forecast.dayAfterTomorrow.events.any { it.id !in prevEventIds }
+    } else false
 
     companion object {
         fun forGuild(guild: Guild): Client {

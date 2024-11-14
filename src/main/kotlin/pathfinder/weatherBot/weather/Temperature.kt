@@ -1,10 +1,10 @@
 package pathfinder.weatherBot.weather
 
 import jakarta.persistence.Embeddable
-import java.io.Serializable
+import net.dv8tion.jda.api.entities.MessageEmbed
 
 @Embeddable
-data class Temperature(var temp: Long): Serializable {
+data class Temperature(var temp: Long) {
     val freezing
         get() = temp <= 32
     val cold
@@ -30,12 +30,36 @@ data class Temperature(var temp: Long): Serializable {
         else -> null
     }
 
+    fun embedField(prevTemp: Temperature?) = describeChange(prevTemp)?.let {
+        MessageEmbed.Field("Temperature", it, false)
+    }
+
     private fun tempRise(prevTemp: Temperature) = tempThresholds.any { (t, _) ->
         t != null && prevTemp.temp <= t && temp > t
     }
 
     private fun tempFall(prevTemp: Temperature) = tempThresholds.any { (t, _) ->
         t != null && temp <= t && prevTemp.temp > t
+    }
+
+    fun warn(weather: Weather): String? {
+        val effectiveTemp = temp + weather.precipitation.type.tempAdjust
+
+        return when {
+            effectiveTemp > 140 -> """Extreme heat:
+    Breathing air deals 1d6 points of fire damage per minute (no save). 1d4 points of nonlethal damage (DC 15, +1 per previous check Fortitude) per 5 minutes, this damage does not recover until you escape the heat. Armor or heavy clothing impart -4 penalty."""
+            effectiveTemp > 110 -> """Severe heat:
+    1d4 points of nonlethal damage (DC 15, +1 per previous check Fortitude) per 10 minutes, this damage does not recover until you escape the heat. Armor or heavy clothing impart -4 penalty."""
+            effectiveTemp > 90 -> """Hot weather:
+    1d4 points of nonlethal damage (DC 15, +1 per previous check Fortitude to avoid) per hour, this damage does not recover until you escape the heat. Armor or heavy clothing impart -4 penalty."""
+            effectiveTemp < 40 -> """Cold weather:
+    1d4 points of nonlethal damage (DC 15, +1 per previous check Fortitude to avoid) per hour, this damage does not recover until you escape the cold. Nonlethal damage causes hypothermia (Fatigued) until cured."""
+            effectiveTemp < 0 -> """Severe cold:
+    1d4 points of nonlethal damage (DC 15, +1 per previous check Fortitude to avoid) per 10 minutes, this damage does not recover until you escape the cold. Nonlethal damage causes hypothermia (Fatigued) until cured."""
+            effectiveTemp < -20 -> """Extreme cold:
+    1d6 points of cold damage per minute (no save). 1d4 points of nonlethal damage (DC 15, +1 per previous check Fortitude) per 5 minutes, this damage does not recover until you escape the heat. Nonlethal damage causes frostbite (Fatigued) until cured."""
+            else -> null
+        }
     }
 
     companion object {

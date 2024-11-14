@@ -1,10 +1,6 @@
 package pathfinder.weatherBot.weather.events
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
@@ -16,9 +12,9 @@ class Event(
     @Column(name = "EVENT_END")
     var end: LocalDateTime,
     @Column(name = "EVENT_TYPE")
-    val type: EventType<*>
+    val type: EventType<*>,
+    var active: Boolean = false
 ) {
-    var active = false
 
     val name: String
         get() = type.name

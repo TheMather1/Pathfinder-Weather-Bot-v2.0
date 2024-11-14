@@ -12,25 +12,27 @@
         <div class="container">
             <div th:replace="~{fragments :: sidebar}"></div>
             <header th:replace="~{fragments :: navbar(page='guild')}"></header>
-            <div class="content">
-            <section class="guildInfo">
-            <div class="temp">
-                <h1>Temperature: </h1>
-                <th:block th:text="${temp}"/>
-            </div>
-            <div class="clouds">
-                <h1>Clouds: </h1>
-                <th:block th:text="${clouds}"/>
-            </div>
-            <div class="wind">
-                <h1>Wind: </h1>
-                <th:block th:text="${wind}"/>
-            </div>
-            <div class="precip">
-                <h1>Precipitation: </h1>
-                <th:block th:text="${precip}"/>
-            </div>
-            </section>
+            <div class="contentWrapper">
+                <div class="content">
+                    <section class="guildInfo">
+                        <div class="temp">
+                            <h1>Temperature: </h1>
+                            <th:block th:text="${temp}"/>
+                        </div>
+                        <div class="clouds">
+                            <h1>Clouds: </h1>
+                            <th:block th:text="${clouds}"/>
+                        </div>
+                        <div class="wind">
+                            <h1>Wind: </h1>
+                            <th:block th:text="${wind}"/>
+                        </div>
+                        <div class="precip">
+                            <h1>Precipitation: </h1>
+                            <th:block th:text="${precip}"/>
+                        </div>
+                    </section>
+                </div>
             </div>
         </div>
     </div>

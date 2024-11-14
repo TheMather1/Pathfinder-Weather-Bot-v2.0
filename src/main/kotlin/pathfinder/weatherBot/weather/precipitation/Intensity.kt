@@ -3,6 +3,7 @@ package pathfinder.weatherBot.weather.precipitation
 import pathfinder.diceSyntax.d
 import pathfinder.weatherBot.dHundredException
 import pathfinder.weatherBot.weather.Temperature
+import pathfinder.weatherBot.weather.Wind
 import pathfinder.weatherBot.weather.precipitation.Fog.*
 import pathfinder.weatherBot.weather.precipitation.Rain.*
 import pathfinder.weatherBot.weather.precipitation.Snow.*
@@ -71,7 +72,7 @@ enum class Intensity {
             in 11..20 -> PrecipitationWrapper(start, start.plusHours((2 d 6).toLong()), HEAVY_FOG)
             in 21..60 -> PrecipitationWrapper(start, start.plusHours((2 d 12).toLong()), LIGHT_SNOW)
             in 61..90 -> PrecipitationWrapper(start, start.plusHours((1 d 8).toLong()), MEDIUM_SNOW)
-            in 91..100 -> PrecipitationWrapper(start, start.plusHours((1 d 6).toLong()), HEAVY_SNOW)
+            in 91..100 -> heavySnow(start, start.plusHours((1 d 6).toLong()))
             else -> throw dHundredException
         }
     };
@@ -82,4 +83,22 @@ enum class Intensity {
     operator fun minus(i: Int) = Intensity.entries[max(ordinal - i, 0)]
     abstract fun wet(start: LocalDateTime, temp: Temperature): PrecipitationWrapper
     abstract fun frozen(start: LocalDateTime): PrecipitationWrapper
+
+
+    fun thunder(): Boolean = (1 d 100).toInt() <= 10
+    fun blizzard(wind: Wind): Boolean = wind >= Wind.SEVERE && (1 d 100).toInt() <= 40
+    fun blizzardDuration(start: LocalDateTime) = if ((1 d 100).toInt() <= 20) start.plusHours((2 d 12).toLong()) else null
+
+    fun heavySnow(start: LocalDateTime, end: LocalDateTime): PrecipitationWrapper {
+        val wind = Wind()
+        return when {
+            thunder() -> thundersnow(start, end)
+            blizzard(wind) -> PrecipitationWrapper(start, blizzardDuration(start) ?: end, BLIZZARD, wind)
+            else -> PrecipitationWrapper(start, end, HEAVY_SNOW, wind)
+        }
+    }
+    fun thundersnow(start: LocalDateTime, end: LocalDateTime): PrecipitationWrapper = Thunder.wind.let {
+        if (blizzard(it)) PrecipitationWrapper(start, end, THUNDER_BLIZZARD, it)
+        else PrecipitationWrapper(start, end, THUNDERSNOW, it)
+    }
 }

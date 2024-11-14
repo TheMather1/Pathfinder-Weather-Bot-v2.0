@@ -7,7 +7,6 @@ import jakarta.persistence.Id
 import pathfinder.weatherBot.location.Climate
 import pathfinder.weatherBot.location.Elevation
 import pathfinder.weatherBot.weather.precipitation.Intensity
-import java.io.Serializable
 import java.time.ZoneId
 
 @Entity
@@ -16,8 +15,8 @@ class GuildConfig(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
     var outputChannel: Long,
+    var alertsChannel: Long? = null,
     var active: Boolean = false,
-    var forecastRole: Long? = null,
     var climate: Climate = Climate.TEMPERATE,
     var elevation: Elevation = Elevation.SEA_LEVEL,
     var desert: Boolean = false,
@@ -30,8 +29,8 @@ class GuildConfig(
 
     fun override(config: GuildConfig) {
         outputChannel = config.outputChannel
+        alertsChannel = config.alertsChannel
         active = config.active
-        forecastRole = config.forecastRole
         climate = config.climate
         elevation = config.elevation
         desert = config.desert

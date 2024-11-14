@@ -37,7 +37,7 @@ class BotConfig {
                 logger.info("Adding commands: ${commandClient.slashCommands.map { it.name }}")
                 awaitReady()
                 unavailableGuilds.forEach {
-                    logger.info("Unavailable guild: $it")
+                    logger.warn("Unavailable guild: $it")
                 }
                 presence.activity = Activity.watching("the skies")
             }

@@ -4,6 +4,11 @@ import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.Permission.MANAGE_SERVER
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.Member
+import net.dv8tion.jda.api.interactions.commands.Command
+import net.dv8tion.jda.api.interactions.commands.PrivilegeConfig
+import net.dv8tion.jda.api.interactions.commands.privileges.IntegrationPrivilege.Type.CHANNEL
+import net.dv8tion.jda.api.interactions.commands.privileges.IntegrationPrivilege.Type.ROLE
+import net.dv8tion.jda.api.interactions.commands.privileges.IntegrationPrivilege.Type.USER
 import org.springframework.http.HttpStatus.FORBIDDEN
 import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -105,15 +110,15 @@ class PortalController(private val jda: JDA, private val clientRepository: Clien
         form.events.forEach { formEvent ->
             client.forecast.apply {
                 today.hours.firstNotNullOfOrNull { h ->
-                    h?.events?.firstOrNull { formEvent.isEvent(it) }?.apply {
+                    h.events.firstOrNull { formEvent.isEvent(it) }?.apply {
                         active = formEvent.active
                     }
                 } ?: tomorrow.hours.firstNotNullOfOrNull { h ->
-                    h?.events?.firstOrNull { formEvent.isEvent(it) }?.apply {
+                    h.events.firstOrNull { formEvent.isEvent(it) }?.apply {
                         active = formEvent.active
                     }
                 } ?: dayAfterTomorrow.hours.firstNotNullOfOrNull { h ->
-                    h?.events?.firstOrNull { formEvent.isEvent(it) }?.apply {
+                    h.events.firstOrNull { formEvent.isEvent(it) }?.apply {
                         active = formEvent.active
                     }
                 }
@@ -150,10 +155,7 @@ class PortalController(private val jda: JDA, private val clientRepository: Clien
         val client = clientRepository.findByGuildId(guildId) ?: clientRepository.saveAndFlush(Client.forGuild(guild))
         val member =
             guild.getMember(user) ?: throw ResponseStatusException(FORBIDDEN, "You are not a member of this server.")
-        asMember(member, client)
-        if (permissions == Permissions.FORECAST && !member.hasPermission(MANAGE_SERVER) && member.roles.none { it.idLong == client.config.forecastRole } || permissions == Permissions.MODERATOR && !member.hasPermission(
-                MANAGE_SERVER
-            )) throw ResponseStatusException(FORBIDDEN, "You do not have permission to access to view this page.")
+        asMember(member, permissions)
         return Triple(guild, client, member)
     }
 
@@ -163,11 +165,18 @@ class PortalController(private val jda: JDA, private val clientRepository: Clien
         addAttribute("servers", user.mutualGuilds.associate { it.name to it.idLong })
     }
 
-    private fun Model.asMember(member: Member, client: Client) {
+    private fun Model.asMember(member: Member, requiredPermissions: Permissions? = null) {
         if (member.hasPermission(MANAGE_SERVER)) {
             addAttribute("canForecast", true)
             addAttribute("isModerator", true)
-        } else if (member.roles.any { it.idLong == client.config.forecastRole }) addAttribute("canForecast", true)
+        } else member.onPrivileges { commands, privileges ->
+            if (member.canUse(commands.forecast, privileges, true)) addAttribute("canForecast", true)
+            else if (requiredPermissions == Permissions.FORECAST)
+                throw ResponseStatusException(FORBIDDEN, "You do not have permission to access to view this page.")
+            if (member.canUse(commands.settings, privileges)) addAttribute("isModerator", true)
+            else if (requiredPermissions == Permissions.MODERATOR)
+                throw ResponseStatusException(FORBIDDEN, "You do not have permission to access to view this page.")
+        }
     }
 
     private fun Model.onGuild(guild: Guild) {
@@ -183,5 +192,26 @@ class PortalController(private val jda: JDA, private val clientRepository: Clien
         addAttribute("clouds", hour?.weather?.clouds)
         addAttribute("wind", hour?.weather?.wind)
         addAttribute("precip", hour?.weather?.precipitation ?: "None")
+    }
+
+    private val List<Command>.forecast
+        get() = first { it.name == "forecast" }
+    private val List<Command>.settings
+        get() = first { it.name == "settings" }
+
+    private fun Member.onPrivileges(action: (List<Command>, PrivilegeConfig) -> Unit) {
+        guild.retrieveCommands().and(guild.retrieveCommandPrivileges(), action).complete()
+    }
+
+    private fun Member.canUse(command: Command, privileges: PrivilegeConfig, acceptUnconfigured: Boolean = false): Boolean {
+        return privileges.getCommandPrivileges(command)?.filter { it.isEnabled }?.run {
+            (acceptUnconfigured && isEmpty()) || any { privilege ->
+                val userIds = listOf(idLong, user.idLong)
+                val roleIds = roles.map { it.idLong }
+                privilege.type == CHANNEL || privilege.targetsEveryone()
+                        || privilege.type == USER && privilege.idLong in userIds
+                        || privilege.type == ROLE && privilege.idLong in roleIds
+            }
+        } == true
     }
 }

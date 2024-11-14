@@ -1,9 +1,6 @@
 package pathfinder.weatherBot.weather.precipitation
 
 import pathfinder.weatherBot.weather.precipitation.Rain.THUNDERSTORM
-import pathfinder.weatherBot.weather.precipitation.Snow.BLIZZARD
-import pathfinder.weatherBot.weather.precipitation.Snow.HEAVY_SNOW
-import pathfinder.weatherBot.weather.precipitation.Snow.MEDIUM_SNOW
 
 enum class Snow : Precipitation {
     SLEET {
@@ -18,8 +15,10 @@ enum class Snow : Precipitation {
             else -> "Wet sleet is falling through the air."
         }
 
-        override val finished: String
-            get() = "The sleet came and went, leaving very few traces of its occurrence behind."
+        override val finished = "The sleet ceases, leaving very few traces of its occurrence behind."
+        override val warn = """Sleet:
+    Visibility range is reduced to three-quarters. Ranged attacks and perception checks suffer a –2 penalty. Tiny unprotected flames (candles and the like, but not torches) have a 75% chance of being extinguished."""
+        override val iconUrl = "https://github.com/basmilius/weather-icons/blob/dev/production/fill/png/1024/sleet.png?raw=true"
     },
     LIGHT_SNOW {
         override val fireRetardance = 5
@@ -35,8 +34,10 @@ enum class Snow : Precipitation {
         }
 
 
-        override val finished: String
-            get() = "The gentle snowing has ended."
+        override val finished = "The gentle snowfall has ended."
+        override val warn = """Light snow:
+    Visibility range is reduced to three-quarters. Ranged attacks and perception checks suffer a –2 penalty. Tiny unprotected flames (candles and the like, but not torches) have a 75% chance of being extinguished."""
+        override val iconUrl = "https://github.com/basmilius/weather-icons/blob/dev/production/fill/png/1024/snow.png?raw=true"
     },
     MEDIUM_SNOW {
         override val fireRetardance = 25
@@ -56,9 +57,10 @@ enum class Snow : Precipitation {
             else -> "Snow is falling upon the area."
         }
 
-
-        override val finished: String
-        get() = "The snowing gradually ends."
+        override val finished = "The snowfall gradually ends."
+        override val warn = """Snow:
+    Visibility range is halved. Ranged attacks and Perception checks suffer a –4 penalty. Unprotected flames (candles, torches, and the like) are automatically extinguished."""
+        override val iconUrl = "https://github.com/basmilius/weather-icons/blob/dev/production/fill/png/1024/overcast-snow.png?raw=true"
     },
     HEAVY_SNOW {
         override val fireRetardance = 75
@@ -74,8 +76,10 @@ enum class Snow : Precipitation {
             else -> "An intense snowstorm blankets the area."
         }
 
-        override val finished: String
-        get() = "The heavy pillowing of snow stops."
+        override val finished = "The heavy pillowing of snow stops."
+        override val warn = """Heavy snow:
+    Visibility range is quartered. Ranged attacks and perception checks suffer a -6 penalty. Unprotected flames are automatically extinguished."""
+        override val iconUrl = "https://github.com/basmilius/weather-icons/blob/dev/production/fill/png/1024/extreme-snow.png?raw=true"
     },
     BLIZZARD {
         override val fireRetardance = HEAVY_SNOW.fireRetardance
@@ -88,8 +92,12 @@ enum class Snow : Precipitation {
             else -> "There is a blizzard buffeting the area."
         }
 
-        override val finished: String
-            get() = "Leaving behind a heaping helping of snow, the blizzard has passed us!"
+        override val tempAdjust = -20
+
+        override val finished = "Leaving behind a heaping helping of snow, the blizzard has passed us!"
+        override val warn = """Blizzard:
+    Visibility is limited to 20 ft. Ranged attacks suffer a -6 penalty. Perception checks suffer a -8 penalty. Unprotected flames are automatically extinguished."""
+        override val iconUrl = HEAVY_SNOW.iconUrl
     },
     THUNDERSNOW {
         override val fireRetardance = HEAVY_SNOW.fireRetardance
@@ -104,8 +112,9 @@ enum class Snow : Precipitation {
             else -> "A heavy snowstorm is accompanied by roaring thunder."
         }?.plus(" Be careful about walking outside in metal armor.")
 
-        override val finished: String
-            get() = "The thunder rolls away, as does the snow."
+        override val finished = "The thunder rolls away, as does the snowfall."
+        override val warn = HEAVY_SNOW.warn
+        override val iconUrl = "https://github.com/basmilius/weather-icons/blob/dev/production/fill/png/1024/thunderstorms-extreme-snow.png?raw=true"
     },
     THUNDER_BLIZZARD {
         override val fireRetardance = BLIZZARD.fireRetardance
@@ -119,8 +128,11 @@ enum class Snow : Precipitation {
             else -> "An intense blizzard is accompanied by roaring thunder."
         }?.plus(" Be careful about walking outside in metal armor.")
 
-        override val finished: String
-            get() = "The thunder blizzard clears out."
+        override val tempAdjust = BLIZZARD.tempAdjust
+
+        override val finished = "The thunder blizzard clears out."
+        override val warn = BLIZZARD.warn
+        override val iconUrl = THUNDERSNOW.iconUrl
     };
 
     override fun fall() { }

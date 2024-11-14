@@ -1,18 +1,14 @@
 package pathfinder.weatherBot.time
 
-import jakarta.persistence.CascadeType
-import jakarta.persistence.Embedded
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
+import jakarta.persistence.*
 import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.weather.TemperatureRange
 import pathfinder.weatherBot.weather.Weather
+import pathfinder.weatherBot.weather.Wind.SEVERE
 import pathfinder.weatherBot.weather.events.Event
+import pathfinder.weatherBot.weather.events.Haboob
+import pathfinder.weatherBot.weather.events.Sandstorm
 import pathfinder.weatherBot.weather.events.tornado.Tornado
-import pathfinder.weatherBot.weather.events.tornado.Tornado.Companion.invoke
 import java.time.LocalDate
 
 @Entity(name = "DAYS")
@@ -70,6 +66,17 @@ class Day(
                         events
                     )
                     if (events.none { it.type is Tornado }) Tornado(hour)?.let(events::add)
+                    if (config.desert) {
+                        if (events.none { it.type is Haboob }) Haboob(hour)?.also {
+                            events.removeIf { it.type is Sandstorm }
+                            events.add(it)
+                        }
+                        if (events.none { it.type is Sandstorm } && hour.weather.wind >= SEVERE) events.add(Event(
+                            start = dateTime,
+                            end = dateTime.plusHours(hour.weather.windDuration),
+                            type = Sandstorm()
+                        ))
+                    }
                     o + hour
                 }
             )

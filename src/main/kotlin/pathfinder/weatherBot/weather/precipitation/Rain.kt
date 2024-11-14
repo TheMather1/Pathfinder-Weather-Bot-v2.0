@@ -12,8 +12,10 @@ enum class Rain : Precipitation {
             else -> "There is a light drizzle."
         }
 
-        override val finished: String
-            get() = "The drizzle ends."
+        override val finished = "The drizzle ends."
+        override val warn = """Drizzle:
+    Visibility range is reduced to three-quarters. Perception checks suffer a –2 penalty. Tiny unprotected flames (candles and the like, but not torches) are automatically extinguished."""
+        override val iconUrl = "https://github.com/basmilius/weather-icons/blob/dev/production/fill/png/1024/overcast-drizzle.png?raw=true"
     },
     LIGHT_RAIN {
         override val fireRetardance = 10
@@ -28,8 +30,8 @@ enum class Rain : Precipitation {
             else -> "There is a light rain."
         }
 
-        override val finished: String
-            get() = "The sprinkling lets up."
+        override val finished = "The sprinkling lets up."
+        override val iconUrl = "https://github.com/basmilius/weather-icons/blob/dev/production/fill/png/1024/overcast-rain.png?raw=true"
     },
     MEDIUM_RAIN {
         override val fireRetardance = 15
@@ -44,8 +46,8 @@ enum class Rain : Precipitation {
             else -> "It is raining."
         }
 
-        override val finished: String
-            get() = "The rainfall ceases."
+        override val finished = "The rainfall ceases."
+        override val iconUrl = "https://github.com/basmilius/weather-icons/blob/dev/production/fill/png/1024/overcast-rain.png?raw=true"
     },
     HEAVY_RAIN  {
         override val fireRetardance = 25
@@ -61,6 +63,9 @@ enum class Rain : Precipitation {
 
         override val finished: String
             get() = "The clouds have been drained, and the downpour ends."
+        override val warn = """Heavy rain:
+    Visibility range is quartered. Ranged attacks and perception checks suffer a -6 penalty. Unprotected flames are automatically extinguished."""
+        override val iconUrl = "https://github.com/basmilius/weather-icons/blob/dev/production/fill/png/1024/extreme-rain.png?raw=true"
     },
     THUNDERSTORM {
         override val fireRetardance = HEAVY_RAIN.fireRetardance
@@ -77,7 +82,11 @@ enum class Rain : Precipitation {
 
         override val finished: String
             get() = "The sounds of thunder cease, and soon after, the shower as well."
+        override val warn = HEAVY_RAIN.warn
+        override val iconUrl = "https://github.com/basmilius/weather-icons/blob/dev/production/fill/png/1024/thunderstorms-extreme-rain.png?raw=true"
     };
 
     override fun fall() { }
+    override val warn = """Rain:
+    Visibility range is halved. Ranged attacks and Perception checks suffer a –4 penalty. Unprotected flames (candles, torches, and the like) are automatically extinguished."""
 }

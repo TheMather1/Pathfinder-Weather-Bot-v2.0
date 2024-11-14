@@ -1,10 +1,27 @@
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    health:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - metrics
+
+logging.level:
+  org.springframework.security: info
+
+server:
+  port: ${PORT:8080}
+
 spring:
   jpa:
     hibernate:
       ddl-auto: update
     open-in-view: true
-  datasource:
-    url: jdbc:h2:file:./Database_new;AUTO_SERVER=TRUE
   mvc:
     hiddenmethod:
       filter:
@@ -19,14 +36,7 @@ spring:
       authorization-grant-type: authorization_code
       client-id: 619946100723548171
       client-name: WeatherBot
-      client-secret: dvuYOBEGeivNzeg2tagr3RSYBB40zGs5
-      redirectUri: http://localhost:8080/login/oauth2/code/discord
+      redirectUri: ${baseUrl}/login/oauth2/code/discord
       provider: discord
       scope:
         - identify
-logging.level:
-  pathfinder: debug
-  org.springframework.security: info
-
-server:
-  port: ${PORT:8080}

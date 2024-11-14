@@ -50,7 +50,7 @@
       <li th:if="${canForecast}" th:classappend="${page == 'forecast'} ? 'activeContent'">
         <a th:href="@{'/portal/{id}/forecast'(id=${guild.first})}">Forecast</a>
       </li>
-      <li th:if="${isModerator}" th:classappend="${page == 'moderator'} ? 'activeContent'">
+      <li th:if="${isModerator}" th:classappend="${page == 'settings'} ? 'activeContent'">
         <a th:href="@{'/portal/{id}/settings'(id=${guild.first})}">Settings</a>
       </li>
       <li th:if="${isModerator}" th:classappend="${page == 'events'} ? 'activeContent'">

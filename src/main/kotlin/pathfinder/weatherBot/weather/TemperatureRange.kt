@@ -6,7 +6,6 @@ import pathfinder.diceSyntax.d
 import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.location.Climate
 import pathfinder.weatherBot.time.Season
-import java.io.Serializable
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.LocalTime.NOON

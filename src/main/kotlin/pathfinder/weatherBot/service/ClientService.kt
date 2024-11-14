@@ -23,7 +23,7 @@ class ClientService(private val clientRepository: ClientRepository) {
     } else false
 
     @Transactional
-    fun getOrCreate(guild: Guild) = clientRepository.findByGuildId(guild.idLong)
+    fun getOrCreate(guild: Guild): Client = clientRepository.findByGuildId(guild.idLong)
         ?: clientRepository.saveAndFlush(Client.forGuild(guild))
 
     @Transactional
@@ -44,8 +44,8 @@ class ClientService(private val clientRepository: ClientRepository) {
     }
 
     @Transactional
-    fun save(client: Client) = clientRepository.saveAndFlush(client)
+    fun save(client: Client): Client = clientRepository.saveAndFlush(client)
 
     @Transactional
-    fun save(clients: List<Client>) = clientRepository.saveAllAndFlush(clients)
+    fun save(clients: List<Client>): List<Client?> = clientRepository.saveAllAndFlush(clients)
 }

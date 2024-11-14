@@ -12,50 +12,52 @@
         <div class="container">
             <div th:replace="~{fragments :: sidebar}"></div>
             <header th:replace="~{fragments :: navbar(page='events')}"></header>
-            <div class="content">
-            <section class="settings">
-                <form th:action="@{/events}" th:object="${eventForm}" method="post">
-                    <fieldset>
-                        <table aria-label="Scheduled weather events.">
-                            <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Start</th>
-                                <th>End</th>
-                                <th>Active</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="event, s : *{events}">
-                                <td>
-                                    <label>
-                                        <input type="text" readonly="readonly" th:field="*{events[__${s.index}__].name}"
-                                        th:value="${event.name}"/>
-                                    </label>
-                                </td>
-                                <td>
-                                    <label>
-                                        <input type="datetime-local" readonly="readonly" th:field="*{events[__${s.index}__].start}" size="17"/>
-                                    </label>
-                                </td>
-                                <td>
-                                    <label>
-                                        <input type="datetime-local" readonly="readonly" th:field="*{events[__${s.index}__].end}" size="17"/>
-                                    </label>
-                                </td>
-                                <td>
-                                    <label>
-                                        <input type="checkbox" th:field="*{events[__${s.index}__].active}" style="display: block; margin: 0 auto;" checked="checked"
-                                               th:attrappend="checked=${event.active} ? 'checked'"/>
-                                    </label>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <input class="inputButton tableSubmit" type="submit" value="Save changes"/>
-                    </fieldset>
-                </form>
-            </section>
+            <div class="contentWrapper">
+                <div class="content">
+                <section class="settings">
+                    <form action="#" th:action="@{events}" th:object="${eventForm}" method="post">
+                        <fieldset>
+                            <table aria-label="Scheduled weather events.">
+                                <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Start</th>
+                                    <th>End</th>
+                                    <th>Active</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="event, s : *{events}">
+                                    <td>
+                                        <label>
+                                            <input type="text" readonly="readonly" th:field="*{events[__${s.index}__].name}"
+                                            th:value="${event.name}"/>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="datetime-local" readonly="readonly" th:field="*{events[__${s.index}__].start}" size="17"/>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="datetime-local" readonly="readonly" th:field="*{events[__${s.index}__].end}" size="17"/>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="checkbox" th:field="*{events[__${s.index}__].active}" style="display: block; margin: 0 auto;" checked="checked"
+                                                   th:attrappend="checked=${event.active} ? 'checked'"/>
+                                        </label>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <input class="inputButton tableSubmit" type="submit" value="Save changes"/>
+                        </fieldset>
+                    </form>
+                </section>
+                </div>
             </div>
         </div>
     </div>
