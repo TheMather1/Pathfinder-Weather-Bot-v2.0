@@ -65,21 +65,24 @@ class Day(
                         prevHour?.nextHumidity ?: 1F,
                         events
                     )
-                    if (events.none { it.type is Tornado }) Tornado(hour)?.let(events::add)
+                    o + hour
+                }
+            ).apply {
+                hours.forEach { hour ->
+                    if (hour.events.none { it.type is Tornado }) Tornado(hour)?.let(hour.events::add)
                     if (config.desert) {
-                        if (events.none { it.type is Haboob }) Haboob(hour)?.also {
-                            events.removeIf { it.type is Sandstorm }
-                            events.add(it)
+                        if (hour.events.none { it.type is Haboob }) Haboob(hour)?.also {
+                            hour.events.removeIf { it.type is Sandstorm }
+                            hour.events.add(it)
                         }
-                        if (events.none { it.type is Sandstorm } && hour.weather.wind >= SEVERE) events.add(Event(
-                            start = dateTime,
-                            end = dateTime.plusHours(hour.weather.windDuration),
+                        if (hour.events.none { it.type is Sandstorm } && hour.weather.wind >= SEVERE) hour.events.add(Event(
+                            start = hour.time,
+                            end = hour.time.plusHours(hour.weather.windDuration),
                             type = Sandstorm()
                         ))
                     }
-                    o + hour
                 }
-            )
+            }
         }
     }
 }

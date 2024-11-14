@@ -2,9 +2,10 @@ package pathfinder.weatherBot.weather.events
 
 import pathfinder.weatherBot.time.Hour
 import pathfinder.weatherBot.weather.Weather
+import pathfinder.weatherBot.weather.Wind.SEVERE
 
 open class Sandstorm : EventType<Sandstorm> {
-    override fun progress(hour: Hour, weather: Weather, event: Event) = if (event.end.isAfter(hour.time)) event
+    override fun progress(hour: Hour, weather: Weather, event: Event) = if (event.end.isAfter(hour.time) && hour.weather.wind >= SEVERE) event
     else null
 
     override val warn = """Sandstorm:

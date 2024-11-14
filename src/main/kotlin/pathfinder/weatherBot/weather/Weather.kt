@@ -55,6 +55,7 @@ class Weather(
             windDuration = prevWeather.windDuration - 1
             prevWeather.wind
         } else {
+            prevWeather?.windDuration = 0
             windDuration = 3 + (1 d 3).toLong()
             Wind()
         }
