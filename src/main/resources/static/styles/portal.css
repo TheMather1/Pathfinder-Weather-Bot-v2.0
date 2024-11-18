@@ -97,7 +97,6 @@ h1 {
 
 .contentWrapper {
     display: flex;
-    height: 100%;
     flex: 1 1 1440px;
     flex-direction: column;
     padding-top: 44px;
@@ -121,6 +120,7 @@ h1 {
     display: inline-flex;
 }
 
+/*noinspection CssUnusedSymbol*/
 .contentNavbar li.activeContent {
     background: #36393f;
     border-radius: 15px 15px 0 0;
@@ -197,6 +197,43 @@ td input {
     transition-timing-function: ease-out;
 }
 
+.statusButton {
+    display: flex;
+    align-items: center;
+}
+
+.startButton {
+    position: relative;
+    cursor: pointer;
+    padding: 7px 16px;
+    border-radius: 3px;
+    background-color: #4caf50;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: center;
+    transition-duration: .17s;
+    transition-property: all;
+    transition-timing-function: ease-out;
+}
+
+.stopButton {
+    position: relative;
+    cursor: pointer;
+    padding: 7px 16px;
+    border-radius: 3px;
+    background-color: #f44336;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: center;
+    transition-duration: .17s;
+    transition-property: all;
+    transition-timing-function: ease-out;
+}
+
 .inputButton:hover {
     background-color: rgb(60, 69, 165);
 }
@@ -215,7 +252,7 @@ td input {
 .guildInfo > div {
     background-color: #2f3136;
     border-radius: 10px;
-    margin: 25px;
+    margin: 15px;
     padding: 10px;
 }
 
@@ -295,6 +332,7 @@ td input {
     color: #ffffff;
 }
 
+/*noinspection CssUnusedSymbol*/
 .sidebar a.activeLink {
     background-color: #5865F2;
     border-color: #ffffff;

@@ -9,6 +9,7 @@ import pathfinder.weatherBot.location.Elevation
 import pathfinder.weatherBot.weather.precipitation.Intensity
 import java.time.ZoneId
 
+@Suppress("JpaObjectClassSignatureInspection")
 @Entity
 class GuildConfig(
     @Id
@@ -30,7 +31,6 @@ class GuildConfig(
     fun override(config: GuildConfig) {
         outputChannel = config.outputChannel
         alertsChannel = config.alertsChannel
-        active = config.active
         climate = config.climate
         elevation = config.elevation
         desert = config.desert

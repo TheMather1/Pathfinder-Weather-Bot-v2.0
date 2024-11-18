@@ -9,6 +9,7 @@ import jakarta.persistence.OneToOne
 import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.weather.events.Event
 
+@Suppress("JpaObjectClassSignatureInspection")
 @Entity(name = "FORECASTS")
 class Forecast(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +23,9 @@ class Forecast(
 ) {
 
     val allEvents: List<Event>
-        get() = (today.hours.flatMap { it?.events ?: emptyList() } + tomorrow.hours.flatMap {
-            it?.events ?: emptyList()
-        } + dayAfterTomorrow.hours.flatMap { it?.events ?: emptyList() }).toSet().sortedBy { it.start }
+        get() = (today.hours.flatMap { it.events } + tomorrow.hours.flatMap {
+            it.events
+        } + dayAfterTomorrow.hours.flatMap { it.events }).toSet().sortedBy { it.start }
 
     fun advanceDay(config: GuildConfig) {
         today = tomorrow

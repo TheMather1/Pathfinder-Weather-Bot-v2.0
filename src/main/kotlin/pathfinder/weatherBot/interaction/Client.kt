@@ -8,11 +8,12 @@ import pathfinder.weatherBot.time.Forecast
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
+@Suppress("JpaObjectClassSignatureInspection")
 @Entity(name = "CLIENTS")
 class Client(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
-    @NaturalId
+    @Suppress("unused") @NaturalId
     val guildId: Long,
     @OneToOne(cascade = [(CascadeType.ALL)], fetch = FetchType.LAZY, orphanRemoval = true)
     val config: GuildConfig,
@@ -29,7 +30,7 @@ class Client(
     val lastHour
         get() = forecast.today.hours[if (isMidnight) 23 else now.hour - 1]
 
-    fun status() = if (config.active) "running" else "stopped"
+    fun status() = if (config.active) "Running" else "Stopped"
 
     fun resetForecast() = Forecast.fromConfig(config).also {
         forecast = it

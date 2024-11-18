@@ -18,9 +18,10 @@ object Thunder {
 
     fun tornado(wind: Wind) = wind == WINDSTORM && (1 d 100).toInt() <= 10
 
-    fun hurricane(wind: Wind, temp: Temperature) = if(wind == WINDSTORM && temp.temp > 85 && (1 d 100).toInt() <= 20)
-        HURRICANE
-    else wind
+    fun hurricane(wind: Wind, temp: Temperature) = wind == WINDSTORM && temp.temp > 85 && (1 d 100).toInt() <= 20
 
-    fun lightning() { }
+    @Suppress("unused")
+    fun lightning() {
+        TODO()
+    }
 }

@@ -6,6 +6,7 @@ import pathfinder.diceSyntax.components.DiceComponent
 import pathfinder.weatherBot.location.Climate
 import java.time.LocalDate
 
+@Suppress("JpaObjectClassSignatureInspection")
 @Embeddable
 data class TemperatureWave(
     @Column(name = "TEMP_WAVE_END")

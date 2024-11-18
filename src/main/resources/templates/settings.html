@@ -35,13 +35,10 @@
                                             th:selected="${channel.key == config.outputChannel}"/>
                                 </select>
                                 <br>
-                                <label for="active">Active: </label>
-                                <input type="checkbox" id="active" th:field="*{active}"/>
-                                <br>
                                 <label for="climate">Climate: </label>
                                 <select id="climate" th:field="*{climate}">
                                     <option th:each="c : ${climateOptions}"
-                                            th:text="${c}"
+                                            th:text="${c.text()}"
                                             th:value="${c}"
                                             th:selected="${c == config.climate}"/>
                                 </select>
@@ -49,7 +46,7 @@
                                 <label for="elevation">Elevation: </label>
                                 <select id="elevation" th:field="*{elevation}">
                                     <option th:each="e : ${elevationOptions}"
-                                            th:text="${e}"
+                                            th:text="${e.text()}"
                                             th:value="${e}"
                                             th:selected="${e == config.elevation}"/>
                                 </select>

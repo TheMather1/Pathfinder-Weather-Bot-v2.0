@@ -55,4 +55,7 @@ enum class Climate(
     abstract fun tempWave(start: LocalDate): TemperatureWave
     protected fun tempWave(start: LocalDate, days: Number, function: () -> DiceComponent<*,*,*>) =
         TemperatureWave(start.plusDays(days.toLong()), function())
+
+    fun text() = name.toString()
+        .replace('_', ' ').lowercase().replaceFirstChar(Char::uppercase)
 }

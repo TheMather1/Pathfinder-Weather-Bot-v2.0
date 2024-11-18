@@ -12,7 +12,7 @@ class Status(
     override fun execute(event: SlashCommandEvent) {
         event.deferReply(true).queue { hook ->
             clientService.perform(event.guild!!) { client ->
-                hook.editOriginal("The bot is ${client.status()}.").queue()
+                hook.editOriginal("The bot is ${client.status().lowercase()}.").queue()
             }
         }
     }

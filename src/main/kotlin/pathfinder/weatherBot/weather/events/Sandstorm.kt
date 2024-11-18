@@ -1,12 +1,9 @@
 package pathfinder.weatherBot.weather.events
 
 import pathfinder.weatherBot.time.Hour
-import pathfinder.weatherBot.weather.Weather
 import pathfinder.weatherBot.weather.Wind.SEVERE
 
-open class Sandstorm : EventType<Sandstorm> {
-    override fun progress(hour: Hour, weather: Weather, event: Event) = if (event.end.isAfter(hour.time) && hour.weather.wind >= SEVERE) event
-    else null
+open class Sandstorm : EventType {
 
     override val warn = """Sandstorm:
     Visibility is reduced to 1d10*10 ft. Perception checks take a -6 penalty. Creatures caught in the open take 1d3 nonlethal damage per hour."""
@@ -19,5 +16,19 @@ open class Sandstorm : EventType<Sandstorm> {
         }
     }
 
-    override fun finished() = "The clouds of sand seemed to have passed us by!"
+    override fun finished() = "The airborne sand slowly settles."
+
+    open fun persist(event: Event, nextHour: Hour) = if (nextHour.weather.wind >= SEVERE) {
+        event.end = nextHour.time.plusHours(1)
+        event
+    } else null
+
+    companion object {
+        private fun condition(hour: Hour) = hour.weather.wind >= SEVERE
+        operator fun invoke(hour: Hour) = if (condition(hour)) Event(
+            start = hour.time,
+            end = hour.time.plusHours(1),
+            type = Sandstorm()
+        ) else null
+    }
 }

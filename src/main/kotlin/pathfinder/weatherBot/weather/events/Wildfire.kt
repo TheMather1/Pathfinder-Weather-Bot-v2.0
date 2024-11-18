@@ -2,10 +2,9 @@ package pathfinder.weatherBot.weather.events
 
 import pathfinder.diceSyntax.d
 import pathfinder.weatherBot.time.Hour
-import pathfinder.weatherBot.weather.Weather
 import java.time.temporal.ChronoUnit.HOURS
 
-open class Wildfire : EventType<Wildfire> {
+open class Wildfire : EventType {
     companion object {
         operator fun invoke(hour: Hour): Event? = if (hour.hotAndDry() || hour.lightningSpark()) Event(
             0, hour.time, hour.time.plusHours(1), Wildfire()
@@ -13,10 +12,10 @@ open class Wildfire : EventType<Wildfire> {
 
         private fun Hour.hotAndDry() = (1 d 100).toLong() <= fireRisk
 
-        private fun Hour.lightningSpark() = weather.precipitation.type.isThunder && (1 d 100).toLong() >= 60 - (humidity * 100)
+        private fun Hour.lightningSpark() = weather.precipitation.type.isThunder && (1 d 100).toLong() >= (humidity * 100) + 60
     }
 
-    override fun progress(hour: Hour, weather: Weather, event: Event) = event.takeIf {
+    fun persist(event: Event, hour: Hour) = event.takeIf {
         (1 d 10).toLong() + hour.fireRisk > it.start.until(hour.time, HOURS)
     }?.also {
         it.end = event.end.plusHours(1)

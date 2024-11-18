@@ -31,6 +31,16 @@
                             <h1>Precipitation: </h1>
                             <th:block th:text="${precip}"/>
                         </div>
+                        <div class="status">
+                            <h1>Status: </h1>
+                            <th:block th:text="${status}"/>
+                        </div>
+                        <div th:if="${isModerator}" class="statusButton">
+                            <form action="#" th:action="@{'/portal/{guild}'(guild=${guild.first})}" th:method="POST">
+                                <button th:if="${status == 'Stopped'}" type=submit name="start" class="startButton">Start</button>
+                                <button th:if="${status == 'Running'}" type=submit name="stop" class="stopButton">Stop</button>
+                            </form>
+                        </div>
                     </section>
                 </div>
             </div>

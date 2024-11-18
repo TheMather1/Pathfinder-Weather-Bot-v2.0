@@ -29,5 +29,8 @@ enum class Elevation(val adjustTemp: Long, val adjustPrecip: Int, val basePrecip
         -20,
         -1,
         MEDIUM
-    )
+    );
+
+    fun text() = name.toString()
+        .replace('_', ' ').lowercase().replaceFirstChar(Char::uppercase)
 }

@@ -7,18 +7,21 @@ import net.dv8tion.jda.api.entities.MessageEmbed
 import pathfinder.diceSyntax.d
 import pathfinder.weatherBot.interaction.GuildConfig
 import pathfinder.weatherBot.time.Season
+import pathfinder.weatherBot.weather.Wind.HURRICANE
 import pathfinder.weatherBot.weather.precipitation.Fog
 import pathfinder.weatherBot.weather.precipitation.None
 import pathfinder.weatherBot.weather.precipitation.PrecipitationWrapper
 import pathfinder.weatherBot.weather.precipitation.Snow.HEAVY_SNOW
 import pathfinder.weatherBot.weather.precipitation.Thunder
 import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit.HOURS
 
+@Suppress("JpaObjectClassSignatureInspection")
 @Embeddable
 class Weather(
     config: GuildConfig,
-    season: Season, time:
-    LocalDateTime,
+    season: Season,
+    time: LocalDateTime,
     temp: Temperature,
     prevWeather: Weather?
 ) {
@@ -41,15 +44,22 @@ class Weather(
 
     var windDuration = 0L
     @Enumerated(EnumType.STRING)
-    val wind: Wind = when {
+    var wind: Wind = when {
         precipitation.type is Fog -> Wind.LIGHT
         precipitation.type == HEAVY_SNOW -> precipitation.windOverride
         precipitation.type.isThunder -> if (prevWeather?.keepWind(precipitation) == true) {
-            windDuration = prevWeather.windDuration - 1
-            prevWeather.wind.let { Thunder.hurricane(it, temp) }
+            prevWeather.wind.let { wind ->
+                if(wind != HURRICANE && Thunder.hurricane(wind, temp)) {
+                    windDuration = HOURS.between(prevWeather.precipitation.end, time)
+                    HURRICANE
+                } else {
+                    windDuration = prevWeather.windDuration - 1
+                    wind
+                }
+            }
         } else {
             windDuration = 2 + (1 d 3).toLong()
-            Thunder.wind.let { Thunder.hurricane(it, temp) }
+            Thunder.wind
         }
         else -> if (prevWeather?.keepWind(precipitation) == true) {
             windDuration = prevWeather.windDuration - 1
@@ -72,5 +82,5 @@ class Weather(
         wind.describeChange(prevWeather?.wind)?.let { MessageEmbed.Field("Wind", it, false) },
     )
 
-    private fun keepWind(precip: PrecipitationWrapper?) = windDuration > 0 && (precip?.type?.isThunder == true || precipitation.type.isThunder)
+    private fun keepWind(precip: PrecipitationWrapper) = windDuration > 0 && (precip.type.isThunder == precipitation.type.isThunder)
 }

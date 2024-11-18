@@ -4,7 +4,6 @@ import jakarta.persistence.Embeddable
 import jakarta.persistence.Embedded
 import pathfinder.diceSyntax.d
 import pathfinder.weatherBot.interaction.GuildConfig
-import pathfinder.weatherBot.location.Climate
 import pathfinder.weatherBot.time.Season
 import java.time.LocalDate
 import java.time.LocalTime
@@ -13,8 +12,9 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.roundToLong
 
+@Suppress("JpaObjectClassSignatureInspection")
 @Embeddable
-class TemperatureRange(config: GuildConfig, date: LocalDate, season: Season, climate: Climate, oldTemp: TemperatureRange? = null) {
+class TemperatureRange(config: GuildConfig, date: LocalDate, season: Season, oldTemp: TemperatureRange? = null) {
     @Embedded
     private val temperatureWave: TemperatureWave = oldTemp?.temperatureWave?.progress(date, config.climate) ?: config.climate.tempWave(date)
     private val highTemp = season.temp(config) + temperatureWave()

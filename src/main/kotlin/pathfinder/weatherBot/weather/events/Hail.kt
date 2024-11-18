@@ -1,10 +1,9 @@
 package pathfinder.weatherBot.weather.events
 
 import pathfinder.diceSyntax.d
-import pathfinder.weatherBot.time.Hour
-import pathfinder.weatherBot.weather.Weather
 
-class Hail : EventType<Hail> {
+@Suppress("unused")
+class Hail : EventType {
 
     private val damaging = (1 d 100).toInt() <= 5
 
@@ -15,11 +14,4 @@ class Hail : EventType<Hail> {
         TODO("Not yet implemented")
     }
 
-    override fun progress(
-        hour: Hour,
-        weather: Weather,
-        event: Event
-    ): Event? {
-        TODO("Not yet implemented")
-    }
 }

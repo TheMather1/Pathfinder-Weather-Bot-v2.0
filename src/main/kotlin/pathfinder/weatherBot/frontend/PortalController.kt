@@ -41,9 +41,39 @@ class PortalController(private val jda: JDA, private val clientRepository: Clien
 
     @GetMapping("/{guildId}")
     fun viewGuild(
-        model: Model, @AuthenticationPrincipal user: DiscordUser, @PathVariable("guildId") guildId: Long
+        model: Model,
+        @AuthenticationPrincipal
+        user: DiscordUser,
+        @PathVariable("guildId")
+        guildId: Long
     ): String {
         val (_, client, _) = model.authenticateUser(user, guildId, Permissions.USER)
+        model.displayWeather(client)
+        return "guild"
+    }
+
+    @PostMapping("/{guildId}", params = ["start", "!stop"])
+    fun startBot(
+        model: Model,
+        @AuthenticationPrincipal user: DiscordUser,
+        @PathVariable("guildId") guildId: Long
+    ): String {
+        var (_, client, _) = model.authenticateUser(user, guildId, Permissions.USER)
+        client.config.active = true
+        client = clientRepository.saveAndFlush(client)
+        model.displayWeather(client)
+        return "guild"
+    }
+
+    @PostMapping("/{guildId}", params = ["stop", "!start"])
+    fun stopBot(
+        model: Model,
+        @AuthenticationPrincipal user: DiscordUser,
+        @PathVariable("guildId") guildId: Long
+    ): String {
+        var (_, client, _) = model.authenticateUser(user, guildId, Permissions.USER)
+        client.config.active = false
+        client = clientRepository.saveAndFlush(client)
         model.displayWeather(client)
         return "guild"
     }
@@ -185,6 +215,7 @@ class PortalController(private val jda: JDA, private val clientRepository: Clien
 
     private fun Model.displayWeather(client: Client) {
         displayWeather(client.forecast.today.hours[ZonedDateTime.now(client.config.timezone).hour])
+        addAttribute("status", client.status())
     }
 
     private fun Model.displayWeather(hour: Hour?) {

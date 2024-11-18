@@ -11,6 +11,7 @@ import pathfinder.weatherBot.weather.Temperature
 import pathfinder.weatherBot.weather.Wind
 import java.time.LocalDateTime
 
+@Suppress("JpaObjectClassSignatureInspection")
 @Embeddable
 class PrecipitationWrapper(
     @Column(name = "PRECIP_START")
@@ -18,6 +19,7 @@ class PrecipitationWrapper(
     @Column(name = "PRECIP_END")
     val end: LocalDateTime,
     @Column(name = "PRECIP_TYPE")
+    @Suppress("JpaAttributeTypeInspection") //Manually defined JPAConverter
     val type: Precipitation,
     @Column(name = "PRECIP_WIND")
     @Enumerated(EnumType.STRING)
@@ -25,6 +27,7 @@ class PrecipitationWrapper(
 ) {
 
     override fun toString() = type.toString()
+        .replace('_', ' ').lowercase().replaceFirstChar(Char::uppercase)
 
     companion object {
         private fun dry(season: Season, config: GuildConfig): Boolean = (1 d 100).toInt() > season.frequency(config).chance
